@@ -3,343 +3,127 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GIANTS vs BILLS — Franchise Matchup 2026</title>
-<meta name="description" content="The definitive Madden-style franchise comparison. Giants vs Bills: rings, coaches, rosters, receipts.">
+<title>GIANTS vs BILLS — NFL Gods Analytics</title>
+<meta name="description" content="Madden-style franchise comparison + NFL Gods analytics. Giants vs Bills: rings, coaches, rosters, probabilities, receipts.">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;600;700;900&family=Archivo+Black&display=swap');
-
-  :root{
-    --pitch:#07090f;
-    --panel:#10141f;
-    --panel2:#171c2b;
-    --line:rgba(255,255,255,.08);
-    --nyg:#1B4FD8;
-    --nyg-glow:rgba(27,79,216,.5);
-    --nyg-red:#A71930;
-    --buf:#5a6273;
-    --buf-red:#C60C30;
-    --white:#F2F4F8;
-    --grey:#9aa1b0;
-    --gold:#F2C14E;
-    --elite:linear-gradient(135deg,#F2C14E,#b8860b);
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--pitch);
-    color:var(--white);
-    font-family:'Archivo',sans-serif;
-    line-height:1.6;
-    overflow-x:hidden;
-  }
-  body::before{
-    content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-    background:
-      linear-gradient(115deg, transparent 42%, rgba(27,79,216,.06) 46%, transparent 54%),
-      linear-gradient(245deg, transparent 42%, rgba(198,12,48,.05) 46%, transparent 54%);
-  }
-  .wrap{position:relative;z-index:1;}
-
-  /* ===== TICKER ===== */
-  .ticker{
-    background:linear-gradient(90deg,var(--nyg),#0a1e52);
-    overflow:hidden;white-space:nowrap;
-    font-family:'Anton',sans-serif;
-    font-size:13px;letter-spacing:.22em;text-transform:uppercase;
-    padding:9px 0;border-bottom:2px solid var(--gold);
-  }
-  .ticker-inner{display:inline-block;animation:scroll 32s linear infinite;}
-  @keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-  .ticker span{margin:0 26px;color:var(--white);}
-  .ticker .g{color:var(--gold);}
-
-  /* ===== HERO / TEAM SELECT ===== */
-  .hero{
-    text-align:center;
-    padding:56px 16px 40px;
-    position:relative;
-  }
-  .mode{
-    display:inline-block;
-    font-family:'Anton',sans-serif;
-    font-size:13px;letter-spacing:.4em;text-transform:uppercase;
-    color:var(--gold);
-    border:1px solid rgba(242,193,78,.4);
-    padding:7px 20px 6px;
-    margin-bottom:24px;
-    clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);
-    background:rgba(242,193,78,.06);
-  }
-  .matchup{
-    display:flex;align-items:center;justify-content:center;gap:4vw;
-    max-width:900px;margin:0 auto;
-  }
-  .team{flex:1;max-width:300px;}
-  .team .city{font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--grey);}
-  .team .name{
-    font-family:'Anton',sans-serif;
-    font-size:clamp(34px,7vw,64px);
-    text-transform:uppercase;line-height:1;
-  }
-  .team.g .name{color:var(--white);text-shadow:0 0 40px var(--nyg-glow);}
-  .team.b .name{color:var(--buf);}
-  .ovr{
-    display:inline-flex;flex-direction:column;align-items:center;
-    margin-top:14px;padding:10px 22px 8px;
-    clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);
-  }
-  .team.g .ovr{background:var(--elite);color:#1a1200;}
-  .team.b .ovr{background:#242a38;color:var(--grey);}
-  .ovr .n{font-family:'Anton',sans-serif;font-size:44px;line-height:1;}
-  .ovr .t{font-size:10px;font-weight:900;letter-spacing:.3em;}
-  .vs{
-    font-family:'Anton',sans-serif;
-    font-size:clamp(28px,5vw,48px);
-    color:var(--gold);
-    text-shadow:0 0 30px rgba(242,193,78,.4);
-  }
-  .subline{
-    margin-top:26px;font-size:14px;color:var(--grey);
-    max-width:520px;margin-left:auto;margin-right:auto;
-  }
-  .subline b{color:var(--gold);}
-
-  /* ===== SECTIONS ===== */
-  section{max-width:860px;margin:0 auto;padding:52px 18px;}
-  .sh{
-    display:flex;align-items:center;gap:14px;margin-bottom:8px;
-    font-family:'Anton',sans-serif;
-    font-size:clamp(22px,4.6vw,32px);
-    text-transform:uppercase;letter-spacing:.06em;
-  }
-  .sh::before{content:'';width:6px;height:1.1em;background:var(--gold);clip-path:polygon(0 0,100% 12%,100% 100%,0 88%);}
-  .sd{color:var(--grey);font-size:13.5px;margin-bottom:30px;max-width:640px;}
-  .sd a{color:var(--gold);}
-
-  /* ===== STAT BARS ===== */
-  .statrow{margin-bottom:22px;}
-  .statrow .lbl{
-    display:flex;justify-content:space-between;
-    font-family:'Archivo',sans-serif;font-weight:900;
-    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
-    margin-bottom:7px;
-  }
-  .statrow .lbl .l{color:#7fa3ff;}
-  .statrow .lbl .m{color:var(--grey);font-weight:700;}
-  .statrow .lbl .r{color:var(--buf);}
-  .bars{display:flex;gap:6px;height:14px;}
-  .bars .bl,.bars .br{height:100%;position:relative;background:var(--panel2);flex:1;}
-  .bars .bl{clip-path:polygon(0 0,100% 0,calc(100% - 7px) 100%,0 100%);display:flex;justify-content:flex-end;}
-  .bars .br{clip-path:polygon(7px 0,100% 0,100% 100%,0 100%);}
-  .bars .fill-l{height:100%;background:linear-gradient(90deg,#123a9e,var(--nyg));box-shadow:0 0 14px var(--nyg-glow);}
-  .bars .fill-r{height:100%;background:linear-gradient(90deg,var(--buf-red),#6e0a1e);}
-
-  /* ===== CARDS GRID ===== */
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
-  .card{
-    background:linear-gradient(160deg,var(--panel2),var(--panel) 70%);
-    border:1px solid var(--line);
-    clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));
-    padding:18px 18px 16px;
-    position:relative;
-  }
-  .card .top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
-  .card .rating{
-    font-family:'Anton',sans-serif;font-size:40px;line-height:.9;
-  }
-  .card .rating small{display:block;font-size:9px;letter-spacing:.3em;font-family:'Archivo',sans-serif;font-weight:900;color:var(--grey);}
-  .card.elite .rating{background:var(--elite);-webkit-background-clip:text;background-clip:text;color:transparent;}
-  .card.good .rating{color:#7fa3ff;}
-  .card.dead .rating{color:#525a6b;}
-  .card .tag{
-    font-family:'Archivo',sans-serif;font-weight:900;
-    font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
-    padding:5px 9px 4px;
-    clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);
-  }
-  .tag.gold{background:var(--elite);color:#1a1200;}
-  .tag.blue{background:var(--nyg);color:var(--white);}
-  .tag.red{background:var(--buf-red);color:var(--white);}
-  .tag.grey{background:#2a3040;color:var(--grey);}
-  .card h4{
-    font-family:'Anton',sans-serif;font-size:21px;letter-spacing:.03em;
-    text-transform:uppercase;line-height:1.05;margin-bottom:2px;
-  }
-  .card .pos{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);margin-bottom:10px;}
-  .card .xf{
-    font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--gold);margin-bottom:8px;
-  }
-  .card .xf.off{color:#525a6b;}
-  .card p{font-size:13px;color:#b9bfcc;line-height:1.55;}
-  .card p a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(242,193,78,.4);}
-  .card.dead{opacity:.85;}
-  .card.dead h4{color:#8d94a5;}
-  .card.dead::after{
-    content:attr(data-stamp);
-    position:absolute;top:44%;left:50%;
-    transform:translate(-50%,-50%) rotate(-14deg);
-    font-family:'Anton',sans-serif;font-size:26px;letter-spacing:.12em;
-    color:var(--buf-red);border:3px solid var(--buf-red);
-    padding:2px 12px;opacity:.55;pointer-events:none;white-space:nowrap;
-  }
-
-  /* ===== VS COACH SPLIT ===== */
-  .coachvs{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch;}
-  @media(max-width:640px){.coachvs{grid-template-columns:1fr;} .coachvs .midvs{display:none;}}
-  .midvs{display:flex;align-items:center;font-family:'Anton',sans-serif;font-size:30px;color:var(--gold);}
-
-  /* ===== LOWLIGHTS ===== */
-  .low{border-left:2px solid var(--buf-red);padding:2px 0 2px 18px;margin-bottom:26px;}
-  .low .y{font-family:'Archivo',sans-serif;font-weight:900;font-size:11px;letter-spacing:.2em;color:var(--grey);text-transform:uppercase;}
-  .low h4{font-family:'Anton',sans-serif;font-size:20px;text-transform:uppercase;margin:3px 0 6px;}
-  .low p{font-size:13.5px;color:#b9bfcc;}
-  .low a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(242,193,78,.35);}
-
-  /* ===== REBUTTAL ===== */
-  .console{
-    background:var(--panel);
-    border:1px solid var(--line);
-    clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,22px 100%,0 calc(100% - 22px));
-    padding:26px 26px;
-    font-size:15px;color:#c9cfdb;
-  }
-  .console b{color:var(--gold);}
-  .console .attr{display:block;margin-top:12px;font-size:10.5px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);}
-
-  footer{
-    background:#05070c;text-align:center;padding:30px 18px;
-    border-top:2px solid var(--gold);
-    font-family:'Anton',sans-serif;font-size:14px;letter-spacing:.2em;text-transform:uppercase;
-  }
-  footer .go{color:var(--gold);}
-  footer .fine{
-    display:block;margin-top:12px;
-    font-family:'Archivo',sans-serif;font-size:10px;letter-spacing:.03em;text-transform:none;
-    color:var(--grey);max-width:600px;margin-left:auto;margin-right:auto;
-  }
-  @media (prefers-reduced-motion:reduce){.ticker-inner{animation:none;}html{scroll-behavior:auto;}}
-
-  /* ===== IMMERSIVE 3D LAYER ===== */
-  #fx{position:fixed;inset:0;z-index:0;pointer-events:none;}
-  .wrap{position:relative;z-index:1;}
-  .card,.ovr,.console{transform-style:preserve-3d;will-change:transform;transition:box-shadow .3s;}
-  .card{position:relative;}
-  .card .glare{
-    content:'';position:absolute;inset:0;pointer-events:none;
-    background:radial-gradient(circle at var(--gx,50%) var(--gy,50%), rgba(255,255,255,.14), transparent 55%);
-    opacity:0;transition:opacity .25s;mix-blend-mode:screen;
-  }
-  .card.tilting .glare{opacity:1;}
-  .card.elite.tilting{box-shadow:0 18px 50px -12px rgba(242,193,78,.35);}
-  .card.good.tilting{box-shadow:0 18px 50px -12px rgba(27,79,216,.4);}
-  section, .hero{perspective:1200px;}
-  .reveal{opacity:0;transform:rotateX(14deg) translateY(46px);transition:opacity .7s ease,transform .8s cubic-bezier(.16,1,.3,1);}
-  .reveal.in{opacity:1;transform:rotateX(0) translateY(0);}
-  .shake{animation:shake .5s;}
-  @keyframes shake{0%,100%{transform:translateX(0) rotate(0);}20%{transform:translateX(-7px) rotate(-1.5deg);}40%{transform:translateX(7px) rotate(1.5deg);}60%{transform:translateX(-5px);}80%{transform:translateX(5px);}}
-  .matchup{transform-style:preserve-3d;}
-  .team,.vs{will-change:transform;}
-  .fourD{
-    position:fixed;right:12px;bottom:12px;z-index:5;
-    font-family:'Anton',sans-serif;font-size:10px;letter-spacing:.3em;
-    color:var(--gold);border:1px solid rgba(242,193,78,.4);
-    padding:6px 12px 5px;background:rgba(7,9,15,.8);
-    clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);
-    pointer-events:none;
-  }
-  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none;} #fx{display:none;}}
-
-
-  /* ===== ARCADE ===== */
-  .arcade{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
-  .game{
-    background:linear-gradient(160deg,var(--panel2),var(--panel) 70%);
-    border:1px solid var(--line);
-    clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));
-    padding:20px;text-align:center;
-  }
-  .game h4{font-family:'Anton',sans-serif;font-size:22px;text-transform:uppercase;margin-bottom:4px;}
-  .game .gd{font-size:12.5px;color:var(--grey);margin-bottom:14px;}
-  .gbtn{
-    font-family:'Anton',sans-serif;font-size:15px;letter-spacing:.18em;text-transform:uppercase;
-    background:var(--nyg);color:#fff;border:0;padding:13px 26px;cursor:pointer;
-    clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);
-    transition:transform .1s, background .2s; touch-action:manipulation; user-select:none;-webkit-user-select:none;
-  }
-  .gbtn:active{transform:scale(.96);}
-  .gbtn.red{background:var(--buf-red);}
-  .gbtn:disabled{background:#2a3040;color:var(--grey);cursor:default;}
-  /* wide right field */
-  #wrField{width:100%;max-width:340px;height:220px;margin:0 auto 12px;display:block;background:linear-gradient(#0b2e13,#0a2410);border:1px solid var(--line);}
-  #wrMeterWrap{height:14px;background:var(--panel);border:1px solid var(--line);position:relative;margin:0 auto 12px;max-width:340px;overflow:hidden;}
-  #wrMeterWrap .zone{position:absolute;left:44%;width:12%;top:0;bottom:0;background:rgba(242,193,78,.35);}
-  #wrNeedle{position:absolute;top:0;bottom:0;width:3px;background:#fff;left:0;box-shadow:0 0 8px #fff;}
-  .gmsg{font-family:'Anton',sans-serif;font-size:15px;letter-spacing:.06em;min-height:40px;color:var(--gold);text-transform:uppercase;}
-  .gsub{font-size:11px;color:var(--grey);min-height:16px;}
-  /* 13 seconds */
-  #clock13{font-family:'Anton',sans-serif;font-size:64px;line-height:1;color:#7fa3ff;margin:6px 0 10px;text-shadow:0 0 30px rgba(27,79,216,.5);}
-  #clock13.panic{color:var(--buf-red);text-shadow:0 0 30px rgba(198,12,48,.7);}
-  /* trophy case */
-  .shelfwrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-  .shelf{background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line);padding:18px 12px 14px;text-align:center;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));}
-  .shelf .t{font-family:'Anton',sans-serif;font-size:13px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px;}
-  .shelf.g .t{color:var(--gold);}
-  .shelf.b .t{color:var(--grey);}
-  .trophies{display:flex;justify-content:center;gap:8px;font-size:34px;min-height:48px;align-items:center;flex-wrap:wrap;}
-  .trophy{cursor:pointer;display:inline-block;transition:transform .6s cubic-bezier(.16,1,.3,1);transform-style:preserve-3d;}
-  .trophy.spin{transform:rotateY(720deg) scale(1.25);}
-  .cobweb{font-size:30px;opacity:.5;cursor:pointer;}
-  .shelf .cap{font-size:10.5px;color:var(--grey);margin-top:10px;}
-  /* sound toggle */
-  .sndbtn{
-    position:fixed;left:12px;bottom:12px;z-index:5;
-    font-family:'Anton',sans-serif;font-size:10px;letter-spacing:.25em;
-    color:var(--grey);border:1px solid var(--line);background:rgba(7,9,15,.85);
-    padding:6px 12px 5px;cursor:pointer;
-    clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);
-  }
-  .sndbtn.on{color:var(--gold);border-color:rgba(242,193,78,.4);}
-
-
-  /* ===== NFL GODS ORACLE ===== */
-  .oracle-badge{
-    display:inline-block;font-family:'Anton',sans-serif;font-size:11px;letter-spacing:.35em;
-    color:#0af5c8;border:1px solid rgba(10,245,200,.35);padding:6px 14px 5px;margin-bottom:14px;
-    clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);background:rgba(10,245,200,.05);
-  }
-  .gauges{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;}
-  .gauge{
-    background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line);
-    clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
-    padding:20px 12px 16px;text-align:center;
-  }
-  .ring{width:110px;height:110px;border-radius:50%;margin:0 auto 10px;position:relative;
-    display:flex;align-items:center;justify-content:center;
-    background:conic-gradient(var(--rc,#0af5c8) calc(var(--p,0)*1%), #1c2230 0);}
-  .ring::before{content:'';position:absolute;inset:9px;border-radius:50%;background:var(--panel);}
-  .ring .v{position:relative;font-family:'Anton',sans-serif;font-size:26px;}
-  .gauge .gl{font-family:'Archivo',sans-serif;font-weight:900;font-size:11px;letter-spacing:.14em;text-transform:uppercase;}
-  .gauge .gs{font-size:10.5px;color:var(--grey);margin-top:6px;line-height:1.5;}
-  .gauge .gs a{color:var(--gold);}
-  /* cascade */
-  .cascade{margin-top:8px;}
-  .cstep{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);}
-  .cstep .cp{font-family:'Anton',sans-serif;font-size:24px;min-width:84px;text-align:right;color:#7fa3ff;}
-  .cstep.doom .cp{color:var(--buf-red);}
-  .cstep .ct{font-size:13px;color:#c9cfdb;}
-  .cstep .ct a{color:var(--gold);}
-  .cfinal{display:flex;align-items:center;gap:12px;padding:18px 0 4px;}
-  .cfinal .cp{font-family:'Anton',sans-serif;font-size:44px;min-width:84px;text-align:right;color:#0af5c8;text-shadow:0 0 24px rgba(10,245,200,.4);}
-  .cfinal .ct{font-family:'Anton',sans-serif;font-size:15px;letter-spacing:.08em;text-transform:uppercase;}
-  /* monte carlo */
-  #mcOut{font-family:'Archivo',sans-serif;font-size:13px;color:#c9cfdb;text-align:left;margin-top:14px;min-height:20px;line-height:1.9;}
-  #mcOut b{color:#0af5c8;}
-  #mcOut .bad{color:var(--buf-red);font-weight:900;}
-  .mcbar{height:10px;background:var(--panel);border:1px solid var(--line);margin:2px 0 8px;position:relative;overflow:hidden;}
-  .mcbar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#123a9e,#7fa3ff);transition:width 1s ease;}
-  .mcbar i.doom{background:linear-gradient(90deg,#6e0a1e,var(--buf-red));}
-
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;700;900&display=swap');
+:root{--pitch:#07090f;--panel:#10141f;--panel2:#171c2b;--line:rgba(255,255,255,.08);--nyg:#1B4FD8;--nyg-glow:rgba(27,79,216,.5);--buf:#5a6273;--buf-red:#C60C30;--white:#F2F4F8;--grey:#9aa1b0;--gold:#F2C14E;--teal:#0af5c8;--elite:linear-gradient(135deg,#F2C14E,#b8860b);}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--pitch);color:var(--white);font-family:'Archivo',sans-serif;line-height:1.6;overflow-x:hidden;}
+#fx{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.wrap{position:relative;z-index:1;}
+a{color:var(--gold);}
+.ticker{background:linear-gradient(90deg,var(--nyg),#0a1e52);overflow:hidden;white-space:nowrap;font-family:'Anton',sans-serif;font-size:12px;letter-spacing:.22em;text-transform:uppercase;padding:8px 0;border-bottom:2px solid var(--gold);}
+.ticker-inner{display:inline-block;animation:scroll 30s linear infinite;}
+@keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.ticker span{margin:0 24px;}.ticker .g{color:var(--gold);}
+.hero{text-align:center;padding:46px 16px 36px;perspective:1200px;}
+.mode{display:inline-block;font-family:'Anton',sans-serif;font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:var(--teal);border:1px solid rgba(10,245,200,.35);padding:6px 16px 5px;margin-bottom:20px;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);background:rgba(10,245,200,.05);}
+.matchup{display:flex;align-items:center;justify-content:center;gap:4vw;max-width:900px;margin:0 auto;transform-style:preserve-3d;}
+.team{flex:1;max-width:300px;will-change:transform;}
+.team .city{font-weight:900;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--grey);}
+.team .name{font-family:'Anton',sans-serif;font-size:clamp(32px,7vw,60px);text-transform:uppercase;line-height:1;}
+.team.g .name{color:var(--white);text-shadow:0 0 40px var(--nyg-glow);}
+.team.b .name{color:var(--buf);}
+.ovr{display:inline-flex;flex-direction:column;align-items:center;margin-top:12px;padding:9px 20px 7px;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);}
+.team.g .ovr{background:var(--elite);color:#1a1200;}.team.b .ovr{background:#242a38;color:var(--grey);}
+.ovr .n{font-family:'Anton',sans-serif;font-size:40px;line-height:1;}.ovr .t{font-size:9px;font-weight:900;letter-spacing:.3em;}
+.vs{font-family:'Anton',sans-serif;font-size:clamp(26px,5vw,44px);color:var(--gold);text-shadow:0 0 30px rgba(242,193,78,.4);will-change:transform;}
+.subline{margin-top:22px;font-size:13.5px;color:var(--grey);max-width:520px;margin-left:auto;margin-right:auto;}
+.subline b{color:var(--gold);}
+section{max-width:840px;margin:0 auto;padding:40px 18px;perspective:1200px;}
+.sh{display:flex;align-items:center;gap:12px;margin-bottom:6px;font-family:'Anton',sans-serif;font-size:clamp(20px,4.4vw,28px);text-transform:uppercase;letter-spacing:.06em;}
+.sh::before{content:'';width:6px;height:1.1em;background:var(--gold);clip-path:polygon(0 0,100% 12%,100% 100%,0 88%);}
+.sd{color:var(--grey);font-size:13px;margin-bottom:24px;max-width:640px;}
+.statrow{margin-bottom:18px;}
+.statrow .lbl{display:flex;justify-content:space-between;font-weight:900;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;}
+.statrow .lbl .l{color:#7fa3ff;}.statrow .lbl .m{color:var(--grey);}.statrow .lbl .r{color:var(--buf);}
+.bars{display:flex;gap:6px;height:13px;}
+.bars .bl,.bars .br{height:100%;position:relative;background:var(--panel2);flex:1;}
+.bars .bl{clip-path:polygon(0 0,100% 0,calc(100% - 7px) 100%,0 100%);display:flex;justify-content:flex-end;}
+.bars .br{clip-path:polygon(7px 0,100% 0,100% 100%,0 100%);}
+.bars .fill-l{height:100%;background:linear-gradient(90deg,#123a9e,var(--nyg));box-shadow:0 0 14px var(--nyg-glow);}
+.bars .fill-r{height:100%;background:linear-gradient(90deg,var(--buf-red),#6e0a1e);}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
+.card{background:linear-gradient(160deg,var(--panel2),var(--panel) 70%);border:1px solid var(--line);clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));padding:17px 17px 15px;position:relative;transform-style:preserve-3d;will-change:transform;}
+.card .glare{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.14),transparent 55%);opacity:0;transition:opacity .25s;mix-blend-mode:screen;}
+.card.tilting .glare{opacity:1;}
+.card.elite.tilting{box-shadow:0 18px 50px -12px rgba(242,193,78,.35);}
+.card.good.tilting{box-shadow:0 18px 50px -12px rgba(27,79,216,.4);}
+.card .top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;}
+.card .rating{font-family:'Anton',sans-serif;font-size:38px;line-height:.9;}
+.card .rating small{display:block;font-size:9px;letter-spacing:.3em;font-family:'Archivo',sans-serif;font-weight:900;color:var(--grey);}
+.card.elite .rating{background:var(--elite);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.card.good .rating{color:#7fa3ff;}.card.dead .rating{color:#525a6b;}
+.card .tag{font-weight:900;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:5px 9px 4px;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);}
+.tag.gold{background:var(--elite);color:#1a1200;}.tag.blue{background:var(--nyg);color:#fff;}.tag.red{background:var(--buf-red);color:#fff;}.tag.grey{background:#2a3040;color:var(--grey);}
+.card h4{font-family:'Anton',sans-serif;font-size:20px;text-transform:uppercase;line-height:1.05;margin-bottom:2px;}
+.card .pos{font-size:10.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);margin-bottom:8px;}
+.card .xf{font-size:10.5px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}
+.card .xf.off{color:#525a6b;}
+.card p{font-size:12.5px;color:#b9bfcc;line-height:1.55;}
+.card p a{text-decoration:none;border-bottom:1px solid rgba(242,193,78,.4);}
+.card.dead{opacity:.85;}.card.dead h4{color:#8d94a5;}
+.card.dead::after{content:attr(data-stamp);position:absolute;top:44%;left:50%;transform:translate(-50%,-50%) rotate(-14deg);font-family:'Anton',sans-serif;font-size:24px;letter-spacing:.12em;color:var(--buf-red);border:3px solid var(--buf-red);padding:2px 12px;opacity:.55;pointer-events:none;white-space:nowrap;}
+.coachvs{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch;}
+@media(max-width:640px){.coachvs{grid-template-columns:1fr;}.coachvs .midvs{display:none;}}
+.midvs{display:flex;align-items:center;font-family:'Anton',sans-serif;font-size:28px;color:var(--gold);}
+.low{border-left:2px solid var(--buf-red);padding:2px 0 2px 16px;margin-bottom:20px;}
+.low .y{font-weight:900;font-size:10.5px;letter-spacing:.18em;color:var(--grey);text-transform:uppercase;}
+.low h4{font-family:'Anton',sans-serif;font-size:18px;text-transform:uppercase;margin:2px 0 4px;}
+.low p{font-size:13px;color:#b9bfcc;}
+.low a{text-decoration:none;border-bottom:1px solid rgba(242,193,78,.35);}
+.console{background:var(--panel);border:1px solid var(--line);clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,22px 100%,0 calc(100% - 22px));padding:22px 24px;font-size:14px;color:#c9cfdb;}
+.console b{color:var(--gold);}
+.console .attr{display:block;margin-top:10px;font-size:10px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);}
+.oracle-badge{display:inline-block;font-family:'Anton',sans-serif;font-size:10px;letter-spacing:.35em;color:var(--teal);border:1px solid rgba(10,245,200,.35);padding:5px 13px 4px;margin-bottom:12px;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);background:rgba(10,245,200,.05);}
+.gauges{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;}
+.gauge{background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line);clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));padding:18px 12px 14px;text-align:center;}
+.ring{width:104px;height:104px;border-radius:50%;margin:0 auto 10px;position:relative;display:flex;align-items:center;justify-content:center;background:conic-gradient(var(--rc,#0af5c8) calc(var(--p,0)*1%),#1c2230 0);}
+.ring::before{content:'';position:absolute;inset:9px;border-radius:50%;background:var(--panel);}
+.ring .v{position:relative;font-family:'Anton',sans-serif;font-size:24px;}
+.gauge .gl{font-weight:900;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;}
+.gauge .gs{font-size:10.5px;color:var(--grey);margin-top:6px;line-height:1.5;}
+.cstep{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);}
+.cstep .cp{font-family:'Anton',sans-serif;font-size:22px;min-width:78px;text-align:right;color:#7fa3ff;}
+.cstep.doom .cp{color:var(--buf-red);}
+.cstep .ct{font-size:12.5px;color:#c9cfdb;}
+.cfinal{display:flex;align-items:center;gap:12px;padding:16px 0 4px;}
+.cfinal .cp{font-family:'Anton',sans-serif;font-size:40px;min-width:78px;text-align:right;color:var(--teal);text-shadow:0 0 24px rgba(10,245,200,.4);}
+.cfinal .ct{font-family:'Anton',sans-serif;font-size:14px;letter-spacing:.08em;text-transform:uppercase;}
+.arcade{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;}
+.game{background:linear-gradient(160deg,var(--panel2),var(--panel) 70%);border:1px solid var(--line);clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));padding:18px;text-align:center;}
+.game h4{font-family:'Anton',sans-serif;font-size:20px;text-transform:uppercase;margin-bottom:3px;}
+.game .gd{font-size:12px;color:var(--grey);margin-bottom:12px;}
+.gbtn{font-family:'Anton',sans-serif;font-size:14px;letter-spacing:.16em;text-transform:uppercase;background:var(--nyg);color:#fff;border:0;padding:12px 24px;cursor:pointer;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);transition:transform .1s;touch-action:manipulation;user-select:none;-webkit-user-select:none;}
+.gbtn:active{transform:scale(.96);}.gbtn.red{background:var(--buf-red);}
+.gbtn:disabled{background:#2a3040;color:var(--grey);cursor:default;}
+canvas.gc{width:100%;max-width:340px;display:block;margin:0 auto 10px;border:1px solid var(--line);}
+#wrMeterWrap{height:13px;background:var(--panel);border:1px solid var(--line);position:relative;margin:0 auto 10px;max-width:340px;overflow:hidden;}
+#wrMeterWrap .zone{position:absolute;left:44%;width:12%;top:0;bottom:0;background:rgba(242,193,78,.35);}
+#wrNeedle{position:absolute;top:0;bottom:0;width:3px;background:#fff;left:0;box-shadow:0 0 8px #fff;}
+.gmsg{font-family:'Anton',sans-serif;font-size:14px;letter-spacing:.06em;min-height:36px;color:var(--gold);text-transform:uppercase;}
+.gsub{font-size:10.5px;color:var(--grey);min-height:15px;}
+#clock13{font-family:'Anton',sans-serif;font-size:56px;line-height:1;color:#7fa3ff;margin:4px 0 8px;text-shadow:0 0 30px rgba(27,79,216,.5);}
+#clock13.panic{color:var(--buf-red);text-shadow:0 0 30px rgba(198,12,48,.7);}
+#tsPower{height:13px;background:var(--panel);border:1px solid var(--line);max-width:340px;margin:0 auto 10px;position:relative;overflow:hidden;}
+#tsPower i{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#F2C14E,#C60C30);}
+#mcOut{font-size:12.5px;color:#c9cfdb;text-align:left;margin-top:12px;min-height:18px;line-height:1.85;}
+#mcOut b{color:var(--teal);}#mcOut .bad{color:var(--buf-red);font-weight:900;}
+.mcbar{height:9px;background:var(--panel);border:1px solid var(--line);margin:2px 0 7px;position:relative;overflow:hidden;}
+.mcbar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#123a9e,#7fa3ff);transition:width 1s ease;}
+.mcbar i.doom{background:linear-gradient(90deg,#6e0a1e,var(--buf-red));}
+.reveal{opacity:0;transform:rotateX(14deg) translateY(40px);transition:opacity .7s ease,transform .8s cubic-bezier(.16,1,.3,1);}
+.reveal.in{opacity:1;transform:rotateX(0) translateY(0);}
+.shake{animation:shake .5s;}
+@keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-7px) rotate(-1.5deg);}40%{transform:translateX(7px) rotate(1.5deg);}60%{transform:translateX(-5px);}80%{transform:translateX(5px);}}
+.fourD{position:fixed;right:12px;bottom:12px;z-index:5;font-family:'Anton',sans-serif;font-size:9px;letter-spacing:.3em;color:var(--gold);border:1px solid rgba(242,193,78,.4);padding:5px 11px;background:rgba(7,9,15,.8);clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);pointer-events:none;}
+.sndbtn{position:fixed;left:12px;bottom:12px;z-index:5;font-family:'Anton',sans-serif;font-size:9px;letter-spacing:.25em;color:var(--grey);border:1px solid var(--line);background:rgba(7,9,15,.85);padding:5px 11px;cursor:pointer;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);}
+.sndbtn.on{color:var(--gold);border-color:rgba(242,193,78,.4);}
+footer{background:#05070c;text-align:center;padding:26px 18px;border-top:2px solid var(--gold);font-family:'Anton',sans-serif;font-size:13px;letter-spacing:.2em;text-transform:uppercase;}
+footer .go{color:var(--gold);}
+footer .fine{display:block;margin-top:10px;font-family:'Archivo',sans-serif;font-size:9.5px;letter-spacing:.03em;text-transform:none;color:var(--grey);max-width:600px;margin-left:auto;margin-right:auto;}
+@media (prefers-reduced-motion:reduce){.ticker-inner{animation:none;}html{scroll-behavior:auto;}.reveal{opacity:1;transform:none;transition:none;}#fx{display:none;}}
 </style>
 </head>
 <body>
@@ -347,108 +131,63 @@
 <div class="fourD">4D MODE · ACTIVE</div>
 <div class="wrap">
 
-<div class="ticker" aria-hidden="true">
-  <div class="ticker-inner">
-    <span class="g">NFL GODS ANALYTICS DIVISION</span><span>GIANTS 4 RINGS · BILLS 0</span><span>HARBAUGH IN · McDERMOTT FIRED</span><span>EDMUNDS FLIPPED TO BLUE</span><span>WIDE RIGHT · 13 SECONDS · DENVER OT</span><span class="g">GO GIANTS 🗽</span>
-    <span class="g">NFL GODS ANALYTICS DIVISION</span><span>GIANTS 4 RINGS · BILLS 0</span><span>HARBAUGH IN · McDERMOTT FIRED</span><span>EDMUNDS FLIPPED TO BLUE</span><span>WIDE RIGHT · 13 SECONDS · DENVER OT</span><span class="g">GO GIANTS 🗽</span>
-  </div>
-</div>
+<div class="ticker" aria-hidden="true"><div class="ticker-inner">
+<span class="g">NFL GODS ANALYTICS DIVISION</span><span>GIANTS 4 RINGS · BILLS 0</span><span>HARBAUGH IN · McDERMOTT FIRED</span><span>WIDE RIGHT · 13 SECONDS · DENVER OT</span><span class="g">GO GIANTS 🗽</span>
+<span class="g">NFL GODS ANALYTICS DIVISION</span><span>GIANTS 4 RINGS · BILLS 0</span><span>HARBAUGH IN · McDERMOTT FIRED</span><span>WIDE RIGHT · 13 SECONDS · DENVER OT</span><span class="g">GO GIANTS 🗽</span>
+</div></div>
 
 <div class="hero">
-  <div class="mode">Franchise Mode · Head to Head</div>
+  <div class="mode">NFL Gods · Franchise Analysis</div>
   <div class="matchup">
-    <div class="team g">
-      <div class="city">New York</div>
-      <div class="name">Giants</div>
-      <div class="ovr"><span class="n">96</span><span class="t">FRANCHISE OVR</span></div>
-    </div>
+    <div class="team g"><div class="city">New York</div><div class="name">Giants</div><div class="ovr"><span class="n">96</span><span class="t">FRANCHISE OVR</span></div></div>
     <div class="vs">VS</div>
-    <div class="team b">
-      <div class="city">Buffalo</div>
-      <div class="name">Bills</div>
-      <div class="ovr"><span class="n">58</span><span class="t">JANUARY OVR</span></div>
-    </div>
+    <div class="team b"><div class="city">Buffalo</div><div class="name">Bills</div><div class="ovr"><span class="n">58</span><span class="t">JANUARY OVR</span></div></div>
   </div>
-  <p class="subline">One franchise has <b>four Lombardi Trophies</b> and just hired a Super Bowl-winning head coach. The other fired its coach in January and lost its left guard to salary-cap debt. Load the comparison.</p>
+  <p class="subline">One franchise has <b>four Lombardi Trophies</b> and a Super Bowl-winning head coach. The other fired its coach in January and is <a href="https://www.cbssports.com/nfl/news/betting-the-bills-in-2026-see-how-buffalos-win-total-super-bowl-odds-are-trending-and-our-best-bets/" target="_blank" rel="noopener">the best regular-season team in football with zero Super Bowls to show for it</a>.</p>
 </div>
 
 <section>
   <div class="sh">Franchise Ratings</div>
-  <p class="sd">Attributes rated on the only scale that matters: what happens when everything is on the line.</p>
-
-  <div class="statrow">
-    <div class="lbl"><span class="l">GIANTS · 4</span><span class="m">SUPER BOWL RINGS</span><span class="r">0 · BILLS</span></div>
-    <div class="bars"><div class="bl"><div class="fill-l" style="width:100%"></div></div><div class="br"><div class="fill-r" style="width:0%"></div></div></div>
-  </div>
-  <div class="statrow">
-    <div class="lbl"><span class="l">GIANTS · 4–1</span><span class="m">SUPER BOWL RECORD</span><span class="r">0–4 · BILLS</span></div>
-    <div class="bars"><div class="bl"><div class="fill-l" style="width:80%"></div></div><div class="br"><div class="fill-r" style="width:0%"></div></div></div>
-  </div>
-  <div class="statrow">
-    <div class="lbl"><span class="l">GIANTS · 99</span><span class="m">CLUTCH GENE</span><span class="r">12 · BILLS</span></div>
-    <div class="bars"><div class="bl"><div class="fill-l" style="width:99%"></div></div><div class="br"><div class="fill-r" style="width:12%"></div></div></div>
-  </div>
-  <div class="statrow">
-    <div class="lbl"><span class="l">GIANTS · 98</span><span class="m">DYNASTY SLAYING (BEAT 18-0 PATRIOTS + BRADY ×2)</span><span class="r">3 · BILLS</span></div>
-    <div class="bars"><div class="bl"><div class="fill-l" style="width:98%"></div></div><div class="br"><div class="fill-r" style="width:3%"></div></div></div>
-  </div>
-  <div class="statrow">
-    <div class="lbl"><span class="l">GIANTS · 97</span><span class="m">HEAD COACH JOB SECURITY</span><span class="r">FIRED · BILLS</span></div>
-    <div class="bars"><div class="bl"><div class="fill-l" style="width:97%"></div></div><div class="br"><div class="fill-r" style="width:5%"></div></div></div>
-  </div>
-  <div class="statrow">
-    <div class="lbl"><span class="l">GIANTS · 95</span><span class="m">FURNITURE SAFETY RATING</span><span class="r">2 · BILLS</span></div>
-    <div class="bars"><div class="bl"><div class="fill-l" style="width:95%"></div></div><div class="br"><div class="fill-r" style="width:2%"></div></div></div>
-  </div>
+  <div class="statrow"><div class="lbl"><span class="l">GIANTS · 4</span><span class="m">SUPER BOWL RINGS</span><span class="r">0 · BILLS</span></div>
+  <div class="bars"><div class="bl"><div class="fill-l" style="width:100%"></div></div><div class="br"><div class="fill-r" style="width:0%"></div></div></div></div>
+  <div class="statrow"><div class="lbl"><span class="l">GIANTS · 4–1</span><span class="m">SUPER BOWL RECORD</span><span class="r">0–4 · BILLS</span></div>
+  <div class="bars"><div class="bl"><div class="fill-l" style="width:80%"></div></div><div class="br"><div class="fill-r" style="width:0%"></div></div></div></div>
+  <div class="statrow"><div class="lbl"><span class="l">GIANTS · 99</span><span class="m">CLUTCH GENE (KILLED AN 18-0 DYNASTY, BEAT BRADY ×2)</span><span class="r">12 · BILLS</span></div>
+  <div class="bars"><div class="bl"><div class="fill-l" style="width:99%"></div></div><div class="br"><div class="fill-r" style="width:12%"></div></div></div></div>
+  <div class="statrow"><div class="lbl"><span class="l">GIANTS · 95</span><span class="m">FURNITURE SAFETY RATING</span><span class="r">2 · BILLS</span></div>
+  <div class="bars"><div class="bl"><div class="fill-l" style="width:95%"></div></div><div class="br"><div class="fill-r" style="width:2%"></div></div></div></div>
 </section>
-
 
 <section id="oracle">
   <div class="oracle-badge">NFL GODS · ANALYTICS DIVISION</div>
   <div class="sh">The Josh Allen Outcome Engine</div>
-  <p class="sd">Four possible fates, priced off the real numbers: <a href="https://www.spotrac.com/nfl/player/_/id/25102/josh-allen" target="_blank" rel="noopener">a 6-year, $330M contract with $250M guaranteed through 2030</a> — the largest guarantee package in NFL history. The model is satire; every input is sourced.</p>
-
+  <p class="sd">Four fates, priced off <a href="https://www.spotrac.com/nfl/player/_/id/25102/josh-allen" target="_blank" rel="noopener">the real 6-year, $330M contract with $250M guaranteed through 2030</a>. The model is satire; every input is sourced.</p>
   <div class="gauges">
-    <div class="gauge">
-      <div class="ring" data-p="95" style="--rc:#0af5c8;"><span class="v">95%</span></div>
-      <div class="gl">Stays in Buffalo thru 2028</div>
-      <div class="gs"><a href="https://www.spotrac.com/nfl/player/_/id/25102/josh-allen" target="_blank" rel="noopener">$220M is owed in the first four years — the most 4-year cash in NFL history</a> — and Buffalo <a href="https://www.spotrac.com/nfl/player/_/id/25102/josh-allen" target="_blank" rel="noopener">restructured him again in March 2026.</a> He's not going anywhere. Neither is the grief.</div>
-    </div>
-    <div class="gauge">
-      <div class="ring" data-p="2" style="--rc:#7fa3ff;"><span class="v">2%</span></div>
+    <div class="gauge"><div class="ring" data-p="95" style="--rc:#0af5c8;"><span class="v">95%</span></div>
+      <div class="gl">Stays thru 2028</div>
+      <div class="gs"><a href="https://www.spotrac.com/nfl/player/_/id/25102/josh-allen" target="_blank" rel="noopener">$220M owed in the first four years — most 4-year cash ever</a>, restructured again in March 2026. He's not going anywhere. Neither is the grief.</div></div>
+    <div class="gauge"><div class="ring" data-p="2" style="--rc:#7fa3ff;"><span class="v">2%</span></div>
       <div class="gl">Leaves for another team</div>
-      <div class="gs">Trading that guarantee structure is financial suicide — until the <a href="https://www.si.com/nfl/bills/onsi/news/salary-cap-breakdown-of-bills-qb-josh-allen-massive-new-deal" target="_blank" rel="noopener">2029 cap hit of $86.1M</a>, when <a href="https://www.espn.com/nfl/story/_/id/44255327/how-does-josh-allen-getting-paid-affect-rest-bills" target="_blank" rel="noopener">even ESPN says the Bills seeing out all six years is "probably not"</a> happening. Extend, restructure… or exit. The 2029 Decision Node is loaded.</div>
-    </div>
-    <div class="gauge">
-      <div class="ring" data-p="1" style="--rc:#F2C14E;"><span class="v">1%</span></div>
+      <div class="gs">Financially impossible until the <a href="https://www.si.com/nfl/bills/onsi/news/salary-cap-breakdown-of-bills-qb-josh-allen-massive-new-deal" target="_blank" rel="noopener">2029 cap hit of $86.1M</a> — where <a href="https://www.espn.com/nfl/story/_/id/44255327/how-does-josh-allen-getting-paid-affect-rest-bills" target="_blank" rel="noopener">even ESPN says the Bills finishing all six years is "probably not" happening</a>. The 2029 Decision Node is loaded.</div></div>
+    <div class="gauge"><div class="ring" data-p="1" style="--rc:#F2C14E;"><span class="v">1%</span></div>
       <div class="gl">Retires early</div>
-      <div class="gs">Age 30, MVP form, $200M+ still owed. Prime-age elite QBs almost never walk (Barry Sanders and Andrew Luck are famous precisely because it's so rare). Though watching that January tape every year… the Gods keep this above zero.</div>
-    </div>
-    <div class="gauge">
-      <div class="ring" data-p="3" style="--rc:#C60C30;"><span class="v">~3%</span></div>
+      <div class="gs">Age 30, MVP form, $200M+ still owed. Prime QBs almost never walk. Though after watching that January tape every year… the Gods keep this above zero.</div></div>
+    <div class="gauge"><div class="ring" data-p="3" style="--rc:#C60C30;"><span class="v">~3%</span></div>
       <div class="gl">Career-ending injury / yr</div>
-      <div class="gs">Model estimate, not a wish. Risk inputs are real: <a href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">a career-high 40 sacks taken in 2025</a> and <a href="https://www.espn.com/nfl/story/_/id/44184294/sources-josh-allen-bills-reach-record-6-year-330m-deal" target="_blank" rel="noopener">65 career rushing TDs — 10 more than any QB ever</a>, a truck-stick play style entering his 30s. The contract carries $250M in injury protection for a reason.</div>
-    </div>
+      <div class="gs">Model estimate — but the risk inputs are real: <a href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">career-high 40 sacks in 2025</a>, <a href="https://www.espn.com/nfl/story/_/id/44184294/sources-josh-allen-bills-reach-record-6-year-330m-deal" target="_blank" rel="noopener">65 rushing TDs, 10 more than any QB ever</a>, truck-stick style at 30. There's $250M of injury protection in that contract for a reason.</div></div>
   </div>
 </section>
 
 <section>
   <div class="oracle-badge">NFL GODS · ANALYTICS DIVISION</div>
   <div class="sh">Super Bowl Probability: Market vs History</div>
-  <p class="sd">What Vegas says, what history says, and why those two have never once agreed about Buffalo.</p>
-
-  <div class="cascade">
-    <div class="cstep"><div class="cp">~9%</div><div class="ct"><b>The market baseline.</b> <a href="https://www.espn.com/espn/betting/story/_/id/47809892/2026-super-bowl-lxi-odds-nfl-sports-betting-season-win-totals-playoffs" target="_blank" rel="noopener">Bills sit at 10-1 for Super Bowl LXI — second tier with the Ravens, behind the Rams</a> (<a href="https://sportsbook.fanduel.com/teams/nfl/buffalo-bills/odds" target="_blank" rel="noopener">FanDuel has them +1200 ≈ 7.7%</a>). Respectable. Bookmakers grade talent. They do not grade curses.</div></div>
-    <div class="cstep doom"><div class="cp">×20%</div><div class="ct"><b>The Divisional Round Filter.</b> <a href="https://www.fantasylife.com/articles/betting/super-bowl-odds-and-pick" target="_blank" rel="noopener">Four divisional-round exits in the last five years, plus two AFC Championship losses.</a> The round is a wood chipper with Bills-team-shaped intake.</div></div>
-    <div class="cstep doom"><div class="cp">×0%</div><div class="ct"><b>The Kansas City Clause.</b> <a href="https://en.wikipedia.org/wiki/Bills%E2%80%93Chiefs_rivalry" target="_blank" rel="noopener">Playoff record vs. the Chiefs: winless. Ever.</a> Mathematicians note you cannot multiply by zero and recover. Neither can Buffalo.</div></div>
-    <div class="cstep doom"><div class="cp">×??</div><div class="ct"><b>The Rookie Coach Variable.</b> A <a href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">36-year-old first-time head coach and a first-time defensive coordinator</a>, hired specifically because the last regime hit a "playoff wall." Bold strategy: same building, same wall, new driver.</div></div>
-    <div class="cstep"><div class="cp">+0.1%</div><div class="ct"><b>The Mercy Constant.</b> The Gods add a rounding error of hope, because <a href="https://www.cbssports.com/nfl/news/betting-the-bills-in-2026-see-how-buffalos-win-total-super-bowl-odds-are-trending-and-our-best-bets/" target="_blank" rel="noopener">since 2019 no team has scored more points, allowed fewer, or posted a better point differential (+957) — and it has produced zero Super Bowls.</a> Being the best regular-season team in football and ringless is a statistical miracle. Buffalo IS the miracle. Just the wrong kind.</div></div>
-    <div class="cfinal"><div class="cp">0.7%</div><div class="ct">NFL Gods history-adjusted Super Bowl probability</div></div>
-  </div>
-
-  <div class="game" style="margin-top:22px;">
+  <div class="cstep"><div class="cp">~9%</div><div class="ct"><b>Market baseline.</b> <a href="https://www.espn.com/espn/betting/story/_/id/47809892/2026-super-bowl-lxi-odds-nfl-sports-betting-season-win-totals-playoffs" target="_blank" rel="noopener">10-1 for Super Bowl LXI, second tier behind the Rams.</a> Bookmakers grade talent. They do not grade curses.</div></div>
+  <div class="cstep doom"><div class="cp">×20%</div><div class="ct"><b>Divisional Round Filter.</b> <a href="https://www.fantasylife.com/articles/betting/super-bowl-odds-and-pick" target="_blank" rel="noopener">Four divisional exits in the last five years.</a> The round is a wood chipper with Bills-shaped intake.</div></div>
+  <div class="cstep doom"><div class="cp">×0%</div><div class="ct"><b>The Kansas City Clause.</b> <a href="https://en.wikipedia.org/wiki/Bills%E2%80%93Chiefs_rivalry" target="_blank" rel="noopener">Playoff record vs. the Chiefs: winless, ever.</a> You cannot multiply by zero and recover. Neither can Buffalo.</div></div>
+  <div class="cstep"><div class="cp">+0.1%</div><div class="ct"><b>Mercy Constant.</b> <a href="https://www.cbssports.com/nfl/news/betting-the-bills-in-2026-see-how-buffalos-win-total-super-bowl-odds-are-trending-and-our-best-bets/" target="_blank" rel="noopener">Since 2019: most points scored, fewest allowed, +957 differential — best in football. Zero Super Bowls.</a> Being this good and ringless is a statistical miracle. Buffalo IS the miracle. The wrong kind.</div></div>
+  <div class="cfinal"><div class="cp">0.7%</div><div class="ct">History-adjusted Super Bowl probability</div></div>
+  <div class="game" style="margin-top:20px;">
     <h4>Consult The Gods: 10,000 Season Simulator</h4>
-    <div class="gd">Monte Carlo simulation of the Bills' 2026 season, weighted by market odds and thirty-five years of documented behavior.</div>
     <button class="gbtn" id="mcBtn">Run 10,000 Simulations</button>
     <div id="mcOut"></div>
   </div>
@@ -456,536 +195,247 @@
 
 <section>
   <div class="sh">Coaching Matchup</div>
-  <p class="sd">One sideline gets a Super Bowl champion with nearly two decades of head-coaching wins. The other gets two guys doing their jobs for the first time — because <a href="https://www.nfl.com/news/bills-coach-joe-brady-devastating-sean-mcdermott-firing-i-was-broken" target="_blank" rel="noopener">the last guy was fired in January for nine seasons of playoff nothing</a>.</p>
-
   <div class="coachvs">
-    <div class="card elite">
+    <div class="card elite"><div class="glare"></div>
       <div class="top"><div class="rating">99<small>OVR</small></div><span class="tag gold">SUPER BOWL CHAMPION</span></div>
-      <h4>John Harbaugh</h4>
-      <div class="pos">Head Coach · NY Giants</div>
+      <h4>John Harbaugh</h4><div class="pos">Head Coach · NY Giants</div>
       <div class="xf">⚡ X-Factor: RING BEARER</div>
-      <p>Future Hall of Famer. Won a Super Bowl, nearly two decades of sustained winning, and now he's building smashmouth football in East Rutherford. <a href="https://www.bigblueview.com/new-york-giants-free-agency/155973/rumors-cuts-signings-news-analysis-tracker-start-date" target="_blank" rel="noopener">Expectations in New York just changed overnight.</a></p>
-    </div>
+      <p>Future Hall of Famer, Super Bowl winner, nearly two decades of sustained winning — <a href="https://www.bigblueview.com/new-york-giants-free-agency/155973/rumors-cuts-signings-news-analysis-tracker-start-date" target="_blank" rel="noopener">now building smashmouth football in New York.</a></p></div>
     <div class="midvs">VS</div>
-    <div class="card dead" data-stamp="ROOKIE">
+    <div class="card dead" data-stamp="ROOKIE"><div class="glare"></div>
       <div class="top"><div class="rating">61<small>OVR</small></div><span class="tag grey">FIRST-TIME HC</span></div>
-      <h4>Joe Brady</h4>
-      <div class="pos">Head Coach · Buffalo</div>
+      <h4>Joe Brady</h4><div class="pos">Head Coach · Buffalo</div>
       <div class="xf off">⚡ X-Factor: NOT UNLOCKED</div>
-      <p>36 years old, zero games as a head coach, <a href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">promoted from inside the same staff that just hit the "playoff wall"</a> — he was in the building for most of those January funerals. New title, same curse.</p>
-    </div>
-  </div>
-
-  <div class="coachvs" style="margin-top:16px;">
-    <div class="card good">
-      <div class="top"><div class="rating">88<small>OVR</small></div><span class="tag blue">PROVEN VET</span></div>
-      <h4>Dennard Wilson</h4>
-      <div class="pos">Defensive Coordinator · NY Giants</div>
-      <div class="xf">⚡ X-Factor: EXOTIC BLITZ</div>
-      <p>Brought in under Harbaugh to run an aggressive, versatile defense — with former Bills first-rounder Tremaine Edmunds as its on-field quarterback.</p>
-    </div>
-    <div class="midvs">VS</div>
-    <div class="card dead" data-stamp="UNTESTED">
-      <div class="top"><div class="rating">59<small>OVR</small></div><span class="tag grey">FIRST-TIME DC</span></div>
-      <h4>Jim Leonhard</h4>
-      <div class="pos">Defensive Coordinator · Buffalo</div>
-      <div class="xf off">⚡ X-Factor: NOT UNLOCKED</div>
-      <p>Also doing his job for the first time. The defense he inherits <a href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">gave up 28.3 points per game across the last regime's seven playoff losses.</a> Good luck.</p>
-    </div>
-  </div>
-
-  <div class="grid" style="margin-top:16px;">
-    <div class="card dead" data-stamp="FIRED">
-      <div class="top"><div class="rating">--<small>OVR</small></div><span class="tag red">RELEASED JAN 2026</span></div>
-      <h4>Sean McDermott</h4>
-      <div class="pos">Former Head Coach · Buffalo</div>
-      <p><a href="https://www.nfl.com/news/bills-coach-joe-brady-devastating-sean-mcdermott-firing-i-was-broken" target="_blank" rel="noopener">Nine seasons, 98 wins, seven straight playoff berths, zero Super Bowls — fired anyway</a> after <a href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">the overtime loss to Denver, the fourth divisional-round exit in five years.</a> In Buffalo, even winning 98 games can't save you from January.</p>
-    </div>
+      <p>36, zero games as HC, <a href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">promoted from the same staff that hit the "playoff wall"</a> — alongside a first-time DC inheriting a defense that gave up 28.3 ppg in playoff losses. The old coach? <a href="https://www.nfl.com/news/bills-coach-joe-brady-devastating-sean-mcdermott-firing-i-was-broken" target="_blank" rel="noopener">98 wins, seven straight playoff berths, zero Super Bowls — fired anyway.</a></p></div>
   </div>
 </section>
 
 <section>
-  <div class="sh">Giants Ultimate Haul · 2026</div>
-  <p class="sd">Every card the Giants pulled this offseason. <a href="https://www.giants.com/news/2026-new-york-giants-free-agency-tracker-roster-moves" target="_blank" rel="noopener">Full transaction log here</a> — these are real moves, not fantasy packs.</p>
+  <div class="sh">The 2026 Ledger</div>
+  <p class="sd">Who the Giants built vs. who Buffalo lost. Every move links to real reporting.</p>
   <div class="grid">
-    <div class="card elite">
+    <div class="card elite"><div class="glare"></div>
       <div class="top"><div class="rating">92<small>OVR</small></div><span class="tag gold">EX-BILL · FLIPPED</span></div>
-      <h4>Tremaine Edmunds</h4>
-      <div class="pos">LB · Defensive QB</div>
+      <h4>Tremaine Edmunds</h4><div class="pos">LB · Giants Defensive QB</div>
       <div class="xf">⚡ X-Factor: DOUBLE AGENT</div>
-      <p>Buffalo's own former first-round pick — <a href="https://www.espn.com/nfl/story/_/id/48015678/giants-2026-free-agency-tracker-offseason-moves-signings-trades" target="_blank" rel="noopener">now signed to run the Giants' defense with $23.7M guaranteed.</a> They drafted him. They developed him. He plays for us now.</p>
-    </div>
-    <div class="card good">
-      <div class="top"><div class="rating">87<small>OVR</small></div><span class="tag blue">WEAPON</span></div>
-      <h4>Isaiah Likely</h4>
-      <div class="pos">TE · From Baltimore</div>
-      <div class="xf">⚡ X-Factor: MISMATCH</div>
-      <p><a href="https://www.si.com/nfl/giants/onsi/big-blue-plus/giants-2026-free-agency-tracker-latest-signings-losses-news-rumors-01kk83xzdcpq" target="_blank" rel="noopener">Followed Harbaugh from Baltimore</a> — a scheme-defining weapon for the young franchise QB.</p>
-    </div>
-    <div class="card good">
+      <p>Buffalo's own former first-rounder — <a href="https://www.espn.com/nfl/story/_/id/48015678/giants-2026-free-agency-tracker-offseason-moves-signings-trades" target="_blank" rel="noopener">now running Big Blue's defense, $23.7M guaranteed.</a> They drafted him. He plays for us.</p></div>
+    <div class="card good"><div class="glare"></div>
       <div class="top"><div class="rating">85<small>OVR</small></div><span class="tag blue">FRANCHISE QB</span></div>
-      <h4>Jaxson Dart</h4>
-      <div class="pos">QB · 22 Years Old</div>
+      <h4>Jaxson Dart</h4><div class="pos">QB · 22 Years Old</div>
       <div class="xf">⚡ X-Factor: THE FUTURE</div>
-      <p>The 22-year-old the whole rebuild is aimed at — now with a Hall of Fame coach, new weapons, and a decade of runway. His January record is spotless. Buffalo's QB can't say that.</p>
-    </div>
-    <div class="card good">
-      <div class="top"><div class="rating">86<small>OVR</small></div><span class="tag blue">DRAFT · PICK 5</span></div>
-      <h4>Arvell Reese</h4>
-      <div class="pos">LB · Round 1, No. 5</div>
-      <div class="xf">⚡ X-Factor: DAY ONE</div>
-      <p><a href="https://www.giants.com/news/2026-new-york-giants-free-agency-tracker-roster-moves" target="_blank" rel="noopener">Top-five pick</a> — one of TWO Giants first-rounders in April.</p>
-    </div>
-    <div class="card good">
-      <div class="top"><div class="rating">84<small>OVR</small></div><span class="tag blue">DRAFT · PICK 10</span></div>
-      <h4>Francis Mauigoa</h4>
-      <div class="pos">OL · Round 1, No. 10</div>
-      <div class="xf">⚡ X-Factor: ROAD GRADER</div>
-      <p><a href="https://www.giants.com/news/2026-new-york-giants-free-agency-tracker-roster-moves" target="_blank" rel="noopener">The second first-rounder.</a> Two premium picks in one draft. Buffalo drafted depth; New York drafted a foundation.</p>
-    </div>
-    <div class="card good">
-      <div class="top"><div class="rating">90<small>OVR</small></div><span class="tag blue">ALL-PRO</span></div>
-      <h4>Jordan Stout</h4>
-      <div class="pos">P · Highest-Paid Punter</div>
-      <div class="xf">⚡ X-Factor: FIELD FLIPPER</div>
-      <p><a href="https://www.espn.com/nfl/story/_/id/48015678/giants-2026-free-agency-tracker-offseason-moves-signings-trades" target="_blank" rel="noopener">First-team All-Pro, 50.1 yards per punt</a> — even our punter has more hardware than their trophy case.</p>
-    </div>
-    <div class="card good">
-      <div class="top"><div class="rating">83<small>OVR</small></div><span class="tag blue">SPEED</span></div>
-      <h4>Darnell Mooney</h4>
-      <div class="pos">WR · Deep Threat</div>
-      <div class="xf">⚡ X-Factor: TAKE THE TOP OFF</div>
-      <p><a href="https://sports.yahoo.com/articles/giants-free-agency-tracker-2026-135456830.html" target="_blank" rel="noopener">Signed to stretch the field</a> for Dart — a year removed from a near-1,000-yard season.</p>
-    </div>
-    <div class="card good">
-      <div class="top"><div class="rating">85<small>OVR</small></div><span class="tag blue">SMASHMOUTH</span></div>
-      <h4>Patrick Ricard</h4>
-      <div class="pos">FB · "Pancake Pat" · 300 lbs</div>
-      <div class="xf">⚡ X-Factor: BULLDOZER</div>
-      <p><a href="https://gmenhq.com/new-york-giants-free-agency-tracker-hub" target="_blank" rel="noopener">A 6'3", 300-pound fullback</a> — Harbaugh football has arrived. Buffalo's fullback? He left for the Patriots.</p>
-    </div>
-    <div class="card good">
-      <div class="top"><div class="rating">84<small>OVR</small></div><span class="tag blue">ANCHOR</span></div>
-      <h4>D.J. Reader</h4>
-      <div class="pos">DT · Nose Tackle</div>
-      <div class="xf">⚡ X-Factor: IMMOVABLE</div>
-      <p><a href="https://www.bigblueview.com/new-york-giants-free-agency/155973/rumors-cuts-signings-news-analysis-tracker-start-date" target="_blank" rel="noopener">The veteran nose tackle the middle needed.</a> Plus Jason Sanders at kicker, Ar'Darius Washington and Jevón Holland at safety — the Baltimore pipeline runs through Jersey now.</p>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="sh">Buffalo's Departure Terminal · 2026</div>
-  <p class="sd">Meanwhile in Orchard Park: <a href="https://www.buffalorumblings.com/buffalo-bills-free-agency/130589/buffalo-bills-2026-free-agency-tracker-rumors-signings-trades-news-and-more" target="_blank" rel="noopener">the salary-cap-strapped Bills watched their locker room file out the door.</a> Sixty-six years of your ticket money and they couldn't afford the guard.</p>
-  <div class="grid">
-    <div class="card dead" data-stamp="GONE">
-      <div class="top"><div class="rating">81<small>OVR</small></div><span class="tag red">LOST · SAINTS</span></div>
-      <h4>David Edwards</h4>
-      <div class="pos">LG · Starting Left Guard</div>
-      <p><a href="https://www.si.com/nfl/bills/onsi/free-agency-four-losses-that-will-prove-toughest-for-buffalo-bills-to-overcome" target="_blank" rel="noopener">So good New Orleans paid him $61 million. So broke Buffalo couldn't match.</a> First new O-line combo in three years — right as a rookie coach takes over.</p>
-    </div>
-    <div class="card dead" data-stamp="TRAITOR">
-      <div class="top"><div class="rating">76<small>OVR</small></div><span class="tag red">LOST · PATRIOTS</span></div>
-      <h4>Reggie Gilliam</h4>
-      <div class="pos">FB · Fan Favorite</div>
-      <p><a href="https://www.buffalorumblings.com/buffalo-bills-free-agency/130589/buffalo-bills-2026-free-agency-tracker-rumors-signings-trades-news-and-more" target="_blank" rel="noopener">Defected to the division-rival Patriots.</a> Twice a year, he gets to personally remind Buffalo what loyalty costs.</p>
-    </div>
-    <div class="card dead" data-stamp="GONE">
-      <div class="top"><div class="rating">74<small>OVR</small></div><span class="tag red">LOST · TITANS</span></div>
-      <h4>Mitch Trubisky</h4>
-      <div class="pos">QB · Backup</div>
-      <p><a href="https://www.espn.com/nfl/story/_/id/48015515/bills-2026-free-agency-tracker-offseason-moves-signings-contract-trades" target="_blank" rel="noopener">Josh Allen's backup walked to Tennessee.</a> The replacement plan: a QB whose last start was 2022 — signed mostly because he's Josh's friend.</p>
-    </div>
-    <div class="card dead" data-stamp="GONE">
-      <div class="top"><div class="rating">73<small>OVR</small></div><span class="tag red">LOST · VIKINGS</span></div>
-      <h4>Ryan Van Demark</h4>
-      <div class="pos">OT · Swing Tackle</div>
-      <p><a href="https://www.si.com/nfl/bills/onsi/free-agency-four-losses-that-will-prove-toughest-for-buffalo-bills-to-overcome" target="_blank" rel="noopener">Even his $3.5M tender "was a tough number for us," the GM admitted.</a> When you're haggling over the backup tackle, the window isn't closing — it's boarded up.</p>
-    </div>
-    <div class="card dead" data-stamp="CUT">
-      <div class="top"><div class="rating">--<small>OVR</small></div><span class="tag red">RELEASED</span></div>
-      <h4>Samuel · Jackson · Rapp</h4>
-      <div class="pos">WR · CB · S</div>
-      <p><a href="https://www.buffalorumblings.com/buffalo-bills-free-agency/130589/buffalo-bills-2026-free-agency-tracker-rumors-signings-trades-news-and-more" target="_blank" rel="noopener">Curtis Samuel, Dane Jackson, and Taylor Rapp — all released</a> in the cap purge. Plus Darnell Savage, A.J. Epenesa, and Cam Lewis out the door in free agency.</p>
-    </div>
-    <div class="card dead" data-stamp="GHOSTED">
+      <p>A Hall of Fame coach, new weapons, a decade of runway — and a spotless January record. Buffalo's QB can't say that.</p></div>
+    <div class="card good"><div class="glare"></div>
+      <div class="top"><div class="rating">88<small>OVR</small></div><span class="tag blue">THE HAUL</span></div>
+      <h4>The 2026 Class</h4><div class="pos">Two 1st-Rounders + Weapons</div>
+      <div class="xf">⚡ X-Factor: LOADED</div>
+      <p><a href="https://www.giants.com/news/2026-new-york-giants-free-agency-tracker-roster-moves" target="_blank" rel="noopener">Picks 5 and 10 (Reese, Mauigoa)</a>, TE Isaiah Likely, WR Darnell Mooney, <a href="https://www.espn.com/nfl/story/_/id/48015678/giants-2026-free-agency-tracker-offseason-moves-signings-trades" target="_blank" rel="noopener">All-Pro punter Jordan Stout</a> — even our punter has more hardware than their trophy case.</p></div>
+    <div class="card dead" data-stamp="GONE"><div class="glare"></div>
+      <div class="top"><div class="rating">81<small>OVR</small></div><span class="tag red">BUFFALO'S EXODUS</span></div>
+      <h4>The Departed</h4><div class="pos">LG · QB2 · FB · OT + 3 Cuts</div>
+      <p><a href="https://www.si.com/nfl/bills/onsi/free-agency-four-losses-that-will-prove-toughest-for-buffalo-bills-to-overcome" target="_blank" rel="noopener">LG David Edwards left for $61M they couldn't match</a>; <a href="https://www.buffalorumblings.com/buffalo-bills-free-agency/130589/buffalo-bills-2026-free-agency-tracker-rumors-signings-trades-news-and-more" target="_blank" rel="noopener">Trubisky to Tennessee, Van Demark to Minnesota, fullback Gilliam to the rival Patriots; Samuel, Jackson and Rapp cut.</a> 66 years of your money and they can't afford the guard.</p></div>
+    <div class="card dead" data-stamp="GHOSTED"><div class="glare"></div>
       <div class="top"><div class="rating">12<small>JAN</small></div><span class="tag red">EVERY JANUARY</span></div>
-      <h4>Playoff Josh Allen</h4>
-      <div class="pos">QB · October MVP</div>
+      <h4>Playoff Josh Allen</h4><div class="pos">QB · October MVP</div>
       <div class="xf off">⚡ X-Factor: DISAPPEARS IN JANUARY</div>
-      <p>Regular-season superstar, real MVP — and after eight seasons the postseason résumé still reads: zero Super Bowls, a fired coach, and <a href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">an owner who saw his face after the Denver loss and started firing people.</a></p>
-    </div>
-  </div>
-</section>
-
-
-<section id="arcade">
-  <div class="sh">The Arcade of Grief</div>
-  <p class="sd">Playable. Interactive. Historically accurate — meaning you cannot win. Turn sound on (bottom left) for the full 4D experience.</p>
-  <div class="arcade">
-
-    <div class="game">
-      <h4>Wide Right Simulator</h4>
-      <div class="gd">Super Bowl XXV. 47 yards. 8 seconds left. Stop the needle in the gold zone for a perfect kick. Perfection changes nothing.</div>
-      <canvas id="wrField" width="340" height="220"></canvas>
-      <div id="wrMeterWrap"><div class="zone"></div><div id="wrNeedle"></div></div>
-      <button class="gbtn" id="wrBtn">Kick</button>
-      <div class="gmsg" id="wrMsg"></div>
-      <div class="gsub" id="wrSub">Franchise record on this kick: 0 for everything since 1991</div>
-    </div>
-
-    <div class="game">
-      <h4>The 13 Seconds Challenge</h4>
-      <div class="gd">Jan 2022. You lead by 3. Hold the button to defend for 13 seconds. Nobody has ever survived. Not even the Bills.</div>
-      <div id="clock13">13.0</div>
-      <button class="gbtn red" id="btn13">Hold to Defend</button>
-      <div class="gmsg" id="msg13"></div>
-      <div class="gsub" id="sub13"></div>
-    </div>
-
-  </div>
-
-  <div class="shelfwrap" style="margin-top:16px;">
-    <div class="shelf g">
-      <div class="t">Giants Trophy Case</div>
-      <div class="trophies">
-        <span class="trophy" title="Super Bowl XXI">🏆</span><span class="trophy" title="Super Bowl XXV">🏆</span><span class="trophy" title="Super Bowl XLII">🏆</span><span class="trophy" title="Super Bowl XLVI">🏆</span>
-      </div>
-      <div class="cap">Tap to polish. XXI · XXV · XLII · XLVI — one of them pried directly from Buffalo's hands.</div>
-    </div>
-    <div class="shelf b">
-      <div class="t">Bills Trophy Case</div>
-      <div class="trophies"><span class="cobweb" id="cobweb">🕸️</span></div>
-      <div class="cap">Established 1960. Dusted weekly. Tap to check for trophies — nothing has ever been found.</div>
-    </div>
+      <p>Real MVP every fall. Every winter: zero Super Bowls, a fired coach, and <a href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">an owner who saw his face after the Denver loss and started firing people.</a></p></div>
   </div>
 </section>
 
 <section>
   <div class="sh">He Sent You A Spreadsheet</div>
-  <div class="console">
-    Did a Bills fan just show you regular-season records from 2016–2025? Adorable. Here's the only column that matters: <b>Super Bowls reached in that decade — Bills: 0. Super Bowls won — Bills: 0.</b> The greatest ten-year run in franchise history, the best rosters they've ever assembled, an MVP quarterback in his prime — and it produced exactly as many trophies as your grandmother's flag football team. It produced so little that <a href="https://www.nfl.com/news/bills-coach-joe-brady-devastating-sean-mcdermott-firing-i-was-broken" style="color:var(--gold)">they fired the coach who built it</a>. Regular-season wins are participation ribbons with better marketing. Congratulations on winning October. The Giants own four Februarys.
-    <span class="attr">— Official response to all spreadsheets, screenshots, and win-percentage charts</span>
-  </div>
+  <div class="console">Regular-season records 2016–2025? Adorable. The only column that matters: <b>Super Bowls in that decade — Bills: 0.</b> Their greatest era ever produced as many trophies as your grandmother's flag football team, and <a href="https://www.nfl.com/news/bills-coach-joe-brady-devastating-sean-mcdermott-firing-i-was-broken" style="color:var(--gold)">they fired the coach who built it</a>. Congratulations on winning October. The Giants own four Februarys.
+  <span class="attr">— Official response to all spreadsheets and win-percentage charts</span></div>
 </section>
 
 <section>
   <div class="sh">Lowlight Reel</div>
-  <p class="sd">The documented franchise disasters, with receipts. Tap any link — it's all real.</p>
+  <div class="low"><div class="y">JAN 1991 · GIANTS 20, BILLS 19</div><h4>Wide Right</h4>
+    <p><a href="https://sportsteamhistory.com/how-did-the-bills-lose-4-super-bowls-in-a-row/" target="_blank" rel="noopener">The Parcells–Belichick Giants smothered the favored Bills, and Norwood's 47-yarder sailed wide right.</a> The Giants took the trophy; Buffalo took a two-word curse.</p></div>
+  <div class="low"><div class="y">1991–1994</div><h4>0–4 In Super Bowls</h4>
+    <p><a href="https://en.wikipedia.org/wiki/Super_Bowl_XXVIII" target="_blank" rel="noopener">The only franchise ever to lose four straight Super Bowls.</a> Haven't been back since.</p></div>
+  <div class="low"><div class="y">JAN 2000</div><h4>Music City Miracle</h4>
+    <p><a href="https://en.wikipedia.org/wiki/Music_City_Miracle" target="_blank" rel="noopener">Lead with 16 seconds left; a 75-yard trick lateral return ends the season.</a> Fans still call it a forward pass. The refs disagree. So does reality.</p></div>
+  <div class="low"><div class="y">2000–2016</div><h4>The 17-Year Drought</h4>
+    <p><a href="https://www.espn.com/nfl/story/_/id/18396283/generation-buffalo-bills-fans-endure-longest-playoff-drought" target="_blank" rel="noopener">Seventeen straight seasons without a playoff berth — the longest drought in major American pro sports.</a></p></div>
+  <div class="low"><div class="y">JAN 2022</div><h4>13 Seconds</h4>
+    <p><a href="https://www.espn.com/blog/buffalo-bills/post/_/id/36910/bills-watch-victory-slip-away-in-13-seconds-as-chiefs-end-their-postseason-again" target="_blank" rel="noopener">Up three with thirteen seconds left; lost in OT without touching the ball.</a></p></div>
+  <div class="low"><div class="y">JAN 2025 + JAN 2026</div><h4>KC, Then Denver, Then The Firing Squad</h4>
+    <p><a href="https://www.espn.com/nfl/recap/_/gameId/401671887" target="_blank" rel="noopener">32–29 to the Chiefs in the AFC title game</a> — then <a href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">an OT loss to Denver, the fourth divisional exit in five years, and the owner fired McDermott after seeing Josh Allen's face.</a></p></div>
+</section>
 
-  <div class="low">
-    <div class="y">JAN 1991 · SUPER BOWL XXV · GIANTS 20, BILLS 19</div>
-    <h4>Wide Right</h4>
-    <p>Heavily favored Buffalo ran into the Parcells–Belichick Giants, <a href="https://sportsteamhistory.com/how-did-the-bills-lose-4-super-bowls-in-a-row/" target="_blank" rel="noopener">who smothered the no-huddle and watched Norwood's 47-yarder sail wide right.</a> The Giants took the trophy; Buffalo took a two-word curse.</p>
-  </div>
-  <div class="low">
-    <div class="y">1991–1994</div>
-    <h4>0–4 In Super Bowls</h4>
-    <p><a href="https://en.wikipedia.org/wiki/Super_Bowl_XXVIII" target="_blank" rel="noopener">The only franchise ever to lose four straight Super Bowls</a> — including a 52–17 demolition with a record nine turnovers. Haven't been back since.</p>
-  </div>
-  <div class="low">
-    <div class="y">JAN 2000</div>
-    <h4>Music City Miracle</h4>
-    <p><a href="https://en.wikipedia.org/wiki/Music_City_Miracle" target="_blank" rel="noopener">Lead with 16 seconds left, then a 75-yard trick lateral return ends the season.</a> Fans still call it a forward pass. The refs and an NFL Films analysis disagree.</p>
-  </div>
-  <div class="low">
-    <div class="y">2000–2016</div>
-    <h4>The 17-Year Drought</h4>
-    <p><a href="https://www.espn.com/nfl/story/_/id/18396283/generation-buffalo-bills-fans-endure-longest-playoff-drought" target="_blank" rel="noopener">Seventeen straight seasons without a playoff berth — the longest active drought in major American pro sports.</a> An entire generation grew up without one January game.</p>
-  </div>
-  <div class="low">
-    <div class="y">JAN 2022</div>
-    <h4>13 Seconds</h4>
-    <p><a href="https://www.espn.com/blog/buffalo-bills/post/_/id/36910/bills-watch-victory-slip-away-in-13-seconds-as-chiefs-end-their-postseason-again" target="_blank" rel="noopener">Up three with thirteen seconds left; lost in overtime without touching the ball.</a> Most teams need four quarters to break your heart. Buffalo is efficient.</p>
-  </div>
-  <div class="low">
-    <div class="y">JAN 2025</div>
-    <h4>Kansas City, Again</h4>
-    <p><a href="https://www.espn.com/nfl/recap/_/gameId/401671887" target="_blank" rel="noopener">32–29 at Arrowhead — the fourth playoff elimination by KC in five years.</a> <a href="https://en.wikipedia.org/wiki/Bills%E2%80%93Chiefs_rivalry" target="_blank" rel="noopener">Dominant against the Chiefs every fall, winless against them every winter.</a></p>
-  </div>
-  <div class="low">
-    <div class="y">JAN 2026 · THE FRESHEST ONE</div>
-    <h4>Denver In OT — Then They Fired The Coach</h4>
-    <p><a href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">Fourth divisional-round exit in five years; the owner saw Josh Allen's face and fired McDermott</a> — <a href="https://www.nfl.com/news/bills-coach-joe-brady-devastating-sean-mcdermott-firing-i-was-broken" target="_blank" rel="noopener">nine seasons, 98 wins, zero Super Bowls.</a> The rebuild begins where every Bills season ends: in January, in pieces.</p>
-  </div>
-
-  <div class="console" style="margin-top:10px;">
-    <b>Bonus fan stat:</b> The Bills Mafia remains the only fanbase whose signature highlight is a felony against furniture. More fans have gone through folding tables than Bills teams have gone through to a Super Bowl since 1994. Furniture Safety Rating: 2.
-    <span class="attr">— League Office of Table Welfare</span>
+<section id="arcade">
+  <div class="sh">The Arcade of Grief</div>
+  <p class="sd">Playable. Historically accurate — meaning you cannot win. Except the table one. Sound toggle bottom-left.</p>
+  <div class="arcade">
+    <div class="game">
+      <h4>Wide Right Simulator</h4>
+      <div class="gd">47 yards. 8 seconds left. Stop the needle in the gold zone. Perfection changes nothing.</div>
+      <canvas id="wrField" class="gc" width="340" height="200"></canvas>
+      <div id="wrMeterWrap"><div class="zone"></div><div id="wrNeedle"></div></div>
+      <button class="gbtn" id="wrBtn">Kick</button>
+      <div class="gmsg" id="wrMsg"></div>
+      <div class="gsub" id="wrSub">Record on this kick: 0 for everything since 1991</div>
+    </div>
+    <div class="game">
+      <h4>The 13 Seconds Challenge</h4>
+      <div class="gd">You lead by 3. Hold the button to defend for 13 seconds. Nobody has ever survived.</div>
+      <div id="clock13">13.0</div>
+      <button class="gbtn red" id="btn13">Hold to Defend</button>
+      <div class="gmsg" id="msg13"></div>
+      <div class="gsub" id="sub13"></div>
+    </div>
+    <div class="game">
+      <h4>Table Smash: Mafia Training Camp</h4>
+      <div class="gd">The one thing Bills fans never miss. Hold to charge the jump, release to launch. 12°F. Pre-game. Sober-ish.</div>
+      <canvas id="tsField" class="gc" width="340" height="200"></canvas>
+      <div id="tsPower"><i></i></div>
+      <button class="gbtn red" id="tsBtn">Hold to Charge</button>
+      <div class="gmsg" id="tsMsg"></div>
+      <div class="gsub" id="tsSub">Tables destroyed: 0 · Super Bowls earned by doing this: 0</div>
+    </div>
   </div>
 </section>
 
 <footer>
   FINAL SCORE: HISTORY 4 · EXCUSES 0 &nbsp;·&nbsp; <span class="go">GO GIANTS 🗽</span>
-  <span class="fine">Satirical fan content. Player "ratings" and X-Factors are jokes, not real evaluations. Not affiliated with the NFL, EA Sports, the New York Giants, or the Buffalo Bills. Roster moves and results link to real reporting. No folding tables were harmed in the making of this website — Buffalo handles that on their own.</span>
+  <span class="fine">Satirical fan content. "Ratings," probabilities and X-Factors are jokes, not real evaluations. Not affiliated with the NFL, EA Sports, the Giants, or the Bills. Roster moves, contracts, odds and results link to real reporting. No folding tables were harmed that weren't asking for it.</span>
 </footer>
-
 </div>
-
 <script>
 (function(){
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* PARTICLES */
+const cv=document.getElementById('fx'),ctx=cv.getContext('2d');
+let W,H,parts=[],mx=0,my=0,sv=0;
+const COLORS=['#1B4FD8','#F2C14E','#C60C30','#7fa3ff'];
+function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight;}rs();addEventListener('resize',rs);
+for(let i=0;i<Math.min(80,innerWidth/13|0);i++)parts.push({x:Math.random(),y:Math.random(),z:.25+Math.random()*.75,r:.6+Math.random()*2.2,c:COLORS[i%4],vy:.0002+Math.random()*.00035,tw:Math.random()*6.28});
+addEventListener('pointermove',e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5;},{passive:true});
+let ly=scrollY;addEventListener('scroll',()=>{sv=(scrollY-ly)*.0006;ly=scrollY;},{passive:true});
+(function tick(t){if(reduced)return;ctx.clearRect(0,0,W,H);
+for(const p of parts){p.y-=p.vy*(1+p.z);p.y+=sv*p.z;if(p.y<-.05)p.y=1.05;if(p.y>1.05)p.y=-.05;
+const px=(p.x+mx*.06*p.z)*W,py=(p.y+my*.06*p.z)*H,a=(.25+.45*p.z)*(0.7+0.3*Math.sin(t*.001+p.tw));
+ctx.globalAlpha=a;ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(px,py,p.r*p.z*2,0,6.28);ctx.fill();}
+sv*=.9;ctx.globalAlpha=1;requestAnimationFrame(tick);})(0);
+function burst(x,y,cols){for(let i=0;i<24;i++)parts.push({x:x/innerWidth,y:y/innerHeight,z:1,r:1.5+Math.random()*2.5,c:cols[i%cols.length],vy:-(0.002+Math.random()*.006),tw:Math.random()*6.28});while(parts.length>220)parts.shift();}
 
-  /* ---------- PARTICLE DEPTH FIELD ---------- */
-  const cv = document.getElementById('fx'), ctx = cv.getContext('2d');
-  let W,H,parts=[],mx=0,my=0,scrollV=0;
-  const COLORS=['#1B4FD8','#F2C14E','#C60C30','#7fa3ff'];
-  function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight;}
-  resize(); addEventListener('resize',resize);
-  const N = Math.min(90, Math.floor(innerWidth/12));
-  for(let i=0;i<N;i++){
-    parts.push({x:Math.random()*1,y:Math.random()*1,z:.25+Math.random()*.75,
-      r:.6+Math.random()*2.2,c:COLORS[i%COLORS.length],vy:.00018+Math.random()*.00035,tw:Math.random()*6.28});
-  }
-  addEventListener('pointermove',e=>{mx=(e.clientX/innerWidth-.5);my=(e.clientY/innerHeight-.5);},{passive:true});
-  let lastY=scrollY;
-  addEventListener('scroll',()=>{scrollV=(scrollY-lastY)*.0006;lastY=scrollY;},{passive:true});
-  function tick(t){
-    if(reduced) return;
-    ctx.clearRect(0,0,W,H);
-    for(const p of parts){
-      p.y-=p.vy*(1+p.z); p.y+=scrollV*p.z;
-      if(p.y<-0.05)p.y=1.05; if(p.y>1.05)p.y=-0.05;
-      const px=(p.x + mx*.06*p.z)*W, py=(p.y + my*.06*p.z)*H;
-      const a=(.25+.45*p.z)*(0.7+0.3*Math.sin(t*.001+p.tw));
-      ctx.globalAlpha=a; ctx.fillStyle=p.c;
-      ctx.beginPath(); ctx.arc(px,py,p.r*p.z*2,0,6.28); ctx.fill();
-      if(p.z>.8){ctx.globalAlpha=a*.35;ctx.beginPath();ctx.arc(px,py,p.r*p.z*5,0,6.28);ctx.fill();}
-    }
-    scrollV*=.9; ctx.globalAlpha=1;
-    requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
+/* SOUND */
+let AC=null,sndOn=false;
+const sb=document.createElement('button');sb.className='sndbtn';sb.textContent='🔇 SOUND OFF';document.body.appendChild(sb);
+function ac(){if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();return AC;}
+function tone(f,t0,d,ty,v,sl){if(!sndOn)return;const c=ac(),o=c.createOscillator(),g=c.createGain();o.type=ty||'sine';o.frequency.setValueAtTime(f,c.currentTime+t0);if(sl)o.frequency.exponentialRampToValueAtTime(sl,c.currentTime+t0+d);g.gain.setValueAtTime(0,c.currentTime+t0);g.gain.linearRampToValueAtTime(v||.16,c.currentTime+t0+.012);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+t0+d);o.connect(g).connect(c.destination);o.start(c.currentTime+t0);o.stop(c.currentTime+t0+d+.05);}
+const thump=()=>tone(120,0,.15,'sine',.3,50),whoosh=()=>tone(900,0,.4,'sawtooth',.05,180);
+const sad=()=>[392,370,349,311].forEach((f,i)=>tone(f,i*.28,.32,'sawtooth',.14,f*.97));
+const fan=()=>[523,659,784,1047].forEach((f,i)=>tone(f,i*.11,.22,'triangle',.16));
+const crunch=()=>{tone(90,0,.2,'square',.3,40);tone(2400,0,.08,'sawtooth',.12,300);tone(60,0.05,.25,'sine',.3,30);};
+sb.addEventListener('click',()=>{sndOn=!sndOn;sb.classList.toggle('on',sndOn);sb.textContent=sndOn?'🔊 SOUND ON':'🔇 SOUND OFF';if(sndOn){ac();tone(660,0,.06,'square',.12);}});
 
-  /* ---------- 3D CARD TILT + GLARE ---------- */
-  document.querySelectorAll('.card').forEach(card=>{
-    const g=document.createElement('div');g.className='glare';card.appendChild(g);
-    function move(e){
-      const r=card.getBoundingClientRect();
-      const x=(e.clientX-r.left)/r.width, y=(e.clientY-r.top)/r.height;
-      card.style.transform=`perspective(800px) rotateY(${(x-.5)*14}deg) rotateX(${(0.5-y)*12}deg) translateZ(6px)`;
-      card.style.setProperty('--gx',(x*100)+'%');card.style.setProperty('--gy',(y*100)+'%');
-      card.classList.add('tilting');
-    }
-    function leave(){card.style.transform='';card.classList.remove('tilting');}
-    if(!reduced){card.addEventListener('pointermove',move);card.addEventListener('pointerleave',leave);}
-  });
+/* TILT + REVEAL + CARD TAPS */
+document.querySelectorAll('.card').forEach(card=>{
+if(!reduced){card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;card.style.transform=`perspective(800px) rotateY(${(x-.5)*14}deg) rotateX(${(.5-y)*12}deg) translateZ(6px)`;card.style.setProperty('--gx',x*100+'%');card.style.setProperty('--gy',y*100+'%');card.classList.add('tilting');});
+card.addEventListener('pointerleave',()=>{card.style.transform='';card.classList.remove('tilting');});}
+card.addEventListener('click',e=>{const d=card.classList.contains('dead');if(navigator.vibrate)navigator.vibrate(d?[60,40,120]:30);if(d){card.classList.remove('shake');void card.offsetWidth;card.classList.add('shake');sad();}else{burst(e.clientX,e.clientY,['#F2C14E','#1B4FD8','#fff']);fan();}});});
+document.querySelectorAll('.card,.statrow,.low,.console,.gauge,.cstep,.cfinal,.game,.sh,.sd').forEach(el=>el.classList.add('reveal'));
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+/* hero parallax */
+const tg=document.querySelector('.team.g'),tb=document.querySelector('.team.b'),vs=document.querySelector('.vs');
+function ht(nx,ny){if(reduced)return;tg.style.transform=`translate(${nx*-14}px,${ny*-8}px)`;tb.style.transform=`translate(${nx*14}px,${ny*8}px)`;vs.style.transform=`translate(${nx*-24}px,${ny*-14}px)`;}
+addEventListener('pointermove',e=>ht(e.clientX/innerWidth-.5,e.clientY/innerHeight-.5),{passive:true});
+addEventListener('deviceorientation',e=>{if(e.gamma==null)return;ht(Math.max(-.5,Math.min(.5,e.gamma/60)),Math.max(-.5,Math.min(.5,(e.beta-45)/60)));},{passive:true});
 
-  /* ---------- HERO PARALLAX (pointer + gyro) ---------- */
-  const tg=document.querySelector('.team.g'), tb=document.querySelector('.team.b'), vs=document.querySelector('.vs');
-  function heroTilt(nx,ny){
-    if(reduced||!tg)return;
-    tg.style.transform=`translateZ(30px) translate(${nx*-14}px,${ny*-8}px)`;
-    tb.style.transform=`translateZ(30px) translate(${nx*14}px,${ny*8}px)`;
-    vs.style.transform=`translateZ(60px) translate(${nx*-24}px,${ny*-14}px) scale(1.02)`;
-  }
-  addEventListener('pointermove',e=>heroTilt(e.clientX/innerWidth-.5,e.clientY/innerHeight-.5),{passive:true});
-  addEventListener('deviceorientation',e=>{
-    if(e.gamma==null)return;
-    heroTilt(Math.max(-.5,Math.min(.5,e.gamma/60)),Math.max(-.5,Math.min(.5,(e.beta-45)/60)));
-  },{passive:true});
+/* GAUGES */
+const io2=new IntersectionObserver(es=>es.forEach(en=>{if(!en.isIntersecting)return;const r=en.target,t=+r.dataset.p;let p=0;const iv=setInterval(()=>{p+=Math.max(.5,t/40);if(p>=t){p=t;clearInterval(iv);}r.style.setProperty('--p',p);},16);io2.unobserve(r);}),{threshold:.4});
+document.querySelectorAll('.ring').forEach(r=>io2.observe(r));
 
-  /* ---------- SCROLL-IN 3D REVEAL ---------- */
-  document.querySelectorAll('.card,.statrow,.low,.console,.sh,.sd').forEach(el=>el.classList.add('reveal'));
-  const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}}),{threshold:.12});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+/* MONTE CARLO */
+const mb=document.getElementById('mcBtn'),mo=document.getElementById('mcOut');
+mb.addEventListener('click',()=>{if(navigator.vibrate)navigator.vibrate(25);mb.disabled=true;mb.textContent='CONSULTING…';mo.innerHTML='';
+let s=0,k=0,d=0,w=0,m=0;for(let i=0;i<10000;i++){const r=Math.random();if(r<.007)s++;else if(r<.20)k++;else if(r<.55)d++;else if(r<.80)w++;else m++;}
+setTimeout(()=>{const row=(l,n,dm)=>l+' — <b'+(dm?' class="bad"':'')+'>'+n.toLocaleString()+'</b> ('+(n/100).toFixed(1)+'%)<div class="mcbar"><i'+(dm?' class="doom"':'')+' style="width:0%" data-w="'+(n/100)+'"></i></div>';
+mo.innerHTML=row('🏆 Wins Super Bowl LXI',s)+row('💔 Eliminated by Kansas City (again)',k,1)+row('⚰️ Dies in the Divisional Round (tradition)',d,1)+row('🥶 One-and-done Wild Card exit',w,1)+row('📉 Misses playoffs (rookie coach special)',m,1)+'<div style="margin-top:6px;">Hearts broken: <b class="bad">'+(k+d+w).toLocaleString()+'</b> · Seasons he says "this is our year": <b class="bad">10,000</b></div>';
+requestAnimationFrame(()=>mo.querySelectorAll('.mcbar i').forEach(b=>b.style.width=b.dataset.w+'%'));
+sad();if(navigator.vibrate)navigator.vibrate([60,40,60,40,120]);mb.disabled=false;mb.textContent='Run 10,000 Simulations';},900);});
 
-  /* ---------- 4D FEEDBACK: haptics + confetti ---------- */
-  function burst(x,y,colors){
-    for(let i=0;i<26;i++){
-      parts.push({x:x/innerWidth,y:y/innerHeight,z:1,r:1.5+Math.random()*2.5,
-        c:colors[i%colors.length],vy:-(0.002+Math.random()*.006),tw:Math.random()*6.28,
-        _burst:true});
-    }
-    while(parts.length>240)parts.shift();
-  }
-  document.querySelectorAll('.card').forEach(card=>{
-    card.addEventListener('click',e=>{
-      const dead=card.classList.contains('dead');
-      if(navigator.vibrate)navigator.vibrate(dead?[60,40,120]:30);
-      if(dead){card.classList.remove('shake');void card.offsetWidth;card.classList.add('shake');}
-      else burst(e.clientX,e.clientY,['#F2C14E','#1B4FD8','#ffffff']);
-    });
-  });
+/* WIDE RIGHT */
+const F=document.getElementById('wrField'),fx2=F.getContext('2d');
+const needle=document.getElementById('wrNeedle'),wrapM=document.getElementById('wrMeterWrap');
+const wb=document.getElementById('wrBtn'),wm=document.getElementById('wrMsg'),ws=document.getElementById('wrSub');
+let pos=0,dir=1,sweeping=true,att=0,kick=false;
+function fld(bx,by){fx2.clearRect(0,0,340,200);fx2.fillStyle='#0b2e13';fx2.fillRect(0,0,340,200);
+fx2.strokeStyle='rgba(255,255,255,.12)';fx2.lineWidth=1;for(let y=185;y>40;y-=24){fx2.beginPath();fx2.moveTo(20,y);fx2.lineTo(320,y);fx2.stroke();}
+fx2.strokeStyle='#F2C14E';fx2.lineWidth=5;fx2.lineCap='round';fx2.beginPath();fx2.moveTo(130,64);fx2.lineTo(130,14);fx2.moveTo(210,64);fx2.lineTo(210,14);fx2.moveTo(122,64);fx2.lineTo(218,64);fx2.moveTo(170,64);fx2.lineTo(170,86);fx2.stroke();
+fx2.fillStyle='#8a4a20';fx2.beginPath();fx2.ellipse(bx,by,7,10,0,0,6.28);fx2.fill();
+fx2.strokeStyle='#fff';fx2.lineWidth=1.5;fx2.beginPath();fx2.moveTo(bx,by-5);fx2.lineTo(bx,by+5);fx2.stroke();}
+fld(170,180);
+(function sw(){if(sweeping){pos+=dir*1.6;if(pos>=100){pos=100;dir=-1;}if(pos<=0){pos=0;dir=1;}needle.style.left=(pos/100*(wrapM.clientWidth-3))+'px';}requestAnimationFrame(sw);})();
+wb.addEventListener('click',()=>{if(kick)return;kick=true;sweeping=false;att++;
+const perfect=pos>=44&&pos<=56,acc=Math.max(0,100-Math.abs(pos-50)*2)|0;
+thump();if(navigator.vibrate)navigator.vibrate(25);let t=0;
+setTimeout(function fly(){t+=.022;const x=170+Math.pow(t,1.7)*95,y=180-Math.sin(Math.min(t,1)*Math.PI*.86)*156;fld(x,y);
+if(t<1.15)requestAnimationFrame(fly);else{whoosh();sad();if(navigator.vibrate)navigator.vibrate([70,50,140]);
+wm.textContent=perfect?'PERFECT KICK. WIDE RIGHT.':'ACCURACY: '+acc+'%. STILL WIDE RIGHT.';
+ws.textContent='Record on this kick: 0 for '+att+' this visit · 0 for everything since 1991';
+setTimeout(()=>{kick=false;sweeping=true;fld(170,180);wm.textContent='';},2400);}},120);});
+
+/* 13 SECONDS */
+const b13=document.getElementById('btn13'),c13=document.getElementById('clock13'),m13=document.getElementById('msg13'),s13=document.getElementById('sub13');
+let t13=null,left=13,fails=0,act=false;
+const ends=['MAHOMES: 44 YARDS IN TWO PLAYS. FG. OT. YOU NEVER TOUCH THE BALL.','SQUIB KICK DECLINED. FG IS GOOD. OVERTIME. YOU LOSE.','TIME EXPIRES… FLAG. UNTIMED PLAY. FG IS GOOD. YOU LOSE.'];
+function st(early){clearInterval(t13);t13=null;act=false;fails++;sad();if(navigator.vibrate)navigator.vibrate([80,60,160]);
+m13.textContent=early?'YOU LET GO. SO DID THE SECONDARY.':ends[fails%3];
+s13.textContent='Leads blown here: '+fails+' · In real life: all of them';
+setTimeout(()=>{left=13;c13.textContent='13.0';c13.classList.remove('panic');m13.textContent='';},3000);}
+b13.addEventListener('pointerdown',e=>{e.preventDefault();if(act)return;act=true;left=13;m13.textContent='';
+t13=setInterval(()=>{left-=.1;if(left<=3.05)c13.classList.add('panic');tone(left<=3.05?1200:800,0,.04,'square',.08);
+if(left<=.11){c13.textContent='0.1';st(false);return;}c13.textContent=left.toFixed(1);},100);});
+b13.addEventListener('pointerup',()=>{if(act)st(true);});
+b13.addEventListener('pointerleave',()=>{if(act)st(true);});
+
+/* TABLE SMASH */
+const T=document.getElementById('tsField'),tc=T.getContext('2d');
+const tsB=document.getElementById('tsBtn'),tsP=document.querySelector('#tsPower i'),tsM=document.getElementById('tsMsg'),tsS=document.getElementById('tsSub');
+let charging=false,power=0,pDir=1,flying=false,tables=0,debris=[];
+const quips=['MEDIC! (HE IS FINE. HE IS NOT FINE.)','THE TABLE NEVER SAW WIDE RIGHT. NOW IT SEES NOTHING.','FLAWLESS TECHNIQUE. ZERO PLAYOFF IMPACT.','ANOTHER COSTCO SPECIAL SACRIFICED.','12°F. SHIRTLESS. MAGNIFICENT. POINTLESS.'];
+function drawTS(guyX,guyY,broken){
+tc.clearRect(0,0,340,200);
+// sky + lot
+tc.fillStyle='#0d1220';tc.fillRect(0,0,340,140);tc.fillStyle='#1a2030';tc.fillRect(0,140,340,60);
+// snow flecks
+tc.fillStyle='rgba(255,255,255,.25)';for(let i=0;i<18;i++)tc.fillRect((i*67+((Date.now()/40)|0))%340,(i*43)%140,2,2);
+// RV platform left
+tc.fillStyle='#2a3040';tc.fillRect(10,80,70,70);
+tc.fillStyle='#3a4256';tc.fillRect(10,80,70,10);
+// table right
+const tx=240,ty=150;
+if(!broken){tc.fillStyle='#c9cfdb';tc.fillRect(tx-40,ty,80,7);tc.strokeStyle='#8d94a5';tc.lineWidth=3;
+tc.beginPath();tc.moveTo(tx-34,ty+7);tc.lineTo(tx-40,ty+38);tc.moveTo(tx+34,ty+7);tc.lineTo(tx+40,ty+38);tc.stroke();}
+else{tc.fillStyle='#c9cfdb';tc.save();tc.translate(tx-20,ty+12);tc.rotate(-.5);tc.fillRect(-20,0,40,6);tc.restore();
+tc.save();tc.translate(tx+20,ty+12);tc.rotate(.5);tc.fillRect(-20,0,40,6);tc.restore();}
+// debris
+for(const d of debris){tc.fillStyle=d.c;tc.fillRect(d.x,d.y,3,3);d.x+=d.vx;d.y+=d.vy;d.vy+=.25;}
+debris=debris.filter(d=>d.y<205);
+// guy
+tc.strokeStyle='#C60C30';tc.lineWidth=3;tc.lineCap='round';
+tc.beginPath();tc.arc(guyX,guyY-14,5,0,6.28);tc.stroke();
+tc.beginPath();tc.moveTo(guyX,guyY-9);tc.lineTo(guyX,guyY+4);tc.moveTo(guyX,guyY-6);tc.lineTo(guyX-7,guyY);tc.moveTo(guyX,guyY-6);tc.lineTo(guyX+7,guyY-10);tc.moveTo(guyX,guyY+4);tc.lineTo(guyX-5,guyY+12);tc.moveTo(guyX,guyY+4);tc.lineTo(guyX+5,guyY+12);tc.stroke();}
+drawTS(45,68,false);
+function chargeLoop(){if(!charging)return;power+=pDir*2.2;if(power>=100){power=100;pDir=-1;}if(power<=0){power=0;pDir=1;}tsP.style.width=power+'%';requestAnimationFrame(chargeLoop);}
+tsB.addEventListener('pointerdown',e=>{e.preventDefault();if(flying)return;charging=true;power=0;pDir=1;tsM.textContent='';chargeLoop();if(navigator.vibrate)navigator.vibrate(15);});
+function launch(){if(!charging||flying)return;charging=false;flying=true;
+const p=power/100,peak=40+p*70,distTarget=195*Math.min(1,.35+p*.85);
+let t=0;whoosh();
+(function fly(){t+=.02;const x=45+distTarget*t,y=68-Math.sin(Math.min(t,1)*Math.PI)*peak+Math.pow(Math.max(0,t-.5),2)*160;
+if(y<148||t<1){drawTS(x,y,false);requestAnimationFrame(fly);}
+else{tables++;crunch();if(navigator.vibrate)navigator.vibrate([30,20,90]);
+for(let i=0;i<30;i++)debris.push({x:x,y:150,vx:(Math.random()-.5)*7,vy:-(2+Math.random()*5),c:['#c9cfdb','#F2C14E','#fff'][i%3]});
+burst(innerWidth*.6,innerHeight*.6,['#c9cfdb','#C60C30','#fff']);
+tsM.textContent=quips[tables%quips.length];
+tsS.textContent='Tables destroyed: '+tables+' · Super Bowls earned by doing this: 0';
+let bt=0;(function anim(){bt++;drawTS(x,152,true);if(bt<40)requestAnimationFrame(anim);else{setTimeout(()=>{flying=false;debris=[];tsP.style.width='0%';drawTS(45,68,false);tsM.textContent='';},600);}})();}})();}
+tsB.addEventListener('pointerup',launch);
+tsB.addEventListener('pointerleave',()=>{if(charging)launch();});
 })();
 </script>
-
-
-<script>
-(function(){
-  /* ---------- SOUND ENGINE (synthesized, zero assets) ---------- */
-  let AC=null, sndOn=false;
-  const sbtn=document.createElement('button');
-  sbtn.className='sndbtn';sbtn.textContent='🔇 SOUND OFF';document.body.appendChild(sbtn);
-  function ac(){ if(!AC) AC=new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==='suspended')AC.resume(); return AC; }
-  sbtn.addEventListener('click',()=>{sndOn=!sndOn;sbtn.classList.toggle('on',sndOn);sbtn.textContent=sndOn?'🔊 SOUND ON':'🔇 SOUND OFF';if(sndOn){ac();blip(660,.06,.15);}});
-  function tone(f,t0,dur,type,vol,slideTo){
-    if(!sndOn)return; const c=ac(),o=c.createOscillator(),g=c.createGain();
-    o.type=type||'sine';o.frequency.setValueAtTime(f,c.currentTime+t0);
-    if(slideTo)o.frequency.exponentialRampToValueAtTime(slideTo,c.currentTime+t0+dur);
-    g.gain.setValueAtTime(0,c.currentTime+t0);
-    g.gain.linearRampToValueAtTime(vol||.18,c.currentTime+t0+.012);
-    g.gain.exponentialRampToValueAtTime(.001,c.currentTime+t0+dur);
-    o.connect(g).connect(c.destination);o.start(c.currentTime+t0);o.stop(c.currentTime+t0+dur+.05);
-  }
-  function blip(f,dur,vol){tone(f,0,dur||.08,'square',vol||.12);}
-  function thump(){tone(120,0,.15,'sine',.3,50);}
-  function whoosh(){tone(900,0,.4,'sawtooth',.05,180);}
-  function sadTrombone(){ [392,370,349,311].forEach((f,i)=>tone(f,i*.28,.32,'sawtooth',.14,f*.97)); }
-  function fanfare(){ [523,659,784,1047].forEach((f,i)=>tone(f,i*.11,.22,'triangle',.16)); }
-  function tickSnd(hi){blip(hi?1200:800,.04,.08);}
-  window.__snd={sadTrombone,fanfare,blip};
-
-  /* hook sounds into existing card taps */
-  document.querySelectorAll('.card').forEach(card=>{
-    card.addEventListener('click',()=>{ card.classList.contains('dead')?sadTrombone():fanfare(); });
-  });
-
-  /* ---------- WIDE RIGHT SIMULATOR ---------- */
-  const F=document.getElementById('wrField'); if(F){
-  const fx=F.getContext('2d');
-  const needle=document.getElementById('wrNeedle'), wrap=document.getElementById('wrMeterWrap');
-  const btn=document.getElementById('wrBtn'), msg=document.getElementById('wrMsg'), sub=document.getElementById('wrSub');
-  let pos=0,dir=1,sweeping=true,attempts=0,anim=null,kicking=false;
-  function drawField(ballX,ballY){
-    fx.clearRect(0,0,340,220);
-    // yard stripes
-    fx.strokeStyle='rgba(255,255,255,.12)';fx.lineWidth=1;
-    for(let y=200;y>40;y-=26){fx.beginPath();fx.moveTo(20,y);fx.lineTo(320,y);fx.stroke();}
-    // uprights
-    fx.strokeStyle='#F2C14E';fx.lineWidth=5;fx.lineCap='round';
-    fx.beginPath();fx.moveTo(130,70);fx.lineTo(130,18);fx.moveTo(210,70);fx.lineTo(210,18);fx.moveTo(122,70);fx.lineTo(218,70);fx.moveTo(170,70);fx.lineTo(170,92);fx.stroke();
-    // ball
-    fx.fillStyle='#8a4a20';fx.beginPath();fx.ellipse(ballX,ballY,7,10,0,0,6.28);fx.fill();
-    fx.strokeStyle='#fff';fx.lineWidth=1.5;fx.beginPath();fx.moveTo(ballX,ballY-5);fx.lineTo(ballX,ballY+5);fx.stroke();
-  }
-  drawField(170,196);
-  function sweep(){ if(!sweeping)return;
-    pos+=dir*1.6; if(pos>=100){pos=100;dir=-1;} if(pos<=0){pos=0;dir=1;}
-    needle.style.left=(pos/100*(wrap.clientWidth-3))+'px';
-    requestAnimationFrame(sweep);
-  }
-  sweep();
-  btn.addEventListener('click',()=>{
-    if(kicking)return; kicking=true; sweeping=false; attempts++;
-    const perfect = pos>=44 && pos<=56;
-    const acc=Math.max(0,100-Math.abs(pos-50)*2)|0;
-    thump(); if(navigator.vibrate)navigator.vibrate(25);
-    let t=0;
-    function fly(){
-      t+=0.022;
-      // ball path: starts centered... then curses right, always missing
-      const x=170 + Math.pow(t,1.7)*95;           // drifts right, always
-      const y=196 - Math.sin(Math.min(t,1)*Math.PI*0.86)*168;
-      drawField(x,y);
-      if(t<1.15){requestAnimationFrame(fly);}
-      else{
-        whoosh(); sadTrombone(); if(navigator.vibrate)navigator.vibrate([70,50,140]);
-        const lines = perfect
-          ? ['PERFECT SNAP. PERFECT HOLD. PERFECT KICK.','WIDE RIGHT.']
-          : ['ACCURACY: '+acc+'%','STILL WIDE RIGHT.'];
-        msg.textContent=lines.join(' ');
-        sub.textContent='Franchise record on this kick: 0 for '+attempts+' this visit · 0 for everything since 1991';
-        setTimeout(()=>{kicking=false;sweeping=true;sweep();drawField(170,196);msg.textContent='';},2600);
-      }
-    }
-    setTimeout(()=>{whoosh();fly();},120);
-  });
-  }
-
-  /* ---------- 13 SECONDS CHALLENGE ---------- */
-  const b13=document.getElementById('btn13'); if(b13){
-  const c13=document.getElementById('clock13'), m13=document.getElementById('msg13'), s13=document.getElementById('sub13');
-  let t13=null,left=13.0,fails=0,active=false;
-  const ends=[
-    'MAHOMES: 44 YARDS IN TWO PLAYS. FG. OVERTIME. YOU NEVER TOUCH THE BALL.',
-    'SQUIB KICK DECLINED. FG IS GOOD. OVERTIME. YOU LOSE.',
-    'TIME EXPIRES... FLAG. UNTIMED PLAY. FG IS GOOD. YOU LOSE.'
-  ];
-  function reset(){left=13.0;c13.textContent='13.0';c13.classList.remove('panic');}
-  function stop(early){
-    clearInterval(t13);t13=null;active=false;fails++;
-    sadTrombone(); if(navigator.vibrate)navigator.vibrate([80,60,160]);
-    m13.textContent = early ? 'YOU LET GO. SO DID THE SECONDARY.' : ends[fails%ends.length];
-    s13.textContent='Leads blown here: '+fails+' · Leads blown in real life: all of them';
-    setTimeout(()=>{reset();m13.textContent='';},3200);
-  }
-  function start(e){
-    e.preventDefault();
-    if(active)return; active=true;reset();m13.textContent='';
-    t13=setInterval(()=>{
-      left-=0.1; if(left<=3.05)c13.classList.add('panic');
-      tickSnd(left<=3.05);
-      if(left<=0.11){ c13.textContent='0.1'; stop(false); return; }
-      c13.textContent=left.toFixed(1);
-    },100);
-  }
-  b13.addEventListener('pointerdown',start);
-  b13.addEventListener('pointerup',()=>{if(active)stop(true);});
-  b13.addEventListener('pointerleave',()=>{if(active)stop(true);});
-  }
-
-  /* ---------- TROPHY CASE ---------- */
-  document.querySelectorAll('.trophy').forEach(tr=>{
-    tr.addEventListener('click',()=>{
-      tr.classList.remove('spin');void tr.offsetWidth;tr.classList.add('spin');
-      fanfare(); if(navigator.vibrate)navigator.vibrate(20);
-    });
-  });
-  const cw=document.getElementById('cobweb');
-  if(cw){const dust=['🕸️','💨','🕸️','🦗'];let di=0;
-    cw.addEventListener('click',()=>{di=(di+1)%dust.length;cw.textContent=dust[di];sadTrombone();if(navigator.vibrate)navigator.vibrate([40,30,40]);});
-  }
-})();
-</script>
-
-
-<script>
-(function(){
-  /* gauges animate on scroll */
-  const rings=document.querySelectorAll('.ring');
-  const io2=new IntersectionObserver(es=>es.forEach(en=>{
-    if(!en.isIntersecting)return;
-    const r=en.target,target=+r.dataset.p;let p=0;
-    const iv=setInterval(()=>{p+=Math.max(.5,target/40);if(p>=target){p=target;clearInterval(iv);}r.style.setProperty('--p',p);},16);
-    io2.unobserve(r);
-  }),{threshold:.4});
-  rings.forEach(r=>io2.observe(r));
-
-  /* monte carlo */
-  const btn=document.getElementById('mcBtn'),out=document.getElementById('mcOut');
-  if(btn)btn.addEventListener('click',()=>{
-    if(navigator.vibrate)navigator.vibrate(25);
-    btn.disabled=true;btn.textContent='CONSULTING…';out.innerHTML='';
-    let sb=0,kc=0,div=0,wc=0,miss=0,heart=0;
-    for(let i=0;i<10000;i++){
-      const r=Math.random();
-      if(r<0.007){sb++;}
-      else if(r<0.20){kc++;heart++;}
-      else if(r<0.55){div++;heart++;}
-      else if(r<0.80){wc++;heart++;}
-      else{miss++;}
-    }
-    setTimeout(()=>{
-      function row(label,n,doom){
-        const pct=(n/100).toFixed(1);
-        return label+' — <b'+(doom?' class="bad"':'')+'>'+n.toLocaleString()+'</b> ('+pct+'%)<div class="mcbar"><i'+(doom?' class="doom"':'')+' style="width:0%" data-w="'+pct+'"></i></div>';
-      }
-      out.innerHTML =
-        row('🏆 Wins Super Bowl LXI', sb) +
-        row('💔 Eliminated by Kansas City (again)', kc, true) +
-        row('⚰️ Dies in the Divisional Round (tradition)', div, true) +
-        row('🥶 One-and-done Wild Card exit', wc, true) +
-        row('📉 Misses playoffs entirely (rookie coach special)', miss, true) +
-        '<div style="margin-top:8px;">Hearts broken: <b class="bad">'+heart.toLocaleString()+'</b> · Seasons your brother-in-law says "this is our year": <b class="bad">10,000</b></div>';
-      requestAnimationFrame(()=>{out.querySelectorAll('.mcbar i').forEach(b=>b.style.width=b.dataset.w+'%');});
-      if(window.__snd)window.__snd.sadTrombone();
-      if(navigator.vibrate)navigator.vibrate([60,40,60,40,120]);
-      btn.disabled=false;btn.textContent='Run 10,000 Simulations';
-    },900);
-  });
-})();
-</script>
-
 </body>
 </html>
