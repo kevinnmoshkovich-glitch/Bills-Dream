@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>In Memoriam: The Buffalo Bills — Football's Longest Tease</title>
+<meta name="description" content="A dark satirical memorial to the Buffalo Bills. Four Super Bowls. Zero rings. Endless grief. We remember it all.">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;600;700&family=Special+Elite&display=swap');
+
+  :root{
+    --void:#0a0a0f;
+    --coffin:#14141c;
+    --blood:#8B0000;
+    --blood-bright:#C60C30;
+    --bone:#E8E4DA;
+    --ash:#8a8a96;
+    --gold:#C9A24B;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--void);
+    color:var(--bone);
+    font-family:'Archivo',sans-serif;
+    line-height:1.7;
+  }
+  a{color:var(--gold);}
+
+  /* ===== TICKER ===== */
+  .ticker{
+    background:var(--blood);
+    overflow:hidden;white-space:nowrap;
+    font-family:'Archivo Black',sans-serif;
+    font-size:12px;letter-spacing:.25em;text-transform:uppercase;
+    padding:9px 0;color:var(--bone);
+    border-bottom:1px solid #000;
+  }
+  .ticker-inner{display:inline-block;animation:scroll 34s linear infinite;}
+  @keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  .ticker span{margin:0 28px;}
+
+  /* ===== HERO / OBITUARY ===== */
+  .hero{
+    text-align:center;
+    padding:80px 20px 64px;
+    position:relative;
+    background:
+      radial-gradient(ellipse 90% 60% at 50% 0%, rgba(139,0,0,.22), transparent 65%),
+      var(--void);
+    border-bottom:1px solid rgba(232,228,218,.12);
+  }
+  .cross{font-size:30px;color:var(--ash);letter-spacing:.5em;margin-bottom:20px;}
+  .eyebrow{
+    font-family:'Special Elite',monospace;
+    font-size:13px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--ash);margin-bottom:22px;
+  }
+  h1{
+    font-family:'Archivo Black',sans-serif;
+    font-size:clamp(40px,10vw,88px);
+    line-height:.96;text-transform:uppercase;
+    color:var(--bone);
+  }
+  h1 .dead{
+    display:block;
+    color:var(--blood-bright);
+    text-shadow:0 0 32px rgba(198,12,48,.45);
+  }
+  .lifespan{
+    font-family:'Special Elite',monospace;
+    font-size:18px;color:var(--ash);
+    margin-top:16px;letter-spacing:.15em;
+  }
+  .epitaph{
+    font-family:'Special Elite',monospace;
+    max-width:520px;margin:26px auto 0;
+    font-size:16px;color:var(--bone);
+    font-style:italic;
+  }
+  .hero-cta{
+    display:inline-block;margin-top:34px;
+    background:transparent;color:var(--blood-bright);
+    border:2px solid var(--blood-bright);
+    text-decoration:none;
+    font-family:'Archivo Black',sans-serif;
+    font-size:13px;letter-spacing:.25em;text-transform:uppercase;
+    padding:14px 32px;
+    transition:all .2s;
+  }
+  .hero-cta:hover{background:var(--blood-bright);color:var(--void);box-shadow:0 0 30px rgba(198,12,48,.5);}
+
+  /* ===== SECTIONS ===== */
+  section{max-width:740px;margin:0 auto;padding:60px 22px;}
+  .section-head{
+    display:flex;align-items:center;gap:16px;
+    margin-bottom:38px;
+    font-family:'Archivo Black',sans-serif;
+    font-size:clamp(20px,4.6vw,30px);
+    text-transform:uppercase;letter-spacing:.05em;
+    white-space:nowrap;color:var(--bone);
+  }
+  .section-head::after{content:'';flex:1;border-top:1px solid rgba(198,12,48,.5);}
+
+  /* ===== TOMBSTONES ===== */
+  .stones{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;}
+  .stone{
+    background:var(--coffin);
+    border:1px solid rgba(232,228,218,.1);
+    border-radius:60px 60px 4px 4px;
+    padding:30px 16px 22px;text-align:center;
+    position:relative;
+  }
+  .stone::before{content:'⚰️';font-size:14px;display:block;margin-bottom:8px;}
+  .stone .num{
+    font-family:'Archivo Black',sans-serif;
+    font-size:42px;color:var(--blood-bright);line-height:1;
+  }
+  .stone .label{
+    font-family:'Special Elite',monospace;
+    font-size:11px;text-transform:uppercase;letter-spacing:.1em;
+    margin-top:12px;color:var(--ash);
+  }
+
+  /* ===== TIMELINE / GRAVEYARD ===== */
+  .pain{position:relative;padding-left:34px;}
+  .pain::before{
+    content:'';position:absolute;left:10px;top:6px;bottom:6px;
+    border-left:1px solid rgba(198,12,48,.55);
+  }
+  .moment{position:relative;margin-bottom:44px;}
+  .moment::before{
+    content:'✕';position:absolute;left:-34px;top:-2px;
+    width:22px;height:22px;line-height:22px;text-align:center;
+    background:var(--void);color:var(--blood-bright);
+    font-size:16px;
+    border:1px solid rgba(198,12,48,.55);border-radius:50%;
+  }
+  .moment .year{
+    font-family:'Special Elite',monospace;
+    color:var(--ash);font-size:13px;letter-spacing:.18em;
+  }
+  .moment h3{
+    font-family:'Archivo Black',sans-serif;
+    font-size:23px;text-transform:uppercase;margin:5px 0 10px;
+    color:var(--bone);
+  }
+  .moment p{font-size:15px;color:#c9c5bc;margin-bottom:10px;}
+  .moment p b{color:var(--gold);}
+  .moment .read{
+    display:inline-block;font-size:12px;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;
+    color:var(--blood-bright);text-decoration:none;
+    border-bottom:1px solid var(--blood-bright);
+    padding-bottom:2px;
+  }
+  .moment .read:hover{color:var(--bone);border-color:var(--bone);}
+
+  /* ===== QUOTE ===== */
+  .bigquote{
+    background:var(--coffin);
+    border-left:3px solid var(--blood-bright);
+    padding:28px 30px;
+    font-family:'Special Elite',monospace;
+    font-size:16.5px;color:var(--bone);
+  }
+  .bigquote .attr{
+    display:block;margin-top:14px;
+    font-family:'Archivo',sans-serif;font-weight:700;
+    font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--ash);
+  }
+
+  /* ===== LISTS ===== */
+  .relo-list{list-style:none;}
+  .relo-list li{
+    padding:15px 0;border-bottom:1px solid rgba(232,228,218,.08);
+    font-size:15px;color:#c9c5bc;
+  }
+  .relo-list b{color:var(--gold);}
+
+  /* ===== GIANTS SECTION ===== */
+  .halo{
+    background:
+      radial-gradient(ellipse 80% 70% at 50% 0%, rgba(201,162,75,.10), transparent 70%),
+      var(--void);
+    border-top:1px solid rgba(201,162,75,.25);
+    border-bottom:1px solid rgba(201,162,75,.25);
+  }
+  .halo .section-head{color:var(--gold);}
+  .halo .section-head::after{border-color:rgba(201,162,75,.5);}
+  .halo .moment::before{content:'★';color:var(--gold);border-color:rgba(201,162,75,.5);}
+  .halo .pain::before{border-color:rgba(201,162,75,.5);}
+  .halo .moment h3{color:var(--gold);}
+  .halo .stone .num{color:var(--gold);}
+  .halo .stone::before{content:'★';color:var(--gold);}
+
+  /* ===== FOOTER ===== */
+  footer{
+    background:#000;
+    text-align:center;
+    padding:32px 20px;
+    font-family:'Special Elite',monospace;
+    font-size:13px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--ash);
+    border-top:1px solid rgba(198,12,48,.4);
+  }
+  footer .go{color:var(--gold);}
+  footer .fine{
+    display:block;margin-top:14px;
+    font-size:10px;letter-spacing:.04em;text-transform:none;
+    opacity:.7;max-width:560px;margin-left:auto;margin-right:auto;
+  }
+  @media (prefers-reduced-motion:reduce){
+    .ticker-inner{animation:none;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-inner">
+    <span>💀 IN MEMORIAM: BUFFALO'S PLAYOFF HOPES 💀</span><span>FOUR SUPER BOWLS · ZERO RINGS</span><span>FOOTBALL'S LONGEST TEASE</span><span>WIDE RIGHT · 1991</span><span>13 SECONDS · 2022</span><span>GIANTS: 4 RINGS · BILLS: 0</span><span>GO GIANTS 🗽</span>
+    <span>💀 IN MEMORIAM: BUFFALO'S PLAYOFF HOPES 💀</span><span>FOUR SUPER BOWLS · ZERO RINGS</span><span>FOOTBALL'S LONGEST TEASE</span><span>WIDE RIGHT · 1991</span><span>13 SECONDS · 2022</span><span>GIANTS: 4 RINGS · BILLS: 0</span><span>GO GIANTS 🗽</span>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="cross">💀 💀 💀</div>
+  <div class="eyebrow">In Loving Memory Of</div>
+  <h1>
+    Buffalo's
+    <span class="dead">Championship Hopes</span>
+  </h1>
+  <div class="lifespan">EST. 1960 — DIES EVERY JANUARY</div>
+  <p class="epitaph">"Here lies football's longest tease. Sixty-six years of taking your money, promising you everything, and leaving before the ring."</p>
+  <a class="hero-cta" href="#pain">Enter The Graveyard</a>
+</div>
+
+<section>
+  <div class="section-head">Cause of Death (Recurring)</div>
+  <div class="stones">
+    <div class="stone"><div class="num">0–4</div><div class="label">Super Bowl Record</div></div>
+    <div class="stone"><div class="num">17</div><div class="label">Straight Seasons Without Playoffs</div></div>
+    <div class="stone"><div class="num">13</div><div class="label">Seconds To Blow A Season</div></div>
+    <div class="stone"><div class="num">0</div><div class="label">Rings Since 1960</div></div>
+  </div>
+</section>
+
+<section id="pain">
+  <div class="section-head">The Graveyard</div>
+  <div class="pain">
+
+    <div class="moment">
+      <div class="year">JAN 1991 · SUPER BOWL XXV · GIANTS 20, BILLS 19</div>
+      <h3>Wide Right</h3>
+      <p>Buffalo was heavily favored. Then the <b>New York Giants</b> happened. <a href="https://sportsteamhistory.com/how-did-the-bills-lose-4-super-bowls-in-a-row/" target="_blank" rel="noopener">The Parcells–Belichick defense strangled the famous no-huddle offense and kept it off the field for over 40 minutes</a>, and Scott Norwood's 47-yarder to win it sailed wide right. The Giants left with the trophy. Buffalo left with a two-word tombstone inscription.</p>
+      <a class="read" href="https://sportsteamhistory.com/how-did-the-bills-lose-4-super-bowls-in-a-row/" target="_blank" rel="noopener">Read the death certificate →</a>
+    </div>
+
+    <div class="moment">
+      <div class="year">1991–1994 · SUPER BOWLS XXV–XXVIII</div>
+      <h3>Four Funerals, No Wedding</h3>
+      <p><a href="https://en.wikipedia.org/wiki/Super_Bowl_XXVIII" target="_blank" rel="noopener">The only franchise in NFL history to play — and lose — four consecutive Super Bowls. 0–4. They haven't been back since.</a> The Cowboys beat them twice, once 52–17 in a game featuring a Super Bowl record nine Buffalo turnovers. "The Buffalo Bills of ______" became the universal insult for chokers in every sport. That's not a legacy. That's a warning label.</p>
+      <a class="read" href="https://en.wikipedia.org/wiki/Super_Bowl_XXVIII" target="_blank" rel="noopener">All four autopsies →</a>
+    </div>
+
+    <div class="moment">
+      <div class="year">JAN 2000 · AFC WILD CARD</div>
+      <h3>The Music City Miracle</h3>
+      <p><a href="https://en.wikipedia.org/wiki/Music_City_Miracle" target="_blank" rel="noopener">Lead taken with 16 seconds left. Then Tennessee ran a trick lateral kickoff back 75 yards to win it.</a> Bills fans have spent 26 years insisting it was a forward pass. The refs said no. An NFL Films computer analysis said no. Reality keeps saying no. Grief has five stages; Buffalo lives permanently in denial.</p>
+      <a class="read" href="https://en.wikipedia.org/wiki/Music_City_Miracle" target="_blank" rel="noopener">Deny it yourself →</a>
+    </div>
+
+    <div class="moment">
+      <div class="year">2000–2016 · THE DARK AGES</div>
+      <h3>Seventeen Years In The Ground</h3>
+      <p><a href="https://www.espn.com/nfl/story/_/id/18396283/generation-buffalo-bills-fans-endure-longest-playoff-drought" target="_blank" rel="noopener">Seventeen consecutive seasons without a playoff berth — the longest active drought in all of major American pro sports.</a> An entire generation was born, learned to walk, learned to talk, got driver's licenses, and graduated high school without ever seeing the Bills play in January. Child services was never called. It should have been.</p>
+      <a class="read" href="https://www.espn.com/nfl/story/_/id/18396283/generation-buffalo-bills-fans-endure-longest-playoff-drought" target="_blank" rel="noopener">A lost generation →</a>
+    </div>
+
+    <div class="moment">
+      <div class="year">JAN 2022 · AFC DIVISIONAL</div>
+      <h3>13 Seconds</h3>
+      <p><a href="https://www.espn.com/blog/buffalo-bills/post/_/id/36910/bills-watch-victory-slip-away-in-13-seconds-as-chiefs-end-their-postseason-again" target="_blank" rel="noopener">Up 36–33 with thirteen seconds on the clock — and they still found a way. Mahomes needed two plays to reach field goal range, and Buffalo lost in overtime without ever touching the ball.</a> Most teams need four quarters to break your heart. The Bills are efficient: they can do it in the time it takes to microwave nothing.</p>
+      <a class="read" href="https://www.espn.com/blog/buffalo-bills/post/_/id/36910/bills-watch-victory-slip-away-in-13-seconds-as-chiefs-end-their-postseason-again" target="_blank" rel="noopener">Count to thirteen →</a>
+    </div>
+
+    <div class="moment">
+      <div class="year">JAN 2025 · AFC CHAMPIONSHIP</div>
+      <h3>Kansas City. Again. Always.</h3>
+      <p><a href="https://www.espn.com/nfl/recap/_/gameId/401671887" target="_blank" rel="noopener">A 32–29 loss at Arrowhead — the fourth time since January 2021 that the Chiefs personally ended Buffalo's season.</a> <a href="https://en.wikipedia.org/wiki/Bills%E2%80%93Chiefs_rivalry" target="_blank" rel="noopener">The Bills beat the Chiefs in the regular season constantly and have never once beaten them in the playoffs.</a> Regular season Bills will take your money all fall. Playoff Bills are a different business entirely — and the product is grief.</p>
+      <a class="read" href="https://www.espn.com/nfl/recap/_/gameId/401671887" target="_blank" rel="noopener">Same grave, new dirt →</a>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="bigquote">
+    "These things always happen to the Bills. It rips the heart out of you."
+    <span class="attr">— Andre Reed, Bills Hall of Fame WR, after Super Bowl loss #4. He said this in 1994. Nothing has changed.</span>
+  </div>
+</section>
+
+<section class="halo">
+  <div class="section-head">Meanwhile, Among The Living</div>
+  <div class="stones" style="margin-bottom:34px;">
+    <div class="stone"><div class="num">4</div><div class="label">Giants Super Bowl Rings</div></div>
+    <div class="stone" style="opacity:.55;"><div class="num" style="color:var(--blood-bright);">0</div><div class="label">Bills Super Bowl Rings</div></div>
+  </div>
+  <div class="pain">
+    <div class="moment">
+      <div class="year">THE RÉSUMÉ</div>
+      <h3>Big Blue Doesn't Tease</h3>
+      <p>While Buffalo perfected the art of taking your Sundays and giving nothing back, the <b>New York Giants</b> were collecting hardware: <b>Super Bowls XXI, XXV, XLII, and XLVI.</b> The second one was won directly over Buffalo's corpse. The Giants don't promise. The Giants deliver.</p>
+    </div>
+    <div class="moment">
+      <div class="year">FEB 2008 · SUPER BOWL XLII</div>
+      <h3>They Killed Perfection</h3>
+      <p>The Giants walked into the desert against an 18-0 Patriots team one win from immortality — and murdered the perfect season with the Helmet Catch. Then they beat Brady and Belichick in the Super Bowl <i>again</i> four years later, just to prove it wasn't luck. The Bills spent those same two decades getting swept by New England and calling it a rivalry.</p>
+    </div>
+    <div class="moment">
+      <div class="year">EVERY JANUARY</div>
+      <h3>Closers vs. Ghosts</h3>
+      <p>Giants in Super Bowls: 4–1. Bills in Super Bowls: 0–4. One franchise shows up in the dark and finishes the job. The other <i>is</i> the dark. When history needed a giant-killer, it called New York. When history needed a punchline, Buffalo picked up on the first ring — the only ring they'll ever get.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">Field Report: Bills Mafia</div>
+  <div class="bigquote">
+    The only fanbase in professional sports whose signature celebration is a felony against furniture. While Giants fans watch championships, Bills fans hurl their own bodies through folding tables in a frozen parking lot — before kickoff, in 12°F, sober-ish. The tables committed no crime. The tables did not go wide right. But every Sunday in Orchard Park, another innocent Costco special is sacrificed to a football god who has never once answered.
+    <span class="attr">— Correspondent embedded in an Orchard Park parking lot, presumed concussed</span>
+  </div>
+  <ul class="relo-list" style="margin-top:28px;">
+    <li><b>Grim math:</b> More Bills fans have gone through tables than Bills teams have gone through to a Super Bowl since 1994.</li>
+    <li><b>Medical note:</b> Jumping through a table and rooting for the Bills have identical outcomes — a brief high, a hard landing, and something broken by February.</li>
+    <li><b>Anthropology:</b> Scientists believe the table-smashing is a grief ritual. The Bills provide unlimited grief. The ritual continues.</li>
+  </ul>
+</section>
+
+<section>
+  <div class="section-head">The Fine Print of Fandom</div>
+  <ul class="relo-list">
+    <li><b>The business model:</b> Sixty-six years of selling hope by the season and never once delivering the product. Every fall they take your heart, your Sundays, and your money — and every January they leave you at the altar. Football's longest, coldest tease.</li>
+    <li><b>The pattern:</b> Regular season heroics, playoff funerals. Set your watch to it.</li>
+    <li><b>The cure:</b> The New York Giants remain proudly in the New York metro area with four Lombardi Trophies. No passport, no folding table, no therapy required.</li>
+  </ul>
+</section>
+
+<footer>
+  💀 Est. 1960 · Buried Annually 💀 &nbsp;·&nbsp; <span class="go">GO GIANTS 🗽</span>
+  <span class="fine">Satirical fan content. Not affiliated with the NFL, the Buffalo Bills, or any licensed funeral home. No Bills were harmed in the making of this website — they do that to themselves every January. Wide right. Rest in pieces.</span>
+</footer>
+
+</body>
+</html>
