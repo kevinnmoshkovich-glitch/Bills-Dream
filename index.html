@@ -301,6 +301,45 @@
   }
   .sndbtn.on{color:var(--gold);border-color:rgba(242,193,78,.4);}
 
+
+  /* ===== NFL GODS ORACLE ===== */
+  .oracle-badge{
+    display:inline-block;font-family:'Anton',sans-serif;font-size:11px;letter-spacing:.35em;
+    color:#0af5c8;border:1px solid rgba(10,245,200,.35);padding:6px 14px 5px;margin-bottom:14px;
+    clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);background:rgba(10,245,200,.05);
+  }
+  .gauges{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;}
+  .gauge{
+    background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line);
+    clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
+    padding:20px 12px 16px;text-align:center;
+  }
+  .ring{width:110px;height:110px;border-radius:50%;margin:0 auto 10px;position:relative;
+    display:flex;align-items:center;justify-content:center;
+    background:conic-gradient(var(--rc,#0af5c8) calc(var(--p,0)*1%), #1c2230 0);}
+  .ring::before{content:'';position:absolute;inset:9px;border-radius:50%;background:var(--panel);}
+  .ring .v{position:relative;font-family:'Anton',sans-serif;font-size:26px;}
+  .gauge .gl{font-family:'Archivo',sans-serif;font-weight:900;font-size:11px;letter-spacing:.14em;text-transform:uppercase;}
+  .gauge .gs{font-size:10.5px;color:var(--grey);margin-top:6px;line-height:1.5;}
+  .gauge .gs a{color:var(--gold);}
+  /* cascade */
+  .cascade{margin-top:8px;}
+  .cstep{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);}
+  .cstep .cp{font-family:'Anton',sans-serif;font-size:24px;min-width:84px;text-align:right;color:#7fa3ff;}
+  .cstep.doom .cp{color:var(--buf-red);}
+  .cstep .ct{font-size:13px;color:#c9cfdb;}
+  .cstep .ct a{color:var(--gold);}
+  .cfinal{display:flex;align-items:center;gap:12px;padding:18px 0 4px;}
+  .cfinal .cp{font-family:'Anton',sans-serif;font-size:44px;min-width:84px;text-align:right;color:#0af5c8;text-shadow:0 0 24px rgba(10,245,200,.4);}
+  .cfinal .ct{font-family:'Anton',sans-serif;font-size:15px;letter-spacing:.08em;text-transform:uppercase;}
+  /* monte carlo */
+  #mcOut{font-family:'Archivo',sans-serif;font-size:13px;color:#c9cfdb;text-align:left;margin-top:14px;min-height:20px;line-height:1.9;}
+  #mcOut b{color:#0af5c8;}
+  #mcOut .bad{color:var(--buf-red);font-weight:900;}
+  .mcbar{height:10px;background:var(--panel);border:1px solid var(--line);margin:2px 0 8px;position:relative;overflow:hidden;}
+  .mcbar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#123a9e,#7fa3ff);transition:width 1s ease;}
+  .mcbar i.doom{background:linear-gradient(90deg,#6e0a1e,var(--buf-red));}
+
 </style>
 </head>
 <body>
@@ -310,8 +349,8 @@
 
 <div class="ticker" aria-hidden="true">
   <div class="ticker-inner">
-    <span class="g">FRANCHISE MATCHUP 2026</span><span>GIANTS 4 RINGS · BILLS 0</span><span>HARBAUGH IN · McDERMOTT FIRED</span><span>EDMUNDS FLIPPED TO BLUE</span><span>WIDE RIGHT · 13 SECONDS · DENVER OT</span><span class="g">GO GIANTS 🗽</span>
-    <span class="g">FRANCHISE MATCHUP 2026</span><span>GIANTS 4 RINGS · BILLS 0</span><span>HARBAUGH IN · McDERMOTT FIRED</span><span>EDMUNDS FLIPPED TO BLUE</span><span>WIDE RIGHT · 13 SECONDS · DENVER OT</span><span class="g">GO GIANTS 🗽</span>
+    <span class="g">NFL GODS ANALYTICS DIVISION</span><span>GIANTS 4 RINGS · BILLS 0</span><span>HARBAUGH IN · McDERMOTT FIRED</span><span>EDMUNDS FLIPPED TO BLUE</span><span>WIDE RIGHT · 13 SECONDS · DENVER OT</span><span class="g">GO GIANTS 🗽</span>
+    <span class="g">NFL GODS ANALYTICS DIVISION</span><span>GIANTS 4 RINGS · BILLS 0</span><span>HARBAUGH IN · McDERMOTT FIRED</span><span>EDMUNDS FLIPPED TO BLUE</span><span>WIDE RIGHT · 13 SECONDS · DENVER OT</span><span class="g">GO GIANTS 🗽</span>
   </div>
 </div>
 
@@ -360,6 +399,58 @@
   <div class="statrow">
     <div class="lbl"><span class="l">GIANTS · 95</span><span class="m">FURNITURE SAFETY RATING</span><span class="r">2 · BILLS</span></div>
     <div class="bars"><div class="bl"><div class="fill-l" style="width:95%"></div></div><div class="br"><div class="fill-r" style="width:2%"></div></div></div>
+  </div>
+</section>
+
+
+<section id="oracle">
+  <div class="oracle-badge">NFL GODS · ANALYTICS DIVISION</div>
+  <div class="sh">The Josh Allen Outcome Engine</div>
+  <p class="sd">Four possible fates, priced off the real numbers: <a href="https://www.spotrac.com/nfl/player/_/id/25102/josh-allen" target="_blank" rel="noopener">a 6-year, $330M contract with $250M guaranteed through 2030</a> — the largest guarantee package in NFL history. The model is satire; every input is sourced.</p>
+
+  <div class="gauges">
+    <div class="gauge">
+      <div class="ring" data-p="95" style="--rc:#0af5c8;"><span class="v">95%</span></div>
+      <div class="gl">Stays in Buffalo thru 2028</div>
+      <div class="gs"><a href="https://www.spotrac.com/nfl/player/_/id/25102/josh-allen" target="_blank" rel="noopener">$220M is owed in the first four years — the most 4-year cash in NFL history</a> — and Buffalo <a href="https://www.spotrac.com/nfl/player/_/id/25102/josh-allen" target="_blank" rel="noopener">restructured him again in March 2026.</a> He's not going anywhere. Neither is the grief.</div>
+    </div>
+    <div class="gauge">
+      <div class="ring" data-p="2" style="--rc:#7fa3ff;"><span class="v">2%</span></div>
+      <div class="gl">Leaves for another team</div>
+      <div class="gs">Trading that guarantee structure is financial suicide — until the <a href="https://www.si.com/nfl/bills/onsi/news/salary-cap-breakdown-of-bills-qb-josh-allen-massive-new-deal" target="_blank" rel="noopener">2029 cap hit of $86.1M</a>, when <a href="https://www.espn.com/nfl/story/_/id/44255327/how-does-josh-allen-getting-paid-affect-rest-bills" target="_blank" rel="noopener">even ESPN says the Bills seeing out all six years is "probably not"</a> happening. Extend, restructure… or exit. The 2029 Decision Node is loaded.</div>
+    </div>
+    <div class="gauge">
+      <div class="ring" data-p="1" style="--rc:#F2C14E;"><span class="v">1%</span></div>
+      <div class="gl">Retires early</div>
+      <div class="gs">Age 30, MVP form, $200M+ still owed. Prime-age elite QBs almost never walk (Barry Sanders and Andrew Luck are famous precisely because it's so rare). Though watching that January tape every year… the Gods keep this above zero.</div>
+    </div>
+    <div class="gauge">
+      <div class="ring" data-p="3" style="--rc:#C60C30;"><span class="v">~3%</span></div>
+      <div class="gl">Career-ending injury / yr</div>
+      <div class="gs">Model estimate, not a wish. Risk inputs are real: <a href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">a career-high 40 sacks taken in 2025</a> and <a href="https://www.espn.com/nfl/story/_/id/44184294/sources-josh-allen-bills-reach-record-6-year-330m-deal" target="_blank" rel="noopener">65 career rushing TDs — 10 more than any QB ever</a>, a truck-stick play style entering his 30s. The contract carries $250M in injury protection for a reason.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="oracle-badge">NFL GODS · ANALYTICS DIVISION</div>
+  <div class="sh">Super Bowl Probability: Market vs History</div>
+  <p class="sd">What Vegas says, what history says, and why those two have never once agreed about Buffalo.</p>
+
+  <div class="cascade">
+    <div class="cstep"><div class="cp">~9%</div><div class="ct"><b>The market baseline.</b> <a href="https://www.espn.com/espn/betting/story/_/id/47809892/2026-super-bowl-lxi-odds-nfl-sports-betting-season-win-totals-playoffs" target="_blank" rel="noopener">Bills sit at 10-1 for Super Bowl LXI — second tier with the Ravens, behind the Rams</a> (<a href="https://sportsbook.fanduel.com/teams/nfl/buffalo-bills/odds" target="_blank" rel="noopener">FanDuel has them +1200 ≈ 7.7%</a>). Respectable. Bookmakers grade talent. They do not grade curses.</div></div>
+    <div class="cstep doom"><div class="cp">×20%</div><div class="ct"><b>The Divisional Round Filter.</b> <a href="https://www.fantasylife.com/articles/betting/super-bowl-odds-and-pick" target="_blank" rel="noopener">Four divisional-round exits in the last five years, plus two AFC Championship losses.</a> The round is a wood chipper with Bills-team-shaped intake.</div></div>
+    <div class="cstep doom"><div class="cp">×0%</div><div class="ct"><b>The Kansas City Clause.</b> <a href="https://en.wikipedia.org/wiki/Bills%E2%80%93Chiefs_rivalry" target="_blank" rel="noopener">Playoff record vs. the Chiefs: winless. Ever.</a> Mathematicians note you cannot multiply by zero and recover. Neither can Buffalo.</div></div>
+    <div class="cstep doom"><div class="cp">×??</div><div class="ct"><b>The Rookie Coach Variable.</b> A <a href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">36-year-old first-time head coach and a first-time defensive coordinator</a>, hired specifically because the last regime hit a "playoff wall." Bold strategy: same building, same wall, new driver.</div></div>
+    <div class="cstep"><div class="cp">+0.1%</div><div class="ct"><b>The Mercy Constant.</b> The Gods add a rounding error of hope, because <a href="https://www.cbssports.com/nfl/news/betting-the-bills-in-2026-see-how-buffalos-win-total-super-bowl-odds-are-trending-and-our-best-bets/" target="_blank" rel="noopener">since 2019 no team has scored more points, allowed fewer, or posted a better point differential (+957) — and it has produced zero Super Bowls.</a> Being the best regular-season team in football and ringless is a statistical miracle. Buffalo IS the miracle. Just the wrong kind.</div></div>
+    <div class="cfinal"><div class="cp">0.7%</div><div class="ct">NFL Gods history-adjusted Super Bowl probability</div></div>
+  </div>
+
+  <div class="game" style="margin-top:22px;">
+    <h4>Consult The Gods: 10,000 Season Simulator</h4>
+    <div class="gd">Monte Carlo simulation of the Bills' 2026 season, weighted by market odds and thirty-five years of documented behavior.</div>
+    <button class="gbtn" id="mcBtn">Run 10,000 Simulations</button>
+    <div id="mcOut"></div>
   </div>
 </section>
 
@@ -845,6 +936,54 @@
   if(cw){const dust=['🕸️','💨','🕸️','🦗'];let di=0;
     cw.addEventListener('click',()=>{di=(di+1)%dust.length;cw.textContent=dust[di];sadTrombone();if(navigator.vibrate)navigator.vibrate([40,30,40]);});
   }
+})();
+</script>
+
+
+<script>
+(function(){
+  /* gauges animate on scroll */
+  const rings=document.querySelectorAll('.ring');
+  const io2=new IntersectionObserver(es=>es.forEach(en=>{
+    if(!en.isIntersecting)return;
+    const r=en.target,target=+r.dataset.p;let p=0;
+    const iv=setInterval(()=>{p+=Math.max(.5,target/40);if(p>=target){p=target;clearInterval(iv);}r.style.setProperty('--p',p);},16);
+    io2.unobserve(r);
+  }),{threshold:.4});
+  rings.forEach(r=>io2.observe(r));
+
+  /* monte carlo */
+  const btn=document.getElementById('mcBtn'),out=document.getElementById('mcOut');
+  if(btn)btn.addEventListener('click',()=>{
+    if(navigator.vibrate)navigator.vibrate(25);
+    btn.disabled=true;btn.textContent='CONSULTING…';out.innerHTML='';
+    let sb=0,kc=0,div=0,wc=0,miss=0,heart=0;
+    for(let i=0;i<10000;i++){
+      const r=Math.random();
+      if(r<0.007){sb++;}
+      else if(r<0.20){kc++;heart++;}
+      else if(r<0.55){div++;heart++;}
+      else if(r<0.80){wc++;heart++;}
+      else{miss++;}
+    }
+    setTimeout(()=>{
+      function row(label,n,doom){
+        const pct=(n/100).toFixed(1);
+        return label+' — <b'+(doom?' class="bad"':'')+'>'+n.toLocaleString()+'</b> ('+pct+'%)<div class="mcbar"><i'+(doom?' class="doom"':'')+' style="width:0%" data-w="'+pct+'"></i></div>';
+      }
+      out.innerHTML =
+        row('🏆 Wins Super Bowl LXI', sb) +
+        row('💔 Eliminated by Kansas City (again)', kc, true) +
+        row('⚰️ Dies in the Divisional Round (tradition)', div, true) +
+        row('🥶 One-and-done Wild Card exit', wc, true) +
+        row('📉 Misses playoffs entirely (rookie coach special)', miss, true) +
+        '<div style="margin-top:8px;">Hearts broken: <b class="bad">'+heart.toLocaleString()+'</b> · Seasons your brother-in-law says "this is our year": <b class="bad">10,000</b></div>';
+      requestAnimationFrame(()=>{out.querySelectorAll('.mcbar i').forEach(b=>b.style.width=b.dataset.w+'%');});
+      if(window.__snd)window.__snd.sadTrombone();
+      if(navigator.vibrate)navigator.vibrate([60,40,60,40,120]);
+      btn.disabled=false;btn.textContent='Run 10,000 Simulations';
+    },900);
+  });
 })();
 </script>
 
