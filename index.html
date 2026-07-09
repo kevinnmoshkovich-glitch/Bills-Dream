@@ -250,6 +250,57 @@
   }
   @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none;} #fx{display:none;}}
 
+
+  /* ===== ARCADE ===== */
+  .arcade{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+  .game{
+    background:linear-gradient(160deg,var(--panel2),var(--panel) 70%);
+    border:1px solid var(--line);
+    clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));
+    padding:20px;text-align:center;
+  }
+  .game h4{font-family:'Anton',sans-serif;font-size:22px;text-transform:uppercase;margin-bottom:4px;}
+  .game .gd{font-size:12.5px;color:var(--grey);margin-bottom:14px;}
+  .gbtn{
+    font-family:'Anton',sans-serif;font-size:15px;letter-spacing:.18em;text-transform:uppercase;
+    background:var(--nyg);color:#fff;border:0;padding:13px 26px;cursor:pointer;
+    clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);
+    transition:transform .1s, background .2s; touch-action:manipulation; user-select:none;-webkit-user-select:none;
+  }
+  .gbtn:active{transform:scale(.96);}
+  .gbtn.red{background:var(--buf-red);}
+  .gbtn:disabled{background:#2a3040;color:var(--grey);cursor:default;}
+  /* wide right field */
+  #wrField{width:100%;max-width:340px;height:220px;margin:0 auto 12px;display:block;background:linear-gradient(#0b2e13,#0a2410);border:1px solid var(--line);}
+  #wrMeterWrap{height:14px;background:var(--panel);border:1px solid var(--line);position:relative;margin:0 auto 12px;max-width:340px;overflow:hidden;}
+  #wrMeterWrap .zone{position:absolute;left:44%;width:12%;top:0;bottom:0;background:rgba(242,193,78,.35);}
+  #wrNeedle{position:absolute;top:0;bottom:0;width:3px;background:#fff;left:0;box-shadow:0 0 8px #fff;}
+  .gmsg{font-family:'Anton',sans-serif;font-size:15px;letter-spacing:.06em;min-height:40px;color:var(--gold);text-transform:uppercase;}
+  .gsub{font-size:11px;color:var(--grey);min-height:16px;}
+  /* 13 seconds */
+  #clock13{font-family:'Anton',sans-serif;font-size:64px;line-height:1;color:#7fa3ff;margin:6px 0 10px;text-shadow:0 0 30px rgba(27,79,216,.5);}
+  #clock13.panic{color:var(--buf-red);text-shadow:0 0 30px rgba(198,12,48,.7);}
+  /* trophy case */
+  .shelfwrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .shelf{background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line);padding:18px 12px 14px;text-align:center;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));}
+  .shelf .t{font-family:'Anton',sans-serif;font-size:13px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px;}
+  .shelf.g .t{color:var(--gold);}
+  .shelf.b .t{color:var(--grey);}
+  .trophies{display:flex;justify-content:center;gap:8px;font-size:34px;min-height:48px;align-items:center;flex-wrap:wrap;}
+  .trophy{cursor:pointer;display:inline-block;transition:transform .6s cubic-bezier(.16,1,.3,1);transform-style:preserve-3d;}
+  .trophy.spin{transform:rotateY(720deg) scale(1.25);}
+  .cobweb{font-size:30px;opacity:.5;cursor:pointer;}
+  .shelf .cap{font-size:10.5px;color:var(--grey);margin-top:10px;}
+  /* sound toggle */
+  .sndbtn{
+    position:fixed;left:12px;bottom:12px;z-index:5;
+    font-family:'Anton',sans-serif;font-size:10px;letter-spacing:.25em;
+    color:var(--grey);border:1px solid var(--line);background:rgba(7,9,15,.85);
+    padding:6px 12px 5px;cursor:pointer;
+    clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);
+  }
+  .sndbtn.on{color:var(--gold);border-color:rgba(242,193,78,.4);}
+
 </style>
 </head>
 <body>
@@ -476,6 +527,49 @@
   </div>
 </section>
 
+
+<section id="arcade">
+  <div class="sh">The Arcade of Grief</div>
+  <p class="sd">Playable. Interactive. Historically accurate — meaning you cannot win. Turn sound on (bottom left) for the full 4D experience.</p>
+  <div class="arcade">
+
+    <div class="game">
+      <h4>Wide Right Simulator</h4>
+      <div class="gd">Super Bowl XXV. 47 yards. 8 seconds left. Stop the needle in the gold zone for a perfect kick. Perfection changes nothing.</div>
+      <canvas id="wrField" width="340" height="220"></canvas>
+      <div id="wrMeterWrap"><div class="zone"></div><div id="wrNeedle"></div></div>
+      <button class="gbtn" id="wrBtn">Kick</button>
+      <div class="gmsg" id="wrMsg"></div>
+      <div class="gsub" id="wrSub">Franchise record on this kick: 0 for everything since 1991</div>
+    </div>
+
+    <div class="game">
+      <h4>The 13 Seconds Challenge</h4>
+      <div class="gd">Jan 2022. You lead by 3. Hold the button to defend for 13 seconds. Nobody has ever survived. Not even the Bills.</div>
+      <div id="clock13">13.0</div>
+      <button class="gbtn red" id="btn13">Hold to Defend</button>
+      <div class="gmsg" id="msg13"></div>
+      <div class="gsub" id="sub13"></div>
+    </div>
+
+  </div>
+
+  <div class="shelfwrap" style="margin-top:16px;">
+    <div class="shelf g">
+      <div class="t">Giants Trophy Case</div>
+      <div class="trophies">
+        <span class="trophy" title="Super Bowl XXI">🏆</span><span class="trophy" title="Super Bowl XXV">🏆</span><span class="trophy" title="Super Bowl XLII">🏆</span><span class="trophy" title="Super Bowl XLVI">🏆</span>
+      </div>
+      <div class="cap">Tap to polish. XXI · XXV · XLII · XLVI — one of them pried directly from Buffalo's hands.</div>
+    </div>
+    <div class="shelf b">
+      <div class="t">Bills Trophy Case</div>
+      <div class="trophies"><span class="cobweb" id="cobweb">🕸️</span></div>
+      <div class="cap">Established 1960. Dusted weekly. Tap to check for trophies — nothing has ever been found.</div>
+    </div>
+  </div>
+</section>
+
 <section>
   <div class="sh">He Sent You A Spreadsheet</div>
   <div class="console">
@@ -622,6 +716,135 @@
       else burst(e.clientX,e.clientY,['#F2C14E','#1B4FD8','#ffffff']);
     });
   });
+})();
+</script>
+
+
+<script>
+(function(){
+  /* ---------- SOUND ENGINE (synthesized, zero assets) ---------- */
+  let AC=null, sndOn=false;
+  const sbtn=document.createElement('button');
+  sbtn.className='sndbtn';sbtn.textContent='🔇 SOUND OFF';document.body.appendChild(sbtn);
+  function ac(){ if(!AC) AC=new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==='suspended')AC.resume(); return AC; }
+  sbtn.addEventListener('click',()=>{sndOn=!sndOn;sbtn.classList.toggle('on',sndOn);sbtn.textContent=sndOn?'🔊 SOUND ON':'🔇 SOUND OFF';if(sndOn){ac();blip(660,.06,.15);}});
+  function tone(f,t0,dur,type,vol,slideTo){
+    if(!sndOn)return; const c=ac(),o=c.createOscillator(),g=c.createGain();
+    o.type=type||'sine';o.frequency.setValueAtTime(f,c.currentTime+t0);
+    if(slideTo)o.frequency.exponentialRampToValueAtTime(slideTo,c.currentTime+t0+dur);
+    g.gain.setValueAtTime(0,c.currentTime+t0);
+    g.gain.linearRampToValueAtTime(vol||.18,c.currentTime+t0+.012);
+    g.gain.exponentialRampToValueAtTime(.001,c.currentTime+t0+dur);
+    o.connect(g).connect(c.destination);o.start(c.currentTime+t0);o.stop(c.currentTime+t0+dur+.05);
+  }
+  function blip(f,dur,vol){tone(f,0,dur||.08,'square',vol||.12);}
+  function thump(){tone(120,0,.15,'sine',.3,50);}
+  function whoosh(){tone(900,0,.4,'sawtooth',.05,180);}
+  function sadTrombone(){ [392,370,349,311].forEach((f,i)=>tone(f,i*.28,.32,'sawtooth',.14,f*.97)); }
+  function fanfare(){ [523,659,784,1047].forEach((f,i)=>tone(f,i*.11,.22,'triangle',.16)); }
+  function tickSnd(hi){blip(hi?1200:800,.04,.08);}
+  window.__snd={sadTrombone,fanfare,blip};
+
+  /* hook sounds into existing card taps */
+  document.querySelectorAll('.card').forEach(card=>{
+    card.addEventListener('click',()=>{ card.classList.contains('dead')?sadTrombone():fanfare(); });
+  });
+
+  /* ---------- WIDE RIGHT SIMULATOR ---------- */
+  const F=document.getElementById('wrField'); if(F){
+  const fx=F.getContext('2d');
+  const needle=document.getElementById('wrNeedle'), wrap=document.getElementById('wrMeterWrap');
+  const btn=document.getElementById('wrBtn'), msg=document.getElementById('wrMsg'), sub=document.getElementById('wrSub');
+  let pos=0,dir=1,sweeping=true,attempts=0,anim=null,kicking=false;
+  function drawField(ballX,ballY){
+    fx.clearRect(0,0,340,220);
+    // yard stripes
+    fx.strokeStyle='rgba(255,255,255,.12)';fx.lineWidth=1;
+    for(let y=200;y>40;y-=26){fx.beginPath();fx.moveTo(20,y);fx.lineTo(320,y);fx.stroke();}
+    // uprights
+    fx.strokeStyle='#F2C14E';fx.lineWidth=5;fx.lineCap='round';
+    fx.beginPath();fx.moveTo(130,70);fx.lineTo(130,18);fx.moveTo(210,70);fx.lineTo(210,18);fx.moveTo(122,70);fx.lineTo(218,70);fx.moveTo(170,70);fx.lineTo(170,92);fx.stroke();
+    // ball
+    fx.fillStyle='#8a4a20';fx.beginPath();fx.ellipse(ballX,ballY,7,10,0,0,6.28);fx.fill();
+    fx.strokeStyle='#fff';fx.lineWidth=1.5;fx.beginPath();fx.moveTo(ballX,ballY-5);fx.lineTo(ballX,ballY+5);fx.stroke();
+  }
+  drawField(170,196);
+  function sweep(){ if(!sweeping)return;
+    pos+=dir*1.6; if(pos>=100){pos=100;dir=-1;} if(pos<=0){pos=0;dir=1;}
+    needle.style.left=(pos/100*(wrap.clientWidth-3))+'px';
+    requestAnimationFrame(sweep);
+  }
+  sweep();
+  btn.addEventListener('click',()=>{
+    if(kicking)return; kicking=true; sweeping=false; attempts++;
+    const perfect = pos>=44 && pos<=56;
+    const acc=Math.max(0,100-Math.abs(pos-50)*2)|0;
+    thump(); if(navigator.vibrate)navigator.vibrate(25);
+    let t=0;
+    function fly(){
+      t+=0.022;
+      // ball path: starts centered... then curses right, always missing
+      const x=170 + Math.pow(t,1.7)*95;           // drifts right, always
+      const y=196 - Math.sin(Math.min(t,1)*Math.PI*0.86)*168;
+      drawField(x,y);
+      if(t<1.15){requestAnimationFrame(fly);}
+      else{
+        whoosh(); sadTrombone(); if(navigator.vibrate)navigator.vibrate([70,50,140]);
+        const lines = perfect
+          ? ['PERFECT SNAP. PERFECT HOLD. PERFECT KICK.','WIDE RIGHT.']
+          : ['ACCURACY: '+acc+'%','STILL WIDE RIGHT.'];
+        msg.textContent=lines.join(' ');
+        sub.textContent='Franchise record on this kick: 0 for '+attempts+' this visit · 0 for everything since 1991';
+        setTimeout(()=>{kicking=false;sweeping=true;sweep();drawField(170,196);msg.textContent='';},2600);
+      }
+    }
+    setTimeout(()=>{whoosh();fly();},120);
+  });
+  }
+
+  /* ---------- 13 SECONDS CHALLENGE ---------- */
+  const b13=document.getElementById('btn13'); if(b13){
+  const c13=document.getElementById('clock13'), m13=document.getElementById('msg13'), s13=document.getElementById('sub13');
+  let t13=null,left=13.0,fails=0,active=false;
+  const ends=[
+    'MAHOMES: 44 YARDS IN TWO PLAYS. FG. OVERTIME. YOU NEVER TOUCH THE BALL.',
+    'SQUIB KICK DECLINED. FG IS GOOD. OVERTIME. YOU LOSE.',
+    'TIME EXPIRES... FLAG. UNTIMED PLAY. FG IS GOOD. YOU LOSE.'
+  ];
+  function reset(){left=13.0;c13.textContent='13.0';c13.classList.remove('panic');}
+  function stop(early){
+    clearInterval(t13);t13=null;active=false;fails++;
+    sadTrombone(); if(navigator.vibrate)navigator.vibrate([80,60,160]);
+    m13.textContent = early ? 'YOU LET GO. SO DID THE SECONDARY.' : ends[fails%ends.length];
+    s13.textContent='Leads blown here: '+fails+' · Leads blown in real life: all of them';
+    setTimeout(()=>{reset();m13.textContent='';},3200);
+  }
+  function start(e){
+    e.preventDefault();
+    if(active)return; active=true;reset();m13.textContent='';
+    t13=setInterval(()=>{
+      left-=0.1; if(left<=3.05)c13.classList.add('panic');
+      tickSnd(left<=3.05);
+      if(left<=0.11){ c13.textContent='0.1'; stop(false); return; }
+      c13.textContent=left.toFixed(1);
+    },100);
+  }
+  b13.addEventListener('pointerdown',start);
+  b13.addEventListener('pointerup',()=>{if(active)stop(true);});
+  b13.addEventListener('pointerleave',()=>{if(active)stop(true);});
+  }
+
+  /* ---------- TROPHY CASE ---------- */
+  document.querySelectorAll('.trophy').forEach(tr=>{
+    tr.addEventListener('click',()=>{
+      tr.classList.remove('spin');void tr.offsetWidth;tr.classList.add('spin');
+      fanfare(); if(navigator.vibrate)navigator.vibrate(20);
+    });
+  });
+  const cw=document.getElementById('cobweb');
+  if(cw){const dust=['🕸️','💨','🕸️','🦗'];let di=0;
+    cw.addEventListener('click',()=>{di=(di+1)%dust.length;cw.textContent=dust[di];sadTrombone();if(navigator.vibrate)navigator.vibrate([40,30,40]);});
+  }
 })();
 </script>
 
