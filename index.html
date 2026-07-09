@@ -3,396 +3,505 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>In Memoriam: The Buffalo Bills — Football's Longest Tease</title>
-<meta name="description" content="A dark satirical memorial to the Buffalo Bills. Four Super Bowls. Zero rings. Endless grief. We remember it all.">
+<title>GIANTS vs BILLS — Franchise Matchup 2026</title>
+<meta name="description" content="The definitive Madden-style franchise comparison. Giants vs Bills: rings, coaches, rosters, receipts.">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;600;700&family=Special+Elite&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;600;700;900&family=Archivo+Black&display=swap');
 
   :root{
-    --void:#0a0a0f;
-    --coffin:#14141c;
-    --blood:#8B0000;
-    --blood-bright:#C60C30;
-    --bone:#E8E4DA;
-    --ash:#8a8a96;
-    --gold:#C9A24B;
+    --pitch:#07090f;
+    --panel:#10141f;
+    --panel2:#171c2b;
+    --line:rgba(255,255,255,.08);
+    --nyg:#1B4FD8;
+    --nyg-glow:rgba(27,79,216,.5);
+    --nyg-red:#A71930;
+    --buf:#5a6273;
+    --buf-red:#C60C30;
+    --white:#F2F4F8;
+    --grey:#9aa1b0;
+    --gold:#F2C14E;
+    --elite:linear-gradient(135deg,#F2C14E,#b8860b);
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
-    background:var(--void);
-    color:var(--bone);
+    background:var(--pitch);
+    color:var(--white);
     font-family:'Archivo',sans-serif;
-    line-height:1.7;
+    line-height:1.6;
+    overflow-x:hidden;
   }
-  a{color:var(--gold);}
+  body::before{
+    content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      linear-gradient(115deg, transparent 42%, rgba(27,79,216,.06) 46%, transparent 54%),
+      linear-gradient(245deg, transparent 42%, rgba(198,12,48,.05) 46%, transparent 54%);
+  }
+  .wrap{position:relative;z-index:1;}
 
   /* ===== TICKER ===== */
   .ticker{
-    background:var(--blood);
+    background:linear-gradient(90deg,var(--nyg),#0a1e52);
     overflow:hidden;white-space:nowrap;
-    font-family:'Archivo Black',sans-serif;
-    font-size:12px;letter-spacing:.25em;text-transform:uppercase;
-    padding:9px 0;color:var(--bone);
-    border-bottom:1px solid #000;
+    font-family:'Anton',sans-serif;
+    font-size:13px;letter-spacing:.22em;text-transform:uppercase;
+    padding:9px 0;border-bottom:2px solid var(--gold);
   }
-  .ticker-inner{display:inline-block;animation:scroll 34s linear infinite;}
+  .ticker-inner{display:inline-block;animation:scroll 32s linear infinite;}
   @keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-  .ticker span{margin:0 28px;}
+  .ticker span{margin:0 26px;color:var(--white);}
+  .ticker .g{color:var(--gold);}
 
-  /* ===== HERO / OBITUARY ===== */
+  /* ===== HERO / TEAM SELECT ===== */
   .hero{
     text-align:center;
-    padding:80px 20px 64px;
+    padding:56px 16px 40px;
     position:relative;
-    background:
-      radial-gradient(ellipse 90% 60% at 50% 0%, rgba(139,0,0,.22), transparent 65%),
-      var(--void);
-    border-bottom:1px solid rgba(232,228,218,.12);
   }
-  .cross{font-size:30px;color:var(--ash);letter-spacing:.5em;margin-bottom:20px;}
-  .eyebrow{
-    font-family:'Special Elite',monospace;
-    font-size:13px;letter-spacing:.28em;text-transform:uppercase;
-    color:var(--ash);margin-bottom:22px;
+  .mode{
+    display:inline-block;
+    font-family:'Anton',sans-serif;
+    font-size:13px;letter-spacing:.4em;text-transform:uppercase;
+    color:var(--gold);
+    border:1px solid rgba(242,193,78,.4);
+    padding:7px 20px 6px;
+    margin-bottom:24px;
+    clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);
+    background:rgba(242,193,78,.06);
   }
-  h1{
-    font-family:'Archivo Black',sans-serif;
-    font-size:clamp(40px,10vw,88px);
-    line-height:.96;text-transform:uppercase;
-    color:var(--bone);
+  .matchup{
+    display:flex;align-items:center;justify-content:center;gap:4vw;
+    max-width:900px;margin:0 auto;
   }
-  h1 .dead{
-    display:block;
-    color:var(--blood-bright);
-    text-shadow:0 0 32px rgba(198,12,48,.45);
+  .team{flex:1;max-width:300px;}
+  .team .city{font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--grey);}
+  .team .name{
+    font-family:'Anton',sans-serif;
+    font-size:clamp(34px,7vw,64px);
+    text-transform:uppercase;line-height:1;
   }
-  .lifespan{
-    font-family:'Special Elite',monospace;
-    font-size:18px;color:var(--ash);
-    margin-top:16px;letter-spacing:.15em;
+  .team.g .name{color:var(--white);text-shadow:0 0 40px var(--nyg-glow);}
+  .team.b .name{color:var(--buf);}
+  .ovr{
+    display:inline-flex;flex-direction:column;align-items:center;
+    margin-top:14px;padding:10px 22px 8px;
+    clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);
   }
-  .epitaph{
-    font-family:'Special Elite',monospace;
-    max-width:520px;margin:26px auto 0;
-    font-size:16px;color:var(--bone);
-    font-style:italic;
+  .team.g .ovr{background:var(--elite);color:#1a1200;}
+  .team.b .ovr{background:#242a38;color:var(--grey);}
+  .ovr .n{font-family:'Anton',sans-serif;font-size:44px;line-height:1;}
+  .ovr .t{font-size:10px;font-weight:900;letter-spacing:.3em;}
+  .vs{
+    font-family:'Anton',sans-serif;
+    font-size:clamp(28px,5vw,48px);
+    color:var(--gold);
+    text-shadow:0 0 30px rgba(242,193,78,.4);
   }
-  .hero-cta{
-    display:inline-block;margin-top:34px;
-    background:transparent;color:var(--blood-bright);
-    border:2px solid var(--blood-bright);
-    text-decoration:none;
-    font-family:'Archivo Black',sans-serif;
-    font-size:13px;letter-spacing:.25em;text-transform:uppercase;
-    padding:14px 32px;
-    transition:all .2s;
+  .subline{
+    margin-top:26px;font-size:14px;color:var(--grey);
+    max-width:520px;margin-left:auto;margin-right:auto;
   }
-  .hero-cta:hover{background:var(--blood-bright);color:var(--void);box-shadow:0 0 30px rgba(198,12,48,.5);}
+  .subline b{color:var(--gold);}
 
   /* ===== SECTIONS ===== */
-  section{max-width:740px;margin:0 auto;padding:60px 22px;}
-  .section-head{
-    display:flex;align-items:center;gap:16px;
-    margin-bottom:38px;
-    font-family:'Archivo Black',sans-serif;
-    font-size:clamp(20px,4.6vw,30px);
-    text-transform:uppercase;letter-spacing:.05em;
-    white-space:nowrap;color:var(--bone);
+  section{max-width:860px;margin:0 auto;padding:52px 18px;}
+  .sh{
+    display:flex;align-items:center;gap:14px;margin-bottom:8px;
+    font-family:'Anton',sans-serif;
+    font-size:clamp(22px,4.6vw,32px);
+    text-transform:uppercase;letter-spacing:.06em;
   }
-  .section-head::after{content:'';flex:1;border-top:1px solid rgba(198,12,48,.5);}
+  .sh::before{content:'';width:6px;height:1.1em;background:var(--gold);clip-path:polygon(0 0,100% 12%,100% 100%,0 88%);}
+  .sd{color:var(--grey);font-size:13.5px;margin-bottom:30px;max-width:640px;}
+  .sd a{color:var(--gold);}
 
-  /* ===== TOMBSTONES ===== */
-  .stones{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;}
-  .stone{
-    background:var(--coffin);
-    border:1px solid rgba(232,228,218,.1);
-    border-radius:60px 60px 4px 4px;
-    padding:30px 16px 22px;text-align:center;
+  /* ===== STAT BARS ===== */
+  .statrow{margin-bottom:22px;}
+  .statrow .lbl{
+    display:flex;justify-content:space-between;
+    font-family:'Archivo',sans-serif;font-weight:900;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    margin-bottom:7px;
+  }
+  .statrow .lbl .l{color:#7fa3ff;}
+  .statrow .lbl .m{color:var(--grey);font-weight:700;}
+  .statrow .lbl .r{color:var(--buf);}
+  .bars{display:flex;gap:6px;height:14px;}
+  .bars .bl,.bars .br{height:100%;position:relative;background:var(--panel2);flex:1;}
+  .bars .bl{clip-path:polygon(0 0,100% 0,calc(100% - 7px) 100%,0 100%);display:flex;justify-content:flex-end;}
+  .bars .br{clip-path:polygon(7px 0,100% 0,100% 100%,0 100%);}
+  .bars .fill-l{height:100%;background:linear-gradient(90deg,#123a9e,var(--nyg));box-shadow:0 0 14px var(--nyg-glow);}
+  .bars .fill-r{height:100%;background:linear-gradient(90deg,var(--buf-red),#6e0a1e);}
+
+  /* ===== CARDS GRID ===== */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
+  .card{
+    background:linear-gradient(160deg,var(--panel2),var(--panel) 70%);
+    border:1px solid var(--line);
+    clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));
+    padding:18px 18px 16px;
     position:relative;
   }
-  .stone::before{content:'⚰️';font-size:14px;display:block;margin-bottom:8px;}
-  .stone .num{
-    font-family:'Archivo Black',sans-serif;
-    font-size:42px;color:var(--blood-bright);line-height:1;
+  .card .top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+  .card .rating{
+    font-family:'Anton',sans-serif;font-size:40px;line-height:.9;
   }
-  .stone .label{
-    font-family:'Special Elite',monospace;
-    font-size:11px;text-transform:uppercase;letter-spacing:.1em;
-    margin-top:12px;color:var(--ash);
+  .card .rating small{display:block;font-size:9px;letter-spacing:.3em;font-family:'Archivo',sans-serif;font-weight:900;color:var(--grey);}
+  .card.elite .rating{background:var(--elite);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .card.good .rating{color:#7fa3ff;}
+  .card.dead .rating{color:#525a6b;}
+  .card .tag{
+    font-family:'Archivo',sans-serif;font-weight:900;
+    font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+    padding:5px 9px 4px;
+    clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);
   }
-
-  /* ===== TIMELINE / GRAVEYARD ===== */
-  .pain{position:relative;padding-left:34px;}
-  .pain::before{
-    content:'';position:absolute;left:10px;top:6px;bottom:6px;
-    border-left:1px solid rgba(198,12,48,.55);
+  .tag.gold{background:var(--elite);color:#1a1200;}
+  .tag.blue{background:var(--nyg);color:var(--white);}
+  .tag.red{background:var(--buf-red);color:var(--white);}
+  .tag.grey{background:#2a3040;color:var(--grey);}
+  .card h4{
+    font-family:'Anton',sans-serif;font-size:21px;letter-spacing:.03em;
+    text-transform:uppercase;line-height:1.05;margin-bottom:2px;
   }
-  .moment{position:relative;margin-bottom:44px;}
-  .moment::before{
-    content:'✕';position:absolute;left:-34px;top:-2px;
-    width:22px;height:22px;line-height:22px;text-align:center;
-    background:var(--void);color:var(--blood-bright);
-    font-size:16px;
-    border:1px solid rgba(198,12,48,.55);border-radius:50%;
+  .card .pos{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);margin-bottom:10px;}
+  .card .xf{
+    font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:8px;
   }
-  .moment .year{
-    font-family:'Special Elite',monospace;
-    color:var(--ash);font-size:13px;letter-spacing:.18em;
-  }
-  .moment h3{
-    font-family:'Archivo Black',sans-serif;
-    font-size:23px;text-transform:uppercase;margin:5px 0 10px;
-    color:var(--bone);
-  }
-  .moment p{font-size:15px;color:#c9c5bc;margin-bottom:10px;}
-  .moment p b{color:var(--gold);}
-  .moment .read{
-    display:inline-block;font-size:12px;font-weight:700;
-    letter-spacing:.12em;text-transform:uppercase;
-    color:var(--blood-bright);text-decoration:none;
-    border-bottom:1px solid var(--blood-bright);
-    padding-bottom:2px;
-  }
-  .moment .read:hover{color:var(--bone);border-color:var(--bone);}
-
-  /* ===== QUOTE ===== */
-  .bigquote{
-    background:var(--coffin);
-    border-left:3px solid var(--blood-bright);
-    padding:28px 30px;
-    font-family:'Special Elite',monospace;
-    font-size:16.5px;color:var(--bone);
-  }
-  .bigquote .attr{
-    display:block;margin-top:14px;
-    font-family:'Archivo',sans-serif;font-weight:700;
-    font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;
-    color:var(--ash);
+  .card .xf.off{color:#525a6b;}
+  .card p{font-size:13px;color:#b9bfcc;line-height:1.55;}
+  .card p a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(242,193,78,.4);}
+  .card.dead{opacity:.85;}
+  .card.dead h4{color:#8d94a5;}
+  .card.dead::after{
+    content:attr(data-stamp);
+    position:absolute;top:44%;left:50%;
+    transform:translate(-50%,-50%) rotate(-14deg);
+    font-family:'Anton',sans-serif;font-size:26px;letter-spacing:.12em;
+    color:var(--buf-red);border:3px solid var(--buf-red);
+    padding:2px 12px;opacity:.55;pointer-events:none;white-space:nowrap;
   }
 
-  /* ===== LISTS ===== */
-  .relo-list{list-style:none;}
-  .relo-list li{
-    padding:15px 0;border-bottom:1px solid rgba(232,228,218,.08);
-    font-size:15px;color:#c9c5bc;
-  }
-  .relo-list b{color:var(--gold);}
+  /* ===== VS COACH SPLIT ===== */
+  .coachvs{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch;}
+  @media(max-width:640px){.coachvs{grid-template-columns:1fr;} .coachvs .midvs{display:none;}}
+  .midvs{display:flex;align-items:center;font-family:'Anton',sans-serif;font-size:30px;color:var(--gold);}
 
-  /* ===== GIANTS SECTION ===== */
-  .halo{
-    background:
-      radial-gradient(ellipse 80% 70% at 50% 0%, rgba(201,162,75,.10), transparent 70%),
-      var(--void);
-    border-top:1px solid rgba(201,162,75,.25);
-    border-bottom:1px solid rgba(201,162,75,.25);
-  }
-  .halo .section-head{color:var(--gold);}
-  .halo .section-head::after{border-color:rgba(201,162,75,.5);}
-  .halo .moment::before{content:'★';color:var(--gold);border-color:rgba(201,162,75,.5);}
-  .halo .pain::before{border-color:rgba(201,162,75,.5);}
-  .halo .moment h3{color:var(--gold);}
-  .halo .stone .num{color:var(--gold);}
-  .halo .stone::before{content:'★';color:var(--gold);}
+  /* ===== LOWLIGHTS ===== */
+  .low{border-left:2px solid var(--buf-red);padding:2px 0 2px 18px;margin-bottom:26px;}
+  .low .y{font-family:'Archivo',sans-serif;font-weight:900;font-size:11px;letter-spacing:.2em;color:var(--grey);text-transform:uppercase;}
+  .low h4{font-family:'Anton',sans-serif;font-size:20px;text-transform:uppercase;margin:3px 0 6px;}
+  .low p{font-size:13.5px;color:#b9bfcc;}
+  .low a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(242,193,78,.35);}
 
-  /* ===== FOOTER ===== */
+  /* ===== REBUTTAL ===== */
+  .console{
+    background:var(--panel);
+    border:1px solid var(--line);
+    clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,22px 100%,0 calc(100% - 22px));
+    padding:26px 26px;
+    font-size:15px;color:#c9cfdb;
+  }
+  .console b{color:var(--gold);}
+  .console .attr{display:block;margin-top:12px;font-size:10.5px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);}
+
   footer{
-    background:#000;
-    text-align:center;
-    padding:32px 20px;
-    font-family:'Special Elite',monospace;
-    font-size:13px;letter-spacing:.2em;text-transform:uppercase;
-    color:var(--ash);
-    border-top:1px solid rgba(198,12,48,.4);
+    background:#05070c;text-align:center;padding:30px 18px;
+    border-top:2px solid var(--gold);
+    font-family:'Anton',sans-serif;font-size:14px;letter-spacing:.2em;text-transform:uppercase;
   }
   footer .go{color:var(--gold);}
   footer .fine{
-    display:block;margin-top:14px;
-    font-size:10px;letter-spacing:.04em;text-transform:none;
-    opacity:.7;max-width:560px;margin-left:auto;margin-right:auto;
+    display:block;margin-top:12px;
+    font-family:'Archivo',sans-serif;font-size:10px;letter-spacing:.03em;text-transform:none;
+    color:var(--grey);max-width:600px;margin-left:auto;margin-right:auto;
   }
-  @media (prefers-reduced-motion:reduce){
-    .ticker-inner{animation:none;}
-    html{scroll-behavior:auto;}
-  }
+  @media (prefers-reduced-motion:reduce){.ticker-inner{animation:none;}html{scroll-behavior:auto;}}
 </style>
 </head>
 <body>
+<div class="wrap">
 
 <div class="ticker" aria-hidden="true">
   <div class="ticker-inner">
-    <span>💀 IN MEMORIAM: BUFFALO'S PLAYOFF HOPES 💀</span><span>FOUR SUPER BOWLS · ZERO RINGS</span><span>COACH FIRED JAN 2026</span><span>LOST TO DENVER IN OT</span><span>WIDE RIGHT · 1991</span><span>13 SECONDS · 2022</span><span>GIANTS: 4 RINGS · BILLS: 0</span><span>GO GIANTS 🗽</span>
-    <span>💀 IN MEMORIAM: BUFFALO'S PLAYOFF HOPES 💀</span><span>FOUR SUPER BOWLS · ZERO RINGS</span><span>COACH FIRED JAN 2026</span><span>LOST TO DENVER IN OT</span><span>WIDE RIGHT · 1991</span><span>13 SECONDS · 2022</span><span>GIANTS: 4 RINGS · BILLS: 0</span><span>GO GIANTS 🗽</span>
+    <span class="g">FRANCHISE MATCHUP 2026</span><span>GIANTS 4 RINGS · BILLS 0</span><span>HARBAUGH IN · McDERMOTT FIRED</span><span>EDMUNDS FLIPPED TO BLUE</span><span>WIDE RIGHT · 13 SECONDS · DENVER OT</span><span class="g">GO GIANTS 🗽</span>
+    <span class="g">FRANCHISE MATCHUP 2026</span><span>GIANTS 4 RINGS · BILLS 0</span><span>HARBAUGH IN · McDERMOTT FIRED</span><span>EDMUNDS FLIPPED TO BLUE</span><span>WIDE RIGHT · 13 SECONDS · DENVER OT</span><span class="g">GO GIANTS 🗽</span>
   </div>
 </div>
 
 <div class="hero">
-  <div class="cross">💀 💀 💀</div>
-  <div class="eyebrow">In Loving Memory Of</div>
-  <h1>
-    Buffalo's
-    <span class="dead">Championship Hopes</span>
-  </h1>
-  <div class="lifespan">EST. 1960 — DIES EVERY JANUARY</div>
-  <p class="epitaph">"Here lies football's longest tease. Sixty-six years of taking your money, promising you everything, and leaving before the ring."</p>
-  <a class="hero-cta" href="#pain">Enter The Graveyard</a>
+  <div class="mode">Franchise Mode · Head to Head</div>
+  <div class="matchup">
+    <div class="team g">
+      <div class="city">New York</div>
+      <div class="name">Giants</div>
+      <div class="ovr"><span class="n">96</span><span class="t">FRANCHISE OVR</span></div>
+    </div>
+    <div class="vs">VS</div>
+    <div class="team b">
+      <div class="city">Buffalo</div>
+      <div class="name">Bills</div>
+      <div class="ovr"><span class="n">58</span><span class="t">JANUARY OVR</span></div>
+    </div>
+  </div>
+  <p class="subline">One franchise has <b>four Lombardi Trophies</b> and just hired a Super Bowl-winning head coach. The other fired its coach in January and lost its left guard to salary-cap debt. Load the comparison.</p>
 </div>
 
 <section>
-  <div class="section-head">Cause of Death (Recurring)</div>
-  <div class="stones">
-    <div class="stone"><div class="num">0–4</div><div class="label">Super Bowl Record</div></div>
-    <div class="stone"><div class="num">17</div><div class="label">Straight Seasons Without Playoffs</div></div>
-    <div class="stone"><div class="num">13</div><div class="label">Seconds To Blow A Season</div></div>
-    <div class="stone"><div class="num">1</div><div class="label">Coach Fired Jan 2026 For Never Reaching A Super Bowl</div></div>
+  <div class="sh">Franchise Ratings</div>
+  <p class="sd">Attributes rated on the only scale that matters: what happens when everything is on the line.</p>
+
+  <div class="statrow">
+    <div class="lbl"><span class="l">GIANTS · 4</span><span class="m">SUPER BOWL RINGS</span><span class="r">0 · BILLS</span></div>
+    <div class="bars"><div class="bl"><div class="fill-l" style="width:100%"></div></div><div class="br"><div class="fill-r" style="width:0%"></div></div></div>
   </div>
-</section>
-
-<section id="pain">
-  <div class="section-head">The Graveyard</div>
-  <div class="pain">
-
-    <div class="moment">
-      <div class="year">JAN 1991 · SUPER BOWL XXV · GIANTS 20, BILLS 19</div>
-      <h3>Wide Right</h3>
-      <p>Buffalo was heavily favored. Then the <b>New York Giants</b> happened. <a href="https://sportsteamhistory.com/how-did-the-bills-lose-4-super-bowls-in-a-row/" target="_blank" rel="noopener">The Parcells–Belichick defense strangled the famous no-huddle offense and kept it off the field for over 40 minutes</a>, and Scott Norwood's 47-yarder to win it sailed wide right. The Giants left with the trophy. Buffalo left with a two-word tombstone inscription.</p>
-      <a class="read" href="https://sportsteamhistory.com/how-did-the-bills-lose-4-super-bowls-in-a-row/" target="_blank" rel="noopener">Read the death certificate →</a>
-    </div>
-
-    <div class="moment">
-      <div class="year">1991–1994 · SUPER BOWLS XXV–XXVIII</div>
-      <h3>Four Funerals, No Wedding</h3>
-      <p><a href="https://en.wikipedia.org/wiki/Super_Bowl_XXVIII" target="_blank" rel="noopener">The only franchise in NFL history to play — and lose — four consecutive Super Bowls. 0–4. They haven't been back since.</a> The Cowboys beat them twice, once 52–17 in a game featuring a Super Bowl record nine Buffalo turnovers. "The Buffalo Bills of ______" became the universal insult for chokers in every sport. That's not a legacy. That's a warning label.</p>
-      <a class="read" href="https://en.wikipedia.org/wiki/Super_Bowl_XXVIII" target="_blank" rel="noopener">All four autopsies →</a>
-    </div>
-
-    <div class="moment">
-      <div class="year">JAN 2000 · AFC WILD CARD</div>
-      <h3>The Music City Miracle</h3>
-      <p><a href="https://en.wikipedia.org/wiki/Music_City_Miracle" target="_blank" rel="noopener">Lead taken with 16 seconds left. Then Tennessee ran a trick lateral kickoff back 75 yards to win it.</a> Bills fans have spent 26 years insisting it was a forward pass. The refs said no. An NFL Films computer analysis said no. Reality keeps saying no. Grief has five stages; Buffalo lives permanently in denial.</p>
-      <a class="read" href="https://en.wikipedia.org/wiki/Music_City_Miracle" target="_blank" rel="noopener">Deny it yourself →</a>
-    </div>
-
-    <div class="moment">
-      <div class="year">2000–2016 · THE DARK AGES</div>
-      <h3>Seventeen Years In The Ground</h3>
-      <p><a href="https://www.espn.com/nfl/story/_/id/18396283/generation-buffalo-bills-fans-endure-longest-playoff-drought" target="_blank" rel="noopener">Seventeen consecutive seasons without a playoff berth — the longest active drought in all of major American pro sports.</a> An entire generation was born, learned to walk, learned to talk, got driver's licenses, and graduated high school without ever seeing the Bills play in January. Child services was never called. It should have been.</p>
-      <a class="read" href="https://www.espn.com/nfl/story/_/id/18396283/generation-buffalo-bills-fans-endure-longest-playoff-drought" target="_blank" rel="noopener">A lost generation →</a>
-    </div>
-
-    <div class="moment">
-      <div class="year">JAN 2022 · AFC DIVISIONAL</div>
-      <h3>13 Seconds</h3>
-      <p><a href="https://www.espn.com/blog/buffalo-bills/post/_/id/36910/bills-watch-victory-slip-away-in-13-seconds-as-chiefs-end-their-postseason-again" target="_blank" rel="noopener">Up 36–33 with thirteen seconds on the clock — and they still found a way. Mahomes needed two plays to reach field goal range, and Buffalo lost in overtime without ever touching the ball.</a> Most teams need four quarters to break your heart. The Bills are efficient: they can do it in the time it takes to microwave nothing.</p>
-      <a class="read" href="https://www.espn.com/blog/buffalo-bills/post/_/id/36910/bills-watch-victory-slip-away-in-13-seconds-as-chiefs-end-their-postseason-again" target="_blank" rel="noopener">Count to thirteen →</a>
-    </div>
-
-    <div class="moment">
-      <div class="year">JAN 2025 · AFC CHAMPIONSHIP</div>
-      <h3>Kansas City. Again. Always.</h3>
-      <p><a href="https://www.espn.com/nfl/recap/_/gameId/401671887" target="_blank" rel="noopener">A 32–29 loss at Arrowhead — the fourth time since January 2021 that the Chiefs personally ended Buffalo's season.</a> <a href="https://en.wikipedia.org/wiki/Bills%E2%80%93Chiefs_rivalry" target="_blank" rel="noopener">The Bills beat the Chiefs in the regular season constantly and have never once beaten them in the playoffs.</a> Regular season Bills will take your money all fall. Playoff Bills are a different business entirely — and the product is grief.</p>
-      <a class="read" href="https://www.espn.com/nfl/recap/_/gameId/401671887" target="_blank" rel="noopener">Same grave, new dirt →</a>
-    </div>
-
-    <div class="moment">
-      <div class="year">JAN 2026 · AFC DIVISIONAL · THE FRESHEST GRAVE</div>
-      <h3>Denver, In Overtime. Then They Shot The Coach.</h3>
-      <p>The newest exhibit: <a href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">an overtime loss to the Broncos — Buffalo's fourth divisional-round funeral in five years — after which the owner reportedly looked at Josh Allen's face and decided Sean McDermott had to go.</a> Nine seasons. Seven straight playoff berths. <a href="https://www.nfl.com/news/bills-coach-joe-brady-devastating-sean-mcdermott-firing-i-was-broken" target="_blank" rel="noopener">Zero Super Bowls, and fired for it.</a> The defense allowed over 28 points a game across his playoff losses. Now a 36-year-old first-time head coach and a first-time defensive coordinator inherit the curse. The graveyard has a groundskeeper opening.</p>
-      <a class="read" href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">Read the termination papers →</a>
-    </div>
-
+  <div class="statrow">
+    <div class="lbl"><span class="l">GIANTS · 4–1</span><span class="m">SUPER BOWL RECORD</span><span class="r">0–4 · BILLS</span></div>
+    <div class="bars"><div class="bl"><div class="fill-l" style="width:80%"></div></div><div class="br"><div class="fill-r" style="width:0%"></div></div></div>
+  </div>
+  <div class="statrow">
+    <div class="lbl"><span class="l">GIANTS · 99</span><span class="m">CLUTCH GENE</span><span class="r">12 · BILLS</span></div>
+    <div class="bars"><div class="bl"><div class="fill-l" style="width:99%"></div></div><div class="br"><div class="fill-r" style="width:12%"></div></div></div>
+  </div>
+  <div class="statrow">
+    <div class="lbl"><span class="l">GIANTS · 98</span><span class="m">DYNASTY SLAYING (BEAT 18-0 PATRIOTS + BRADY ×2)</span><span class="r">3 · BILLS</span></div>
+    <div class="bars"><div class="bl"><div class="fill-l" style="width:98%"></div></div><div class="br"><div class="fill-r" style="width:3%"></div></div></div>
+  </div>
+  <div class="statrow">
+    <div class="lbl"><span class="l">GIANTS · 97</span><span class="m">HEAD COACH JOB SECURITY</span><span class="r">FIRED · BILLS</span></div>
+    <div class="bars"><div class="bl"><div class="fill-l" style="width:97%"></div></div><div class="br"><div class="fill-r" style="width:5%"></div></div></div>
+  </div>
+  <div class="statrow">
+    <div class="lbl"><span class="l">GIANTS · 95</span><span class="m">FURNITURE SAFETY RATING</span><span class="r">2 · BILLS</span></div>
+    <div class="bars"><div class="bl"><div class="fill-l" style="width:95%"></div></div><div class="br"><div class="fill-r" style="width:2%"></div></div></div>
   </div>
 </section>
 
 <section>
-  <div class="bigquote">
-    "These things always happen to the Bills. It rips the heart out of you."
-    <span class="attr">— Andre Reed, Bills Hall of Fame WR, after Super Bowl loss #4. He said this in 1994. Nothing has changed.</span>
+  <div class="sh">Coaching Matchup</div>
+  <p class="sd">One sideline gets a Super Bowl champion with nearly two decades of head-coaching wins. The other gets two guys doing their jobs for the first time — because <a href="https://www.nfl.com/news/bills-coach-joe-brady-devastating-sean-mcdermott-firing-i-was-broken" target="_blank" rel="noopener">the last guy was fired in January for nine seasons of playoff nothing</a>.</p>
+
+  <div class="coachvs">
+    <div class="card elite">
+      <div class="top"><div class="rating">99<small>OVR</small></div><span class="tag gold">SUPER BOWL CHAMPION</span></div>
+      <h4>John Harbaugh</h4>
+      <div class="pos">Head Coach · NY Giants</div>
+      <div class="xf">⚡ X-Factor: RING BEARER</div>
+      <p>Future Hall of Famer. Won a Super Bowl, nearly two decades of sustained winning, and now he's building smashmouth football in East Rutherford. <a href="https://www.bigblueview.com/new-york-giants-free-agency/155973/rumors-cuts-signings-news-analysis-tracker-start-date" target="_blank" rel="noopener">Expectations in New York just changed overnight.</a></p>
+    </div>
+    <div class="midvs">VS</div>
+    <div class="card dead" data-stamp="ROOKIE">
+      <div class="top"><div class="rating">61<small>OVR</small></div><span class="tag grey">FIRST-TIME HC</span></div>
+      <h4>Joe Brady</h4>
+      <div class="pos">Head Coach · Buffalo</div>
+      <div class="xf off">⚡ X-Factor: NOT UNLOCKED</div>
+      <p>36 years old, zero games as a head coach, <a href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">promoted from inside the same staff that just hit the "playoff wall"</a> — he was in the building for most of those January funerals. New title, same curse.</p>
+    </div>
+  </div>
+
+  <div class="coachvs" style="margin-top:16px;">
+    <div class="card good">
+      <div class="top"><div class="rating">88<small>OVR</small></div><span class="tag blue">PROVEN VET</span></div>
+      <h4>Dennard Wilson</h4>
+      <div class="pos">Defensive Coordinator · NY Giants</div>
+      <div class="xf">⚡ X-Factor: EXOTIC BLITZ</div>
+      <p>Brought in under Harbaugh to run an aggressive, versatile defense — with former Bills first-rounder Tremaine Edmunds as its on-field quarterback.</p>
+    </div>
+    <div class="midvs">VS</div>
+    <div class="card dead" data-stamp="UNTESTED">
+      <div class="top"><div class="rating">59<small>OVR</small></div><span class="tag grey">FIRST-TIME DC</span></div>
+      <h4>Jim Leonhard</h4>
+      <div class="pos">Defensive Coordinator · Buffalo</div>
+      <div class="xf off">⚡ X-Factor: NOT UNLOCKED</div>
+      <p>Also doing his job for the first time. The defense he inherits <a href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">gave up 28.3 points per game across the last regime's seven playoff losses.</a> Good luck.</p>
+    </div>
+  </div>
+
+  <div class="grid" style="margin-top:16px;">
+    <div class="card dead" data-stamp="FIRED">
+      <div class="top"><div class="rating">--<small>OVR</small></div><span class="tag red">RELEASED JAN 2026</span></div>
+      <h4>Sean McDermott</h4>
+      <div class="pos">Former Head Coach · Buffalo</div>
+      <p><a href="https://www.nfl.com/news/bills-coach-joe-brady-devastating-sean-mcdermott-firing-i-was-broken" target="_blank" rel="noopener">Nine seasons, 98 wins, seven straight playoff berths, zero Super Bowls — fired anyway</a> after <a href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">the overtime loss to Denver, the fourth divisional-round exit in five years.</a> In Buffalo, even winning 98 games can't save you from January.</p>
+    </div>
   </div>
 </section>
 
 <section>
-  <div class="section-head">He Sent You A Spreadsheet</div>
-  <div class="bigquote">
-    Did a Bills fan just show you regular-season records from 2016 to 2025? Adorable. Here's the only column that matters: <b style="color:var(--gold)">Super Bowls reached in that decade — Bills: 0. Super Bowls won — Bills: 0.</b> The greatest ten-year run in franchise history, the best rosters they've ever assembled, an MVP quarterback in his prime — and it produced exactly as many trophies as your grandmother's flag football team. It produced so little that <a href="https://www.nfl.com/news/bills-coach-joe-brady-devastating-sean-mcdermott-firing-i-was-broken" style="color:var(--blood-bright);">they fired the coach who built it.</a> Regular-season wins are participation ribbons with better marketing. Congratulations on winning October. The Giants own four Februarys.
+  <div class="sh">Giants Ultimate Haul · 2026</div>
+  <p class="sd">Every card the Giants pulled this offseason. <a href="https://www.giants.com/news/2026-new-york-giants-free-agency-tracker-roster-moves" target="_blank" rel="noopener">Full transaction log here</a> — these are real moves, not fantasy packs.</p>
+  <div class="grid">
+    <div class="card elite">
+      <div class="top"><div class="rating">92<small>OVR</small></div><span class="tag gold">EX-BILL · FLIPPED</span></div>
+      <h4>Tremaine Edmunds</h4>
+      <div class="pos">LB · Defensive QB</div>
+      <div class="xf">⚡ X-Factor: DOUBLE AGENT</div>
+      <p>Buffalo's own former first-round pick — <a href="https://www.espn.com/nfl/story/_/id/48015678/giants-2026-free-agency-tracker-offseason-moves-signings-trades" target="_blank" rel="noopener">now signed to run the Giants' defense with $23.7M guaranteed.</a> They drafted him. They developed him. He plays for us now.</p>
+    </div>
+    <div class="card good">
+      <div class="top"><div class="rating">87<small>OVR</small></div><span class="tag blue">WEAPON</span></div>
+      <h4>Isaiah Likely</h4>
+      <div class="pos">TE · From Baltimore</div>
+      <div class="xf">⚡ X-Factor: MISMATCH</div>
+      <p><a href="https://www.si.com/nfl/giants/onsi/big-blue-plus/giants-2026-free-agency-tracker-latest-signings-losses-news-rumors-01kk83xzdcpq" target="_blank" rel="noopener">Followed Harbaugh from Baltimore</a> — a scheme-defining weapon for the young franchise QB.</p>
+    </div>
+    <div class="card good">
+      <div class="top"><div class="rating">85<small>OVR</small></div><span class="tag blue">FRANCHISE QB</span></div>
+      <h4>Jaxson Dart</h4>
+      <div class="pos">QB · 22 Years Old</div>
+      <div class="xf">⚡ X-Factor: THE FUTURE</div>
+      <p>The 22-year-old the whole rebuild is aimed at — now with a Hall of Fame coach, new weapons, and a decade of runway. His January record is spotless. Buffalo's QB can't say that.</p>
+    </div>
+    <div class="card good">
+      <div class="top"><div class="rating">86<small>OVR</small></div><span class="tag blue">DRAFT · PICK 5</span></div>
+      <h4>Arvell Reese</h4>
+      <div class="pos">LB · Round 1, No. 5</div>
+      <div class="xf">⚡ X-Factor: DAY ONE</div>
+      <p><a href="https://www.giants.com/news/2026-new-york-giants-free-agency-tracker-roster-moves" target="_blank" rel="noopener">Top-five pick</a> — one of TWO Giants first-rounders in April.</p>
+    </div>
+    <div class="card good">
+      <div class="top"><div class="rating">84<small>OVR</small></div><span class="tag blue">DRAFT · PICK 10</span></div>
+      <h4>Francis Mauigoa</h4>
+      <div class="pos">OL · Round 1, No. 10</div>
+      <div class="xf">⚡ X-Factor: ROAD GRADER</div>
+      <p><a href="https://www.giants.com/news/2026-new-york-giants-free-agency-tracker-roster-moves" target="_blank" rel="noopener">The second first-rounder.</a> Two premium picks in one draft. Buffalo drafted depth; New York drafted a foundation.</p>
+    </div>
+    <div class="card good">
+      <div class="top"><div class="rating">90<small>OVR</small></div><span class="tag blue">ALL-PRO</span></div>
+      <h4>Jordan Stout</h4>
+      <div class="pos">P · Highest-Paid Punter</div>
+      <div class="xf">⚡ X-Factor: FIELD FLIPPER</div>
+      <p><a href="https://www.espn.com/nfl/story/_/id/48015678/giants-2026-free-agency-tracker-offseason-moves-signings-trades" target="_blank" rel="noopener">First-team All-Pro, 50.1 yards per punt</a> — even our punter has more hardware than their trophy case.</p>
+    </div>
+    <div class="card good">
+      <div class="top"><div class="rating">83<small>OVR</small></div><span class="tag blue">SPEED</span></div>
+      <h4>Darnell Mooney</h4>
+      <div class="pos">WR · Deep Threat</div>
+      <div class="xf">⚡ X-Factor: TAKE THE TOP OFF</div>
+      <p><a href="https://sports.yahoo.com/articles/giants-free-agency-tracker-2026-135456830.html" target="_blank" rel="noopener">Signed to stretch the field</a> for Dart — a year removed from a near-1,000-yard season.</p>
+    </div>
+    <div class="card good">
+      <div class="top"><div class="rating">85<small>OVR</small></div><span class="tag blue">SMASHMOUTH</span></div>
+      <h4>Patrick Ricard</h4>
+      <div class="pos">FB · "Pancake Pat" · 300 lbs</div>
+      <div class="xf">⚡ X-Factor: BULLDOZER</div>
+      <p><a href="https://gmenhq.com/new-york-giants-free-agency-tracker-hub" target="_blank" rel="noopener">A 6'3", 300-pound fullback</a> — Harbaugh football has arrived. Buffalo's fullback? He left for the Patriots.</p>
+    </div>
+    <div class="card good">
+      <div class="top"><div class="rating">84<small>OVR</small></div><span class="tag blue">ANCHOR</span></div>
+      <h4>D.J. Reader</h4>
+      <div class="pos">DT · Nose Tackle</div>
+      <div class="xf">⚡ X-Factor: IMMOVABLE</div>
+      <p><a href="https://www.bigblueview.com/new-york-giants-free-agency/155973/rumors-cuts-signings-news-analysis-tracker-start-date" target="_blank" rel="noopener">The veteran nose tackle the middle needed.</a> Plus Jason Sanders at kicker, Ar'Darius Washington and Jevón Holland at safety — the Baltimore pipeline runs through Jersey now.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sh">Buffalo's Departure Terminal · 2026</div>
+  <p class="sd">Meanwhile in Orchard Park: <a href="https://www.buffalorumblings.com/buffalo-bills-free-agency/130589/buffalo-bills-2026-free-agency-tracker-rumors-signings-trades-news-and-more" target="_blank" rel="noopener">the salary-cap-strapped Bills watched their locker room file out the door.</a> Sixty-six years of your ticket money and they couldn't afford the guard.</p>
+  <div class="grid">
+    <div class="card dead" data-stamp="GONE">
+      <div class="top"><div class="rating">81<small>OVR</small></div><span class="tag red">LOST · SAINTS</span></div>
+      <h4>David Edwards</h4>
+      <div class="pos">LG · Starting Left Guard</div>
+      <p><a href="https://www.si.com/nfl/bills/onsi/free-agency-four-losses-that-will-prove-toughest-for-buffalo-bills-to-overcome" target="_blank" rel="noopener">So good New Orleans paid him $61 million. So broke Buffalo couldn't match.</a> First new O-line combo in three years — right as a rookie coach takes over.</p>
+    </div>
+    <div class="card dead" data-stamp="TRAITOR">
+      <div class="top"><div class="rating">76<small>OVR</small></div><span class="tag red">LOST · PATRIOTS</span></div>
+      <h4>Reggie Gilliam</h4>
+      <div class="pos">FB · Fan Favorite</div>
+      <p><a href="https://www.buffalorumblings.com/buffalo-bills-free-agency/130589/buffalo-bills-2026-free-agency-tracker-rumors-signings-trades-news-and-more" target="_blank" rel="noopener">Defected to the division-rival Patriots.</a> Twice a year, he gets to personally remind Buffalo what loyalty costs.</p>
+    </div>
+    <div class="card dead" data-stamp="GONE">
+      <div class="top"><div class="rating">74<small>OVR</small></div><span class="tag red">LOST · TITANS</span></div>
+      <h4>Mitch Trubisky</h4>
+      <div class="pos">QB · Backup</div>
+      <p><a href="https://www.espn.com/nfl/story/_/id/48015515/bills-2026-free-agency-tracker-offseason-moves-signings-contract-trades" target="_blank" rel="noopener">Josh Allen's backup walked to Tennessee.</a> The replacement plan: a QB whose last start was 2022 — signed mostly because he's Josh's friend.</p>
+    </div>
+    <div class="card dead" data-stamp="GONE">
+      <div class="top"><div class="rating">73<small>OVR</small></div><span class="tag red">LOST · VIKINGS</span></div>
+      <h4>Ryan Van Demark</h4>
+      <div class="pos">OT · Swing Tackle</div>
+      <p><a href="https://www.si.com/nfl/bills/onsi/free-agency-four-losses-that-will-prove-toughest-for-buffalo-bills-to-overcome" target="_blank" rel="noopener">Even his $3.5M tender "was a tough number for us," the GM admitted.</a> When you're haggling over the backup tackle, the window isn't closing — it's boarded up.</p>
+    </div>
+    <div class="card dead" data-stamp="CUT">
+      <div class="top"><div class="rating">--<small>OVR</small></div><span class="tag red">RELEASED</span></div>
+      <h4>Samuel · Jackson · Rapp</h4>
+      <div class="pos">WR · CB · S</div>
+      <p><a href="https://www.buffalorumblings.com/buffalo-bills-free-agency/130589/buffalo-bills-2026-free-agency-tracker-rumors-signings-trades-news-and-more" target="_blank" rel="noopener">Curtis Samuel, Dane Jackson, and Taylor Rapp — all released</a> in the cap purge. Plus Darnell Savage, A.J. Epenesa, and Cam Lewis out the door in free agency.</p>
+    </div>
+    <div class="card dead" data-stamp="GHOSTED">
+      <div class="top"><div class="rating">12<small>JAN</small></div><span class="tag red">EVERY JANUARY</span></div>
+      <h4>Playoff Josh Allen</h4>
+      <div class="pos">QB · October MVP</div>
+      <div class="xf off">⚡ X-Factor: DISAPPEARS IN JANUARY</div>
+      <p>Regular-season superstar, real MVP — and after eight seasons the postseason résumé still reads: zero Super Bowls, a fired coach, and <a href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">an owner who saw his face after the Denver loss and started firing people.</a></p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sh">He Sent You A Spreadsheet</div>
+  <div class="console">
+    Did a Bills fan just show you regular-season records from 2016–2025? Adorable. Here's the only column that matters: <b>Super Bowls reached in that decade — Bills: 0. Super Bowls won — Bills: 0.</b> The greatest ten-year run in franchise history, the best rosters they've ever assembled, an MVP quarterback in his prime — and it produced exactly as many trophies as your grandmother's flag football team. It produced so little that <a href="https://www.nfl.com/news/bills-coach-joe-brady-devastating-sean-mcdermott-firing-i-was-broken" style="color:var(--gold)">they fired the coach who built it</a>. Regular-season wins are participation ribbons with better marketing. Congratulations on winning October. The Giants own four Februarys.
     <span class="attr">— Official response to all spreadsheets, screenshots, and win-percentage charts</span>
   </div>
 </section>
 
 <section>
-  <div class="section-head">The 2026 Ledger</div>
-  <div class="pain">
-    <div class="moment">
-      <div class="year">THE EXODUS · WHAT BUFFALO LOST THIS OFFSEASON</div>
-      <h3>Rats, Ship, Etc.</h3>
-      <p>While your guy was building spreadsheets, his roster was building escape tunnels. <a href="https://www.buffalorumblings.com/buffalo-bills-free-agency/130589/buffalo-bills-2026-free-agency-tracker-rumors-signings-trades-news-and-more" target="_blank" rel="noopener">This offseason Buffalo lost its starting left guard David Edwards to New Orleans, backup QB Mitch Trubisky to Tennessee, backup tackle Ryan Van Demark to Minnesota — and fullback Reggie Gilliam defected straight to the division-rival Patriots.</a> They also cut Curtis Samuel, Dane Jackson, and Taylor Rapp. <a href="https://www.si.com/nfl/bills/onsi/free-agency-four-losses-that-will-prove-toughest-for-buffalo-bills-to-overcome" target="_blank" rel="noopener">The team was too cap-broke to keep its own depth</a> — sixty-six years of your money and they still can't afford the guard.</p>
-      <a class="read" href="https://www.buffalorumblings.com/buffalo-bills-free-agency/130589/buffalo-bills-2026-free-agency-tracker-rumors-signings-trades-news-and-more" target="_blank" rel="noopener">The full casualty list →</a>
-    </div>
-    <div class="moment">
-      <div class="year">THE ARRIVAL · WHAT THE GIANTS BUILT</div>
-      <h3 style="color:var(--gold);">New York Reloaded</h3>
-      <p>The Giants didn't rebuild — they upgraded the whole franchise. <a href="https://www.bigblueview.com/new-york-giants-free-agency/155973/rumors-cuts-signings-news-analysis-tracker-start-date" target="_blank" rel="noopener">New head coach: John Harbaugh</a> — a Super Bowl champion and future Hall of Famer. A young franchise QB in Jaxson Dart. <a href="https://www.giants.com/news/2026-new-york-giants-free-agency-tracker-roster-moves" target="_blank" rel="noopener">Two first-round picks in April — Arvell Reese at No. 5 and Francis Mauigoa at No. 10</a> — plus <a href="https://www.espn.com/nfl/story/_/id/48015678/giants-2026-free-agency-tracker-offseason-moves-signings-trades" target="_blank" rel="noopener">TE Isaiah Likely, WR Darnell Mooney, and an All-Pro punter in Jordan Stout.</a></p>
-      <a class="read" href="https://www.giants.com/news/2026-new-york-giants-free-agency-tracker-roster-moves" target="_blank" rel="noopener">The full haul →</a>
-    </div>
-    <div class="moment">
-      <div class="year">THE CHERRY ON TOP</div>
-      <h3 style="color:var(--gold);">We Took Their Linebacker</h3>
-      <p>The new quarterback of the Giants defense? <a href="https://www.espn.com/nfl/story/_/id/48015678/giants-2026-free-agency-tracker-offseason-moves-signings-trades" target="_blank" rel="noopener"><b>Tremaine Edmunds</b> — Buffalo's own former first-round pick, now signed to run Big Blue's defense.</a> The Bills drafted him, developed him, and now he works for the team that won Super Bowl XXV over their corpse. Even their own players end up in blue eventually. Everyone escapes the graveyard except the fans.</p>
-    </div>
-  </div>
-</section>
+  <div class="sh">Lowlight Reel</div>
+  <p class="sd">The documented franchise disasters, with receipts. Tap any link — it's all real.</p>
 
-<section class="halo">
-  <div class="section-head">Meanwhile, Among The Living</div>
-  <div class="stones" style="margin-bottom:34px;">
-    <div class="stone"><div class="num">4</div><div class="label">Giants Super Bowl Rings</div></div>
-    <div class="stone" style="opacity:.55;"><div class="num" style="color:var(--blood-bright);">0</div><div class="label">Bills Super Bowl Rings</div></div>
+  <div class="low">
+    <div class="y">JAN 1991 · SUPER BOWL XXV · GIANTS 20, BILLS 19</div>
+    <h4>Wide Right</h4>
+    <p>Heavily favored Buffalo ran into the Parcells–Belichick Giants, <a href="https://sportsteamhistory.com/how-did-the-bills-lose-4-super-bowls-in-a-row/" target="_blank" rel="noopener">who smothered the no-huddle and watched Norwood's 47-yarder sail wide right.</a> The Giants took the trophy; Buffalo took a two-word curse.</p>
   </div>
-  <div class="pain">
-    <div class="moment">
-      <div class="year">THE RÉSUMÉ</div>
-      <h3>Big Blue Doesn't Tease</h3>
-      <p>While Buffalo perfected the art of taking your Sundays and giving nothing back, the <b>New York Giants</b> were collecting hardware: <b>Super Bowls XXI, XXV, XLII, and XLVI.</b> The second one was won directly over Buffalo's corpse. The Giants don't promise. The Giants deliver.</p>
-    </div>
-    <div class="moment">
-      <div class="year">FEB 2008 · SUPER BOWL XLII</div>
-      <h3>They Killed Perfection</h3>
-      <p>The Giants walked into the desert against an 18-0 Patriots team one win from immortality — and murdered the perfect season with the Helmet Catch. Then they beat Brady and Belichick in the Super Bowl <i>again</i> four years later, just to prove it wasn't luck. The Bills spent those same two decades getting swept by New England and calling it a rivalry.</p>
-    </div>
-    <div class="moment">
-      <div class="year">EVERY JANUARY</div>
-      <h3>Closers vs. Ghosts</h3>
-      <p>Giants in Super Bowls: 4–1. Bills in Super Bowls: 0–4. One franchise shows up in the dark and finishes the job. The other <i>is</i> the dark. When history needed a giant-killer, it called New York. When history needed a punchline, Buffalo picked up on the first ring — the only ring they'll ever get.</p>
-    </div>
+  <div class="low">
+    <div class="y">1991–1994</div>
+    <h4>0–4 In Super Bowls</h4>
+    <p><a href="https://en.wikipedia.org/wiki/Super_Bowl_XXVIII" target="_blank" rel="noopener">The only franchise ever to lose four straight Super Bowls</a> — including a 52–17 demolition with a record nine turnovers. Haven't been back since.</p>
   </div>
-</section>
+  <div class="low">
+    <div class="y">JAN 2000</div>
+    <h4>Music City Miracle</h4>
+    <p><a href="https://en.wikipedia.org/wiki/Music_City_Miracle" target="_blank" rel="noopener">Lead with 16 seconds left, then a 75-yard trick lateral return ends the season.</a> Fans still call it a forward pass. The refs and an NFL Films analysis disagree.</p>
+  </div>
+  <div class="low">
+    <div class="y">2000–2016</div>
+    <h4>The 17-Year Drought</h4>
+    <p><a href="https://www.espn.com/nfl/story/_/id/18396283/generation-buffalo-bills-fans-endure-longest-playoff-drought" target="_blank" rel="noopener">Seventeen straight seasons without a playoff berth — the longest active drought in major American pro sports.</a> An entire generation grew up without one January game.</p>
+  </div>
+  <div class="low">
+    <div class="y">JAN 2022</div>
+    <h4>13 Seconds</h4>
+    <p><a href="https://www.espn.com/blog/buffalo-bills/post/_/id/36910/bills-watch-victory-slip-away-in-13-seconds-as-chiefs-end-their-postseason-again" target="_blank" rel="noopener">Up three with thirteen seconds left; lost in overtime without touching the ball.</a> Most teams need four quarters to break your heart. Buffalo is efficient.</p>
+  </div>
+  <div class="low">
+    <div class="y">JAN 2025</div>
+    <h4>Kansas City, Again</h4>
+    <p><a href="https://www.espn.com/nfl/recap/_/gameId/401671887" target="_blank" rel="noopener">32–29 at Arrowhead — the fourth playoff elimination by KC in five years.</a> <a href="https://en.wikipedia.org/wiki/Bills%E2%80%93Chiefs_rivalry" target="_blank" rel="noopener">Dominant against the Chiefs every fall, winless against them every winter.</a></p>
+  </div>
+  <div class="low">
+    <div class="y">JAN 2026 · THE FRESHEST ONE</div>
+    <h4>Denver In OT — Then They Fired The Coach</h4>
+    <p><a href="https://www.espn.com/nfl/story/_/id/47746216/buffalo-bills-head-coach-joe-brady-why-next" target="_blank" rel="noopener">Fourth divisional-round exit in five years; the owner saw Josh Allen's face and fired McDermott</a> — <a href="https://www.nfl.com/news/bills-coach-joe-brady-devastating-sean-mcdermott-firing-i-was-broken" target="_blank" rel="noopener">nine seasons, 98 wins, zero Super Bowls.</a> The rebuild begins where every Bills season ends: in January, in pieces.</p>
+  </div>
 
-<section>
-  <div class="section-head">Field Report: Bills Mafia</div>
-  <div class="bigquote">
-    The only fanbase in professional sports whose signature celebration is a felony against furniture. While Giants fans watch championships, Bills fans hurl their own bodies through folding tables in a frozen parking lot — before kickoff, in 12°F, sober-ish. The tables committed no crime. The tables did not go wide right. But every Sunday in Orchard Park, another innocent Costco special is sacrificed to a football god who has never once answered.
-    <span class="attr">— Correspondent embedded in an Orchard Park parking lot, presumed concussed</span>
+  <div class="console" style="margin-top:10px;">
+    <b>Bonus fan stat:</b> The Bills Mafia remains the only fanbase whose signature highlight is a felony against furniture. More fans have gone through folding tables than Bills teams have gone through to a Super Bowl since 1994. Furniture Safety Rating: 2.
+    <span class="attr">— League Office of Table Welfare</span>
   </div>
-  <ul class="relo-list" style="margin-top:28px;">
-    <li><b>Grim math:</b> More Bills fans have gone through tables than Bills teams have gone through to a Super Bowl since 1994.</li>
-    <li><b>Medical note:</b> Jumping through a table and rooting for the Bills have identical outcomes — a brief high, a hard landing, and something broken by February.</li>
-    <li><b>Anthropology:</b> Scientists believe the table-smashing is a grief ritual. The Bills provide unlimited grief. The ritual continues.</li>
-  </ul>
-</section>
-
-<section>
-  <div class="section-head">The Fine Print of Fandom</div>
-  <ul class="relo-list">
-    <li><b>The business model:</b> Sixty-six years of selling hope by the season and never once delivering the product. Every fall they take your heart, your Sundays, and your money — and every January they leave you at the altar. Football's longest, coldest tease.</li>
-    <li><b>The pattern:</b> Regular season heroics, playoff funerals. Set your watch to it.</li>
-    <li><b>The cure:</b> The New York Giants remain proudly in the New York metro area with four Lombardi Trophies. No passport, no folding table, no therapy required.</li>
-  </ul>
 </section>
 
 <footer>
-  💀 Est. 1960 · Buried Annually 💀 &nbsp;·&nbsp; <span class="go">GO GIANTS 🗽</span>
-  <span class="fine">Satirical fan content. Not affiliated with the NFL, the Buffalo Bills, or any licensed funeral home. No Bills were harmed in the making of this website — they do that to themselves every January. Wide right. Rest in pieces.</span>
+  FINAL SCORE: HISTORY 4 · EXCUSES 0 &nbsp;·&nbsp; <span class="go">GO GIANTS 🗽</span>
+  <span class="fine">Satirical fan content. Player "ratings" and X-Factors are jokes, not real evaluations. Not affiliated with the NFL, EA Sports, the New York Giants, or the Buffalo Bills. Roster moves and results link to real reporting. No folding tables were harmed in the making of this website — Buffalo handles that on their own.</span>
 </footer>
 
+</div>
 </body>
 </html>
