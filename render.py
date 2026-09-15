@@ -195,6 +195,76 @@ def compare_bars(snap):
     return "".join(rows)
 
 
+def current_week(snap):
+    """Earliest week still holding unplayed games."""
+    left = [g["week"] for g in snap["games"].values() if not g["completed"]]
+    return min(left) if left else None
+
+
+def parlay(snap):
+    """An interactive combined-probability picker for the current week.
+
+    This is the one section of the site that computes rather than reports.
+    Multiplying the legs is correct arithmetic for independent events, and
+    separate games in the same week are near enough independent - but the
+    inputs are ESPN's published figures and the multiplication is ours, so
+    the page says so plainly. No payouts, no odds, no implied returns:
+    the point is the probability and how quickly it falls away.
+    """
+    wk = current_week(snap)
+    if not wk:
+        return "<p class='lede'>The regular season is over.</p>"
+
+    games = sorted([g for g in snap["games"].values()
+                    if g["week"] == wk and g.get("prob")],
+                   key=lambda x: x["date"])
+    if not games:
+        return "<p class='lede'>No published probabilities for this week yet.</p>"
+
+    rows = []
+    for g in games:
+        h, a = g["home"], g["away"]
+        ph, pa = g["prob"]["home"], g["prob"]["away"]
+        day, tm = when(g["date"], g.get("timeValid", True))
+        pre_a = "NYG" if a["abbr"] == "NYG" else ("BUF" if a["abbr"] == "BUF" else "")
+        pre_h = "NYG" if h["abbr"] == "NYG" else ("BUF" if h["abbr"] == "BUF" else "")
+        sel_a = " on" if pre_a else ""
+        sel_h = " on" if pre_h else ""
+        rows.append(
+            f'<div class="pg"><div class="pgd">{day} · {tm}</div>'
+            f'<button class="leg{sel_a}" data-p="{pa}" data-t="{a["abbr"]}">'
+            f'<span class="lt">{a["abbr"]}</span><span class="lp">{pa}%</span></button>'
+            f'<span class="pat">at</span>'
+            f'<button class="leg{sel_h}" data-p="{ph}" data-t="{h["abbr"]}">'
+            f'<span class="lt">{h["abbr"]}</span><span class="lp">{ph}%</span></button>'
+            "</div>")
+
+    return (
+        f'<div class="parlay">'
+        f'<div class="pout"><div class="pbig" id="pOut">—</div>'
+        f'<div class="plbl">chance all <span id="pN">0</span> hit</div>'
+        f'<div class="pnote" id="pList">Pick a side in any game below.</div></div>'
+        f'<div class="pgames"><div class="ngl">Week {wk} · tap a team to add or drop it</div>'
+        f'{"".join(rows)}</div></div>'
+        '<script>(function(){'
+        'var legs=function(){return [].slice.call(document.querySelectorAll(".leg.on"))};'
+        'function calc(){var L=legs();var p=1;var names=[];'
+        'L.forEach(function(b){p*=parseFloat(b.dataset.p)/100;names.push(b.dataset.t)});'
+        'var o=document.getElementById("pOut");'
+        'document.getElementById("pN").textContent=L.length;'
+        'if(!L.length){o.textContent="—";'
+        'document.getElementById("pList").textContent="Pick a side in any game below.";return}'
+        'var pct=p*100;'
+        'o.textContent=pct>=10?pct.toFixed(1)+"%":(pct>=1?pct.toFixed(2)+"%":pct.toFixed(3)+"%");'
+        'document.getElementById("pList").textContent=names.join(" + ");}'
+        'document.querySelectorAll(".leg").forEach(function(b){'
+        'b.addEventListener("click",function(){'
+        'var sib=b.parentNode.querySelectorAll(".leg");'
+        'if(b.classList.contains("on")){b.classList.remove("on")}'
+        'else{sib.forEach(function(x){x.classList.remove("on")});b.classList.add("on")}'
+        'calc()})});calc();})();</script>')
+
+
 def home_divisions(snap):
     cols = []
     for ab, (name, cls) in FEATURED.items():
@@ -295,6 +365,7 @@ def build(snap, site_dir):
     out = swap(out, "TALLY", tally(snap))
     out = swap(out, "COMPARE", compare_bars(snap))
     out = swap(out, "DIVISIONS", home_divisions(snap))
+    out = swap(out, "PARLAY", parlay(snap))
     out = swap(out, "STAMP", f"Updated {stamp}")
     open(os.path.join(site_dir, "index.html"), "w", encoding="utf-8").write(out)
     written += 1
