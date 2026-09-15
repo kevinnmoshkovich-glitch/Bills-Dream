@@ -343,6 +343,72 @@ def parlay(snap):
 
 
 
+def with_support(snap, rows):
+    """Attach what the player has actually produced to each modelled row.
+
+    The probability column and the production column are independent of each
+    other by construction: the first comes from the book's line, the second
+    from games played. Where they disagree is the only place this page has
+    anything to say that the line does not already say.
+    """
+    logs = snap.get("gamelogs", {})
+    for r in rows:
+        series = logs.get(r["aid"], {}).get(r["stat"]) or []
+        if series:
+            r["games"] = len(series)
+            r["avg"] = round(sum(series) / len(series), 1)
+            r["best"] = max(series)
+            # how the player's average sits against the line, as a ratio
+            r["edge"] = round((r["avg"] - r["line"]) / r["line"] * 100, 1) if r["line"] else None
+            for x in r["rungs"]:
+                x["cleared"] = sum(1 for v in series if v >= x["t"])
+        else:
+            r["games"] = 0
+            r["avg"] = r["best"] = r["edge"] = None
+    return rows
+
+
+def shortlist(snap, rows, n=6):
+    """The rungs worth a second look.
+
+    Deliberately NOT 'highest probability'. The model puts the median at the
+    book's line, so the highest probability is always the lowest threshold,
+    for every player, always - sorting by it would just say 'take the
+    smallest number in every row' and would carry no information.
+
+    This ranks on the one thing the model does not already know: whether the
+    player has actually been clearing that number. Score is the modelled
+    probability weighted by how often he has cleared it, with a penalty while
+    the sample is small, so early-season rows cannot dominate on one game.
+    """
+    scored = []
+    for r in rows:
+        if not r.get("games"):
+            continue
+        for x in r["rungs"]:
+            hit_rate = x["cleared"] / r["games"]
+            # shrink toward the modelled probability when games are few
+            w = r["games"] / (r["games"] + 4.0)
+            blended = (1 - w) * (x["p"] / 100) + w * hit_rate
+            # only interesting if the player is actually clearing it
+            if x["cleared"] == 0:
+                continue
+            scored.append({**r, "t": x["t"], "p": x["p"],
+                           "cleared": x["cleared"], "hit": round(hit_rate * 100),
+                           "score": round(blended * 100, 1)})
+    scored.sort(key=lambda s: (-s["score"], -s["p"]))
+    # at most one row per player so a single hot player cannot fill the list
+    seen, out = set(), []
+    for s in scored:
+        if (s["aid"], s["stat"]) in seen:
+            continue
+        seen.add((s["aid"], s["stat"]))
+        out.append(s)
+        if len(out) >= n:
+            break
+    return out
+
+
 def parlay_page(snap):
     """The parlay tab: real game probabilities and modelled player props,
     combined into one number. Kept visibly separate because one half is
@@ -368,7 +434,8 @@ def parlay_page(snap):
             f'<button class="leg{on_h}" data-p="{ph}" data-t="{h["abbr"]} win">'
             f'<span class="lt">{h["abbr"]}</span><span class="lp">{ph}%</span></button></div>')
 
-    props = player_props(snap)
+    props = with_support(snap, player_props(snap))
+    picks = shortlist(snap, props)
     if props:
         bypl = {}
         for p in props:
@@ -383,8 +450,18 @@ def parlay_page(snap):
                     f'<span class="lt">{x["t"]:.0f}+</span>'
                     f'<span class="lp">{x["p"]}%</span></button>'
                     for x in s["rungs"])
+                if s.get("games"):
+                    d = s.get("edge")
+                    arrow = "above" if (d or 0) > 0 else "below"
+                    prod = (f'<span class="psact">{s["avg"]:g} avg over '
+                            f'{s["games"]} game{"s" if s["games"] != 1 else ""} · '
+                            f'<b class="{"up" if (d or 0) > 0 else "dn"}">'
+                            f'{abs(d):.0f}% {arrow} the line</b></span>')
+                else:
+                    prod = '<span class="psact">no games logged yet</span>'
                 blocks += (f'<div class="pstat"><div class="psl">{s["label"]}'
                            f'<span class="psline">line {s["line"]:g}</span></div>'
+                           f'<div class="psrow">{prod}</div>'
                            f'<div class="rungs">{rungs}</div></div>')
             prows.append(f'<div class="pplayer"><div class="ppn">{name}'
                          f'<span class="ppp">{pos} · {match}</span></div>{blocks}</div>')
@@ -393,8 +470,39 @@ def parlay_page(snap):
         note = (f'<p class="lede">Lines are posted game by game as kickoff nears, so '
                 f'{missing} of this week&rsquo;s {len(snap.get("props", {}))} games have none '
                 f'yet. They appear here as the books put them up.</p>') if missing else ""
+
+    if props and picks:
+        n_games = max((p["games"] for p in picks), default=0)
+        cards = "".join(
+            f'<div class="sl"><div class="sln">{p["name"]}'
+            f'<span class="slp">{p["pos"]}</span></div>'
+            f'<div class="slt">{p["t"]:.0f}+ {p["label"].lower()}</div>'
+            f'<div class="slm"><span><b>{p["p"]}%</b>modelled</span>'
+            f'<span><b>{p["avg"]:g}</b>his average</span>'
+            f'<span><b>{p["cleared"]}/{p["games"]}</b>cleared it</span></div>'
+            f'<button class="leg slbtn" data-p="{p["p"]}" '
+            f'data-t="{p["name"].split()[-1]} {p["t"]:.0f}+ {p["label"].split()[-1]}">'
+            f'<span class="lt">add</span><span class="lp">{p["p"]}%</span></button></div>'
+            for p in picks)
+        caveat = ('<p class="lede"><b>Read this before trusting the order.</b> '
+                  'Ranking by the modelled probability alone would be circular — '
+                  'the model puts the median at the book&rsquo;s line, so the highest '
+                  'probability is always the lowest threshold, for every player, every '
+                  'time. That tells you nothing about who is likely to beat their number. '
+                  'So these rank on the one thing the model does not already know: '
+                  'whether the player has actually been clearing it. '
+                  f'With {n_games} game{"s" if n_games != 1 else ""} played that '
+                  'evidence is thin, and the ranking leans mostly on the model until '
+                  'there is a real sample behind it — call it week six. Right now treat '
+                  'this as a shortlist to look at, not a verdict.</p>')
+        short_html = (f'<h2>Best chances <span class="thru">ranked on production, '
+                      f'not on the model</span></h2>{caveat}'
+                      f'<div class="slgrid">{cards}</div>')
+    elif props:
+        short_html = ""
     else:
         props_html = ""
+        short_html = ""
         note = ('<p class="lede">No player lines are posted for this week yet. Books '
                 'put them up a few days before kickoff; they will appear here on the '
                 'next nightly refresh after that.</p>')
@@ -418,7 +526,7 @@ def parlay_page(snap):
         'the middle. The spread comes from a typical game-to-game figure for that stat, '
         'not from this player&rsquo;s own history; one game into a season there is not '
         'enough of it to measure. Treat these as reasoned estimates, not facts.</p>'
-        f'{note}{props_html}</div></div>'
+        f'{short_html}{note}{props_html}</div></div>'
         '<script>(function(){'
         'function calc(){var L=[].slice.call(document.querySelectorAll(".leg.on"));'
         'var p=1,names=[];L.forEach(function(b){p*=parseFloat(b.dataset.p)/100;'

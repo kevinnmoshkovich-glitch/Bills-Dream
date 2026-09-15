@@ -298,6 +298,56 @@ def fetch_props(games):
     return out
 
 
+# Map our prop keys to the stat name used in an athlete gamelog.
+GAMELOG_STAT = {"pass_yds": "passingYards", "rush_yds": "rushingYards",
+                "rec_yds": "receivingYards", "rec": "receptions",
+                "pass_att": "passingAttempts", "rush_att": "rushingAttempts"}
+
+
+def fetch_gamelogs(ids):
+    """Per-game production for each player who has a line this week.
+
+    This is the only independent read on a player the site has. The model's
+    probabilities are derived from the sportsbook line, so they cannot say
+    whether a player is likely to beat it - only what the line implies.
+    What a player has actually done can.
+
+    Right now it is one game per player, which is noise. It becomes worth
+    something around week six, and by then it also gives a real per-player
+    variance to replace the generic one in STAT_CV.
+    """
+    def one(aid):
+        d = try_get("https://site.web.api.espn.com/apis/common/v3/sports/"
+                    f"football/nfl/athletes/{aid}/gamelog?region=us&lang=en")
+        if not d:
+            return aid, None
+        names = d.get("names") or []
+        idx = {n: i for i, n in enumerate(names)}
+        series = {k: [] for k in GAMELOG_STAT}
+        for st in d.get("seasonTypes") or []:
+            for cat in st.get("categories", []):
+                for ev in cat.get("events", []):
+                    row = ev.get("stats") or []
+                    for key, statname in GAMELOG_STAT.items():
+                        i = idx.get(statname)
+                        if i is None or i >= len(row):
+                            continue
+                        raw = row[i]
+                        try:
+                            series[key].append(float(str(raw).replace(",", "")))
+                        except ValueError:
+                            pass
+        series = {k: v for k, v in series.items() if v}
+        return aid, (series or None)
+
+    out = {}
+    with cf.ThreadPoolExecutor(WORKERS) as ex:
+        for aid, s in ex.map(one, ids):
+            if s:
+                out[aid] = s
+    return out
+
+
 # ----------------------------------------------------------------- assemble
 def build_snapshot():
     snap = {"builtAt": datetime.now(NY).isoformat(), "season": SEASON}
@@ -361,6 +411,8 @@ def build_snapshot():
         cache = fetch_athletes(ids, load_athletes())
         snap["props"] = props
         snap["athletes"] = {i: cache[i] for i in ids if i in cache}
+        log("  per-game production for those players")
+        snap["gamelogs"] = fetch_gamelogs(ids)
         with_lines = sum(1 for pl in props.values() if pl)
         log(f"  {with_lines}/{len(props)} games have lines, "
             f"{sum(len(p) for p in props.values())} players")

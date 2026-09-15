@@ -133,3 +133,29 @@ looking broken.
 
 `athletes.json` caches player id to name. Names don't change, so it makes
 the nightly run nearly free after the first one.
+
+### Best chances, and why it is not sorted by probability
+
+Sorting the shortlist by the modelled probability would be circular. The
+model puts the median at the book's line, so the highest probability is
+always the lowest threshold - for every player, every time. A list built
+that way would say "take the smallest number in every row" and would carry
+no information about who is likely to beat their line.
+
+So `shortlist()` ranks on the one thing the model does not already know:
+whether the player has actually been clearing that number, from the
+gamelogs. The score blends hit rate with the modelled probability and
+shrinks toward the model while the sample is small:
+
+    w       = games / (games + 4)
+    score   = (1 - w) * modelled + w * hit_rate
+
+At one game w is 0.2, so the ranking is still mostly the model and the page
+says so. By about week six w passes 0.6 and production is doing the work.
+Rows where the player has never cleared the threshold are dropped, and only
+one row per player per stat is kept so one hot player cannot fill the list.
+
+When there is a real sample, the other thing to do is replace the generic
+`STAT_CV` with each player's own variance from his gamelog. That is the
+single biggest improvement available to this model, and it is not possible
+in September.
