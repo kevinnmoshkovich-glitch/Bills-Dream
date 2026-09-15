@@ -98,3 +98,38 @@ for a fan page; not a supported API. If it goes for good, a paid feed
 swap the fetch functions in `refresh.py` and leave `render.py` alone.
 
 Names and records only. No logos, no team marks.
+
+## The parlay tab
+
+`/parlay` combines this week's outcomes into one probability. It is
+deliberately split in two, because the halves are not the same kind of
+number.
+
+**Game outcomes** are ESPN's published win probabilities. Real.
+
+**Player outcomes** are computed here. The feed carries the line a
+sportsbook set but *no price*, so there is no market-implied probability to
+read off - it has to be modelled. The method:
+
+    median = the book's line     ->  mu    = ln(line)
+    spread from a typical CV     ->  sigma = sqrt(ln(1 + CV^2))
+    P(X >= t)                    =  1 - Phi((ln t - mu) / sigma)
+
+Log-normal because yardage is non-negative and right-skewed: a receiver's
+ceiling sits far above his median and his floor is zero. Treating the line
+as the median is reasonable - that is roughly what a book sets it to be -
+and the model returns 50% at the line by construction, which is the check
+worth keeping.
+
+The weak assumption is the spread. `STAT_CV` in `render.py` holds a typical
+game-to-game coefficient of variation per stat type, not the player's own
+variance, because one game into a season there is not enough history to
+measure it. Revisit those numbers once there is a real sample. The page
+says all of this in plain words; don't quietly drop that text.
+
+Books post props game by game as kickoff nears, so early in the week most
+games have no lines at all. The page says how many are missing rather than
+looking broken.
+
+`athletes.json` caches player id to name. Names don't change, so it makes
+the nightly run nearly free after the first one.

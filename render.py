@@ -100,7 +100,8 @@ def swap(html, marker, content):
                   f"<!--{marker}-->{content}<!--/{marker}-->", html, flags=re.S)
 
 
-NAV = [("/", "Head to head"), ("/schedule", "Schedules"), ("/league", "Every division")]
+NAV = [("/", "Head to head"), ("/schedule", "Schedules"),
+       ("/parlay", "Parlay"), ("/league", "Every division")]
 
 
 def nav(current):
@@ -195,6 +196,82 @@ def compare_bars(snap):
     return "".join(rows)
 
 
+
+# ------------------------------------------------------------- prop model
+# Every probability in this block is COMPUTED. The feed carries the line a
+# sportsbook set but no price, so there is no market-implied probability to
+# read off - it has to be modelled.
+#
+# Method: treat the over/under line as the median outcome, which is what a
+# book's line approximates, then put a log-normal around it. Log-normal
+# because yardage is non-negative and right-skewed: a receiver's ceiling is
+# far above his median, his floor is zero.
+#
+#     median = line          ->  mu = ln(line)
+#     spread from CV         ->  sigma = sqrt(ln(1 + CV^2))
+#     P(X >= t)              =  1 - Phi((ln t - mu) / sigma)
+#
+# The CV per stat type is a typical NFL game-to-game figure, not this
+# player's own variance - one game into a season there isn't enough history
+# to measure it. That is the weakest assumption here and the page says so.
+import math
+
+STAT_CV = {"pass_yds": 0.30, "rush_yds": 0.50, "rec_yds": 0.60,
+           "rec": 0.40, "pass_att": 0.20, "rush_att": 0.35}
+STAT_LABEL = {"pass_yds": "Passing yards", "rush_yds": "Rushing yards",
+              "rec_yds": "Receiving yards", "rec": "Receptions",
+              "pass_att": "Passing attempts", "rush_att": "Rushing attempts"}
+
+
+def norm_cdf(z):
+    return 0.5 * (1.0 + math.erf(z / math.sqrt(2.0)))
+
+
+def model_prob(line, threshold, cv):
+    """P(stat >= threshold) given the book's line as the median."""
+    if not line or line <= 0 or threshold <= 0:
+        return None
+    sigma = math.sqrt(math.log(1 + cv * cv))
+    mu = math.log(line)
+    return max(0.001, min(0.999, 1 - norm_cdf((math.log(threshold) - mu) / sigma)))
+
+
+def player_props(snap):
+    """One row per player stat, with a few thresholds off the book's ladder."""
+    out = []
+    for eid, players in snap.get("props", {}).items():
+        g = snap["games"].get(eid)
+        if not g or not players:
+            continue
+        for aid, stats in players.items():
+            a = snap.get("athletes", {}).get(aid)
+            if not a:
+                continue
+            for key, v in stats.items():
+                line = v.get("line")
+                if not line:
+                    continue
+                cv = STAT_CV.get(key, 0.4)
+                ladder = [t for t in v.get("ladder", []) if t > 0]
+                # a handful of rungs spread either side of the line
+                if ladder:
+                    picks = sorted(set(
+                        [min(ladder, key=lambda t: abs(t - line * m))
+                         for m in (0.6, 0.8, 1.0, 1.25, 1.5)]))
+                else:
+                    picks = [round(line * m) for m in (0.6, 0.8, 1.0, 1.25, 1.5)]
+                out.append({
+                    "eid": eid, "aid": aid, "name": a["name"], "pos": a["pos"],
+                    "stat": key, "label": STAT_LABEL.get(key, key),
+                    "line": line, "cv": cv,
+                    "match": f"{g['away']['abbr']} at {g['home']['abbr']}",
+                    "rungs": [{"t": t, "p": round(model_prob(line, t, cv) * 100, 1)}
+                              for t in picks],
+                })
+    out.sort(key=lambda r: (r["name"], r["label"]))
+    return out
+
+
 def current_week(snap):
     """Earliest week still holding unplayed games."""
     left = [g["week"] for g in snap["games"].values() if not g["completed"]]
@@ -263,6 +340,105 @@ def parlay(snap):
         'if(b.classList.contains("on")){b.classList.remove("on")}'
         'else{sib.forEach(function(x){x.classList.remove("on")});b.classList.add("on")}'
         'calc()})});calc();})();</script>')
+
+
+
+def parlay_page(snap):
+    """The parlay tab: real game probabilities and modelled player props,
+    combined into one number. Kept visibly separate because one half is
+    published and the other is ours."""
+    wk = current_week(snap)
+    if not wk:
+        return "<p class='lede'>The regular season is over.</p>"
+
+    games = sorted([g for g in snap["games"].values()
+                    if g["week"] == wk and g.get("prob")], key=lambda x: x["date"])
+    grows = []
+    for g in games:
+        h, a = g["home"], g["away"]
+        ph, pa = g["prob"]["home"], g["prob"]["away"]
+        day, tm = when(g["date"], g.get("timeValid", True))
+        on_a = " on" if a["abbr"] in FEATURED else ""
+        on_h = " on" if h["abbr"] in FEATURED else ""
+        grows.append(
+            f'<div class="pg"><div class="pgd">{day} · {tm}</div>'
+            f'<button class="leg{on_a}" data-p="{pa}" data-t="{a["abbr"]} win">'
+            f'<span class="lt">{a["abbr"]}</span><span class="lp">{pa}%</span></button>'
+            f'<span class="pat">at</span>'
+            f'<button class="leg{on_h}" data-p="{ph}" data-t="{h["abbr"]} win">'
+            f'<span class="lt">{h["abbr"]}</span><span class="lp">{ph}%</span></button></div>')
+
+    props = player_props(snap)
+    if props:
+        bypl = {}
+        for p in props:
+            bypl.setdefault((p["name"], p["pos"], p["match"]), []).append(p)
+        prows = []
+        for (name, pos, match), stats in bypl.items():
+            blocks = ""
+            for s in stats:
+                rungs = "".join(
+                    f'<button class="leg rung" data-p="{x["p"]}" '
+                    f'data-t="{name.split()[-1]} {x["t"]:.0f}+ {s["label"].split()[-1]}">'
+                    f'<span class="lt">{x["t"]:.0f}+</span>'
+                    f'<span class="lp">{x["p"]}%</span></button>'
+                    for x in s["rungs"])
+                blocks += (f'<div class="pstat"><div class="psl">{s["label"]}'
+                           f'<span class="psline">line {s["line"]:g}</span></div>'
+                           f'<div class="rungs">{rungs}</div></div>')
+            prows.append(f'<div class="pplayer"><div class="ppn">{name}'
+                         f'<span class="ppp">{pos} · {match}</span></div>{blocks}</div>')
+        props_html = "".join(prows)
+        missing = sum(1 for eid, pl in snap.get("props", {}).items() if not pl)
+        note = (f'<p class="lede">Lines are posted game by game as kickoff nears, so '
+                f'{missing} of this week&rsquo;s {len(snap.get("props", {}))} games have none '
+                f'yet. They appear here as the books put them up.</p>') if missing else ""
+    else:
+        props_html = ""
+        note = ('<p class="lede">No player lines are posted for this week yet. Books '
+                'put them up a few days before kickoff; they will appear here on the '
+                'next nightly refresh after that.</p>')
+
+    return (
+        '<div class="parlay">'
+        '<div class="pout"><div class="pbig" id="pOut">—</div>'
+        '<div class="plbl">chance all <span id="pN">0</span> hit</div>'
+        '<div class="pnote" id="pList">Pick anything below.</div>'
+        '<button class="pclear" id="pClear">Clear all</button></div>'
+        '<div class="pcol">'
+        f'<h2>Game outcomes <span class="thru">published · week {wk}</span></h2>'
+        '<p class="lede">These are ESPN&rsquo;s own published win probabilities. '
+        'Nothing here is estimated.</p>'
+        f'<div class="pgames">{"".join(grows)}</div>'
+        '<h2>Player outcomes <span class="thru">computed, not published</span></h2>'
+        '<p class="lede">The feed carries the line a sportsbook set but no price, so '
+        'there is no market probability to read off — these are modelled. Each line is '
+        'treated as the player&rsquo;s median for the game, with a log-normal spread '
+        'around it, because yardage is never negative and the ceiling sits far above '
+        'the middle. The spread comes from a typical game-to-game figure for that stat, '
+        'not from this player&rsquo;s own history; one game into a season there is not '
+        'enough of it to measure. Treat these as reasoned estimates, not facts.</p>'
+        f'{note}{props_html}</div></div>'
+        '<script>(function(){'
+        'function calc(){var L=[].slice.call(document.querySelectorAll(".leg.on"));'
+        'var p=1,names=[];L.forEach(function(b){p*=parseFloat(b.dataset.p)/100;'
+        'names.push(b.dataset.t)});'
+        'var o=document.getElementById("pOut");'
+        'document.getElementById("pN").textContent=L.length;'
+        'if(!L.length){o.textContent="—";'
+        'document.getElementById("pList").textContent="Pick anything below.";return}'
+        'var pct=p*100;'
+        'o.textContent=pct>=10?pct.toFixed(1)+"%":(pct>=1?pct.toFixed(2)+"%":pct.toFixed(3)+"%");'
+        'document.getElementById("pList").textContent=names.join(" + ");}'
+        'document.querySelectorAll(".leg").forEach(function(b){'
+        'b.addEventListener("click",function(){'
+        'var box=b.closest(".pg")||b.closest(".pstat");'
+        'if(b.classList.contains("on")){b.classList.remove("on")}'
+        'else{if(box){box.querySelectorAll(".leg").forEach(function(x){'
+        'x.classList.remove("on")})}b.classList.add("on")}calc()})});'
+        'document.getElementById("pClear").addEventListener("click",function(){'
+        'document.querySelectorAll(".leg.on").forEach(function(b){'
+        'b.classList.remove("on")});calc()});calc();})();</script>')
 
 
 def home_divisions(snap):
@@ -353,7 +529,10 @@ def stat_panels(snap, ab):
 
 # ------------------------------------------------------------- page build
 def build(snap, site_dir):
-    stamp = datetime.fromisoformat(snap["builtAt"]).strftime("%-d %B %Y, %-I:%M %p")
+    # Date only, deliberately. With a time in it every run produced a different
+    # file, so the workflow's "commit only if something changed" guard never
+    # held and the repo took a commit every night regardless.
+    stamp = datetime.fromisoformat(snap["builtAt"]).strftime("%-d %B %Y")
     asof = next((g["prob"]["asOf"] for g in snap["games"].values() if g.get("prob")), None)
     written = 0
 
@@ -365,7 +544,6 @@ def build(snap, site_dir):
     out = swap(out, "TALLY", tally(snap))
     out = swap(out, "COMPARE", compare_bars(snap))
     out = swap(out, "DIVISIONS", home_divisions(snap))
-    out = swap(out, "PARLAY", parlay(snap))
     out = swap(out, "STAMP", f"Updated {stamp}")
     open(os.path.join(site_dir, "index.html"), "w", encoding="utf-8").write(out)
     written += 1
@@ -392,6 +570,12 @@ def build(snap, site_dir):
          f'<div class="scheds">{cols}</div>'
          f'<p class="lede" style="margin-top:18px">Probabilities as published '
          f'{asof or "—"}. Rebuilt {stamp}.</p>')
+    written += 1
+
+    # ---- parlay
+    page("parlay.html", "/parlay", "Parlay probability", "Parlay probability",
+         "Combine this week&rsquo;s outcomes and see what the odds of all of them "
+         "actually are.", parlay_page(snap))
     written += 1
 
     # ---- league

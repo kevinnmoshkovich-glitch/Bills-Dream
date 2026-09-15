@@ -201,6 +201,103 @@ def fetch_team_stats():
     return out
 
 
+
+# ----------------------------------------------------------------- props
+# Stat types we model, mapped to the "over/under" prop that carries the line
+# and the milestone prop that carries the threshold ladder.
+PROP_STATS = {
+    "pass_yds": {"label": "Passing yards",   "line": "Total Passing Yards (incl. overtime)",
+                 "ladder": "Passing Yards Milestones",   "cv": 0.30},
+    "rush_yds": {"label": "Rushing yards",   "line": "Total Rushing Yards (incl. overtime)",
+                 "ladder": "Rushing Yards Milestones",   "cv": 0.50},
+    "rec_yds":  {"label": "Receiving yards", "line": "Total Receiving Yards (incl. overtime)",
+                 "ladder": "Receiving Yards Milestones", "cv": 0.60},
+    "rec":      {"label": "Receptions",      "line": "Total Receptions (incl. overtime)",
+                 "ladder": "Receptions Milestones",      "cv": 0.40},
+    "pass_att": {"label": "Passing attempts","line": "Total Passing Attempts (incl. overtime)",
+                 "ladder": "Passing Attempts Milestones","cv": 0.20},
+    "rush_att": {"label": "Rushing attempts","line": "Total Rushing Attempts (incl. overtime)",
+                 "ladder": "Rushing Attempts Milestones","cv": 0.35},
+}
+
+ATHLETE_CACHE = os.path.join(SITE_DIR, "athletes.json")
+
+
+def load_athletes():
+    try:
+        return json.load(open(ATHLETE_CACHE))
+    except Exception:
+        return {}
+
+
+def fetch_athletes(ids, cache):
+    """Resolve athlete ids to names. Names do not change, so the cache means
+    this costs almost nothing after the first run."""
+    missing = [i for i in ids if i not in cache]
+    if not missing:
+        return cache
+
+    def one(aid):
+        d = try_get(f"{CORE}/seasons/{SEASON}/athletes/{aid}?lang=en&region=us")
+        if not d:
+            return aid, None
+        return aid, {"name": d.get("displayName"),
+                     "pos": (d.get("position") or {}).get("abbreviation", "")}
+
+    with cf.ThreadPoolExecutor(WORKERS) as ex:
+        for aid, info in ex.map(one, missing):
+            if info:
+                cache[aid] = info
+    json.dump(cache, open(ATHLETE_CACHE, "w"), indent=0, sort_keys=True)
+    return cache
+
+
+def fetch_props(games):
+    """Sportsbook lines for one week's games. One request per game returns all
+    of them - roughly 850 per game.
+
+    Note what is and is not here: the feed carries the LINE (the number the
+    book set) but no price. With no price there is no market-implied
+    probability to read off, so any probability on the page has to be
+    computed. See model_prob in render.py.
+    """
+    def one(g):
+        eid = g["id"]
+        d = try_get(f"{CORE}/events/{eid}/competitions/{eid}/odds/100/propBets?limit=1000")
+        return eid, (d or {}).get("items", [])
+
+    out = {}
+    with cf.ThreadPoolExecutor(WORKERS) as ex:
+        for eid, items in ex.map(one, games):
+            byplayer = {}
+            for it in items:
+                ref = (it.get("athlete") or {}).get("$ref")
+                tgt = (it.get("current") or {}).get("target")
+                if not ref or not tgt:
+                    continue
+                aid = ref.split("/athletes/")[1].split("?")[0]
+                tname = it["type"]["name"]
+                for key, spec in PROP_STATS.items():
+                    slot = byplayer.setdefault(aid, {})
+                    if tname == spec["line"]:
+                        slot.setdefault(key, {})["line"] = tgt["value"]
+                    elif tname == spec["ladder"]:
+                        slot.setdefault(key, {}).setdefault("ladder", []).append(tgt["value"])
+            # tidy: drop players with nothing usable, sort ladders
+            clean = {}
+            for aid, stats in byplayer.items():
+                keep = {}
+                for k, v in stats.items():
+                    if "ladder" in v:
+                        v["ladder"] = sorted(set(v["ladder"]))
+                    if v.get("line") or v.get("ladder"):
+                        keep[k] = v
+                if keep:
+                    clean[aid] = keep
+            out[eid] = clean
+    return out
+
+
 # ----------------------------------------------------------------- assemble
 def build_snapshot():
     snap = {"builtAt": datetime.now(NY).isoformat(), "season": SEASON}
@@ -253,6 +350,21 @@ def build_snapshot():
     for t in teams.values():
         weeks = {g["week"] for g in t["games"]}
         t["bye"] = next((w for w in range(1, 19) if w not in weeks), None)
+    # sportsbook lines for the current week. Books post these game by game as
+    # kickoff approaches, so early in the week most games have none yet.
+    wk = min((g["week"] for g in games.values() if not g["completed"]), default=None)
+    snap["week"] = wk
+    if wk:
+        log(f"sportsbook lines for week {wk}")
+        props = fetch_props([g for g in games.values() if g["week"] == wk])
+        ids = {aid for pl in props.values() for aid in pl}
+        cache = fetch_athletes(ids, load_athletes())
+        snap["props"] = props
+        snap["athletes"] = {i: cache[i] for i in ids if i in cache}
+        with_lines = sum(1 for pl in props.values() if pl)
+        log(f"  {with_lines}/{len(props)} games have lines, "
+            f"{sum(len(p) for p in props.values())} players")
+
     snap["teams"] = teams
     snap["featured"] = list(FEATURED)
     return snap
