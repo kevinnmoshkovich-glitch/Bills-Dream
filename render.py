@@ -410,38 +410,41 @@ def shortlist(snap, rows, n=6):
 
 
 def parlay_page(snap):
-    """The parlay tab: real game probabilities and modelled player props,
-    combined into one number. Kept visibly separate because one half is
-    published and the other is ours."""
+    """The parlay tab, grouped by game.
+
+    Two kinds of number live here and they are kept visibly apart: the winner
+    probability is ESPN's published figure, the player numbers are modelled
+    from a sportsbook line. Grouping by game is what makes it usable during a
+    slate - you look at the game that is on, not at a flat list of everyone.
+    """
     wk = current_week(snap)
     if not wk:
         return "<p class='lede'>The regular season is over.</p>"
 
     games = sorted([g for g in snap["games"].values()
                     if g["week"] == wk and g.get("prob")], key=lambda x: x["date"])
-    grows = []
+    props = with_support(snap, player_props(snap))
+    picks = shortlist(snap, props)
+    by_game = {}
+    for p in props:
+        by_game.setdefault(p["eid"], []).append(p)
+
+    cards = []
     for g in games:
         h, a = g["home"], g["away"]
         ph, pa = g["prob"]["home"], g["prob"]["away"]
         day, tm = when(g["date"], g.get("timeValid", True))
         on_a = " on" if a["abbr"] in FEATURED else ""
         on_h = " on" if h["abbr"] in FEATURED else ""
-        grows.append(
-            f'<div class="pg"><div class="pgd">{day} · {tm}</div>'
-            f'<button class="leg{on_a}" data-p="{pa}" data-t="{a["abbr"]} win">'
-            f'<span class="lt">{a["abbr"]}</span><span class="lp">{pa}%</span></button>'
-            f'<span class="pat">at</span>'
-            f'<button class="leg{on_h}" data-p="{ph}" data-t="{h["abbr"]} win">'
-            f'<span class="lt">{h["abbr"]}</span><span class="lp">{ph}%</span></button></div>')
+        mine = " mine" if (a["abbr"] in FEATURED or h["abbr"] in FEATURED) else ""
 
-    props = with_support(snap, player_props(snap))
-    picks = shortlist(snap, props)
-    if props:
+        rows = by_game.get(g["id"], [])
         bypl = {}
-        for p in props:
-            bypl.setdefault((p["name"], p["pos"], p["match"]), []).append(p)
-        prows = []
-        for (name, pos, match), stats in bypl.items():
+        for p in rows:
+            bypl.setdefault((p["name"], p["pos"]), []).append(p)
+
+        players = ""
+        for (name, pos), stats in bypl.items():
             blocks = ""
             for s in stats:
                 rungs = "".join(
@@ -451,29 +454,45 @@ def parlay_page(snap):
                     f'<span class="lp">{x["p"]}%</span></button>'
                     for x in s["rungs"])
                 if s.get("games"):
-                    d = s.get("edge")
-                    arrow = "above" if (d or 0) > 0 else "below"
-                    prod = (f'<span class="psact">{s["avg"]:g} avg over '
-                            f'{s["games"]} game{"s" if s["games"] != 1 else ""} · '
-                            f'<b class="{"up" if (d or 0) > 0 else "dn"}">'
-                            f'{abs(d):.0f}% {arrow} the line</b></span>')
+                    d = s.get("edge") or 0
+                    prod = (f'<span class="psact">{s["avg"]:g} avg over {s["games"]} '
+                            f'game{"s" if s["games"] != 1 else ""} · '
+                            f'<b class="{"up" if d > 0 else "dn"}">{abs(d):.0f}% '
+                            f'{"above" if d > 0 else "below"} the line</b></span>')
                 else:
                     prod = '<span class="psact">no games logged yet</span>'
                 blocks += (f'<div class="pstat"><div class="psl">{s["label"]}'
                            f'<span class="psline">line {s["line"]:g}</span></div>'
                            f'<div class="psrow">{prod}</div>'
                            f'<div class="rungs">{rungs}</div></div>')
-            prows.append(f'<div class="pplayer"><div class="ppn">{name}'
-                         f'<span class="ppp">{pos} · {match}</span></div>{blocks}</div>')
-        props_html = "".join(prows)
-        missing = sum(1 for eid, pl in snap.get("props", {}).items() if not pl)
-        note = (f'<p class="lede">Lines are posted game by game as kickoff nears, so '
-                f'{missing} of this week&rsquo;s {len(snap.get("props", {}))} games have none '
-                f'yet. They appear here as the books put them up.</p>') if missing else ""
+            players += (f'<div class="pplayer"><div class="ppn">{name}'
+                        f'<span class="ppp">{pos}</span></div>{blocks}</div>')
 
-    if props and picks:
+        if not players:
+            players = ('<div class="noprops">No player lines posted for this game yet. '
+                       'Books put them up nearer kickoff.</div>')
+
+        cards.append(
+            f'<div class="gcard{mine}" data-game="{g["id"]}">'
+            f'<div class="gch"><span class="gcd">{day} · {tm}</span>'
+            f'<span class="gcp">{len(rows)} player line{"s" if len(rows) != 1 else ""}</span></div>'
+            f'<div class="pg"><span class="pgw">Winner</span>'
+            f'<button class="leg{on_a}" data-p="{pa}" data-t="{a["abbr"]} win">'
+            f'<span class="lt">{a["abbr"]}</span><span class="lp">{pa}%</span></button>'
+            f'<span class="pat">at</span>'
+            f'<button class="leg{on_h}" data-p="{ph}" data-t="{h["abbr"]} win">'
+            f'<span class="lt">{h["abbr"]}</span><span class="lp">{ph}%</span></button></div>'
+            f'<div class="gcbody">{players}</div></div>')
+
+    tabs = "".join(
+        f'<button class="gtab{" mine" if (g["home"]["abbr"] in FEATURED or g["away"]["abbr"] in FEATURED) else ""}" '
+        f'data-game="{g["id"]}">{g["away"]["abbr"]} at {g["home"]["abbr"]}'
+        f'<span class="gtn">{len(by_game.get(g["id"], []))}</span></button>'
+        for g in games)
+
+    if picks:
         n_games = max((p["games"] for p in picks), default=0)
-        cards = "".join(
+        slcards = "".join(
             f'<div class="sl"><div class="sln">{p["name"]}'
             f'<span class="slp">{p["pos"]}</span></div>'
             f'<div class="slt">{p["t"]:.0f}+ {p["label"].lower()}</div>'
@@ -484,56 +503,50 @@ def parlay_page(snap):
             f'data-t="{p["name"].split()[-1]} {p["t"]:.0f}+ {p["label"].split()[-1]}">'
             f'<span class="lt">add</span><span class="lp">{p["p"]}%</span></button></div>'
             for p in picks)
-        caveat = ('<p class="lede"><b>Read this before trusting the order.</b> '
-                  'Ranking by the modelled probability alone would be circular — '
-                  'the model puts the median at the book&rsquo;s line, so the highest '
-                  'probability is always the lowest threshold, for every player, every '
-                  'time. That tells you nothing about who is likely to beat their number. '
-                  'So these rank on the one thing the model does not already know: '
-                  'whether the player has actually been clearing it. '
-                  f'With {n_games} game{"s" if n_games != 1 else ""} played that '
-                  'evidence is thin, and the ranking leans mostly on the model until '
-                  'there is a real sample behind it — call it week six. Right now treat '
-                  'this as a shortlist to look at, not a verdict.</p>')
-        short_html = (f'<h2>Best chances <span class="thru">ranked on production, '
-                      f'not on the model</span></h2>{caveat}'
-                      f'<div class="slgrid">{cards}</div>')
-    elif props:
-        short_html = ""
+        short_html = (
+            '<h2>Best chances <span class="thru">ranked on production, not on the '
+            'model</span></h2>'
+            '<p class="lede"><b>Read this before trusting the order.</b> Ranking by the '
+            'modelled probability alone would be circular - the model puts the median at '
+            'the book&rsquo;s line, so the highest probability is always the lowest '
+            'threshold, for every player, every time. That says nothing about who is '
+            'likely to beat their number. These rank instead on the one thing the model '
+            'does not know: whether the player has actually been clearing it. With '
+            f'{n_games} game{"s" if n_games != 1 else ""} played that evidence is thin and '
+            'the order still leans mostly on the model - it starts meaning something '
+            'around week six. A shortlist to look at, not a verdict.</p>'
+            f'<div class="slgrid">{slcards}</div>')
     else:
-        props_html = ""
         short_html = ""
-        note = ('<p class="lede">No player lines are posted for this week yet. Books '
-                'put them up a few days before kickoff; they will appear here on the '
-                'next nightly refresh after that.</p>')
+
+    missing = sum(1 for eid, pl in snap.get("props", {}).items() if not pl)
+    total = len(snap.get("props", {})) or len(games)
+    note = (f'<p class="lede">{missing} of this week&rsquo;s {total} games have no player '
+            'lines yet. Books post them game by game as kickoff nears; they appear here '
+            'on the next refresh after that.</p>') if missing else ""
 
     return (
         '<div class="parlay">'
-        '<div class="pout"><div class="pbig" id="pOut">—</div>'
+        '<div class="pout"><div class="pbig" id="pOut">-</div>'
         '<div class="plbl">chance all <span id="pN">0</span> hit</div>'
         '<div class="pnote" id="pList">Pick anything below.</div>'
         '<button class="pclear" id="pClear">Clear all</button></div>'
         '<div class="pcol">'
-        f'<h2>Game outcomes <span class="thru">published · week {wk}</span></h2>'
-        '<p class="lede">These are ESPN&rsquo;s own published win probabilities. '
-        'Nothing here is estimated.</p>'
-        f'<div class="pgames">{"".join(grows)}</div>'
-        '<h2>Player outcomes <span class="thru">computed, not published</span></h2>'
-        '<p class="lede">The feed carries the line a sportsbook set but no price, so '
-        'there is no market probability to read off — these are modelled. Each line is '
-        'treated as the player&rsquo;s median for the game, with a log-normal spread '
-        'around it, because yardage is never negative and the ceiling sits far above '
-        'the middle. The spread comes from a typical game-to-game figure for that stat, '
-        'not from this player&rsquo;s own history; one game into a season there is not '
-        'enough of it to measure. Treat these as reasoned estimates, not facts.</p>'
-        f'{short_html}{note}{props_html}</div></div>'
+        f'{short_html}'
+        f'<h2>By game <span class="thru">week {wk}</span></h2>'
+        '<p class="lede">Winner probabilities are ESPN&rsquo;s published figures. Player '
+        'numbers are modelled from the sportsbook line. Pick a game to narrow the list.</p>'
+        f'{note}'
+        f'<div class="gtabs"><button class="gtab on" data-game="all">All games</button>{tabs}</div>'
+        f'<div class="gcards">{"".join(cards)}</div>'
+        '</div></div>'
         '<script>(function(){'
         'function calc(){var L=[].slice.call(document.querySelectorAll(".leg.on"));'
         'var p=1,names=[];L.forEach(function(b){p*=parseFloat(b.dataset.p)/100;'
         'names.push(b.dataset.t)});'
         'var o=document.getElementById("pOut");'
         'document.getElementById("pN").textContent=L.length;'
-        'if(!L.length){o.textContent="—";'
+        'if(!L.length){o.textContent="-";'
         'document.getElementById("pList").textContent="Pick anything below.";return}'
         'var pct=p*100;'
         'o.textContent=pct>=10?pct.toFixed(1)+"%":(pct>=1?pct.toFixed(2)+"%":pct.toFixed(3)+"%");'
@@ -545,8 +558,15 @@ def parlay_page(snap):
         'else{if(box){box.querySelectorAll(".leg").forEach(function(x){'
         'x.classList.remove("on")})}b.classList.add("on")}calc()})});'
         'document.getElementById("pClear").addEventListener("click",function(){'
-        'document.querySelectorAll(".leg.on").forEach(function(b){'
-        'b.classList.remove("on")});calc()});calc();})();</script>')
+        'document.querySelectorAll(".leg.on").forEach(function(b){b.classList.remove("on")});'
+        'calc()});'
+        'document.querySelectorAll(".gtab").forEach(function(t){'
+        't.addEventListener("click",function(){'
+        'document.querySelectorAll(".gtab").forEach(function(x){x.classList.remove("on")});'
+        't.classList.add("on");var g=t.dataset.game;'
+        'document.querySelectorAll(".gcard").forEach(function(c){'
+        'c.style.display=(g==="all"||c.dataset.game===g)?"":"none"})})});'
+        'calc();})();</script>')
 
 
 def home_divisions(snap):

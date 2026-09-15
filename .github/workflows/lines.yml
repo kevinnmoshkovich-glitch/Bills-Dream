@@ -1,0 +1,44 @@
+name: Lines refresh
+
+# Sportsbook lines move all day and are posted game by game as kickoff
+# nears, so a once-daily run is always stale on them. This reuses the
+# nightly snapshot and replaces only the lines and gamelogs - about 30
+# requests instead of 280.
+#
+# Times are UTC and chosen around US kickoffs:
+#   15:00  late morning ET, after the heaviest repricing window
+#   19:00  afternoon ET, before Thursday and Sunday evening kickoffs
+#   23:00  evening ET, last look before night games
+on:
+  schedule:
+    - cron: "0 15,19,23 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: site-refresh
+  cancel-in-progress: false
+
+jobs:
+  lines:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Pull sportsbook lines and rebuild
+        run: python3 refresh.py --props-only
+      - name: Commit only if something changed
+        run: |
+          git config user.name  "lines-refresh"
+          git config user.email "actions@github.com"
+          git add parlay.html snapshots/latest.json athletes.json
+          if git diff --staged --quiet; then
+            echo "Lines unchanged."
+          else
+            git commit -m "Lines refresh $(date -u +%Y-%m-%d\ %H:%MZ)"
+            git push
+          fi

@@ -445,7 +445,51 @@ def sanity(snap):
 
 
 # ----------------------------------------------------------------- main
+def refresh_props_only():
+    """Lines move all day; the rest of the league does not. This reuses last
+    night's snapshot and replaces only the sportsbook lines and the gamelogs,
+    so it costs about 30 requests instead of 280."""
+    if not os.path.exists(LIVE_SNAP):
+        log("no snapshot to update. Run a full refresh first.")
+        return 1
+    snap = json.load(open(LIVE_SNAP))
+    wk = snap.get("week")
+    games = [g for g in snap["games"].values() if g["week"] == wk]
+    if not games:
+        log("no games for the current week.")
+        return 0
+
+    log(f"lines only, week {wk}")
+    try:
+        props = fetch_props(games)
+    except Exception as e:
+        log(f"FETCH FAILED: {e}. Keeping yesterday's pages.")
+        return 0
+
+    before = sum(len(p) for p in snap.get("props", {}).values())
+    after = sum(len(p) for p in props.values())
+    if after == 0 and before > 0:
+        log(f"lines came back empty but we had {before}. Refusing to publish.")
+        return 0
+
+    ids = {aid for pl in props.values() for aid in pl}
+    cache = fetch_athletes(ids, load_athletes())
+    snap["props"] = props
+    snap["athletes"] = {i: cache[i] for i in ids if i in cache}
+    snap["gamelogs"] = fetch_gamelogs(ids)
+    snap["builtAt"] = datetime.now(NY).isoformat()
+    log(f"  {sum(1 for p in props.values() if p)}/{len(props)} games have lines, "
+        f"{after} players (was {before})")
+
+    json.dump(snap, open(LIVE_SNAP, "w"))
+    import render
+    log(f"rebuilt {render.build(snap, SITE_DIR)} pages")
+    return 0
+
+
 def main():
+    if "--props-only" in sys.argv:
+        return refresh_props_only()
     os.makedirs(SNAP_DIR, exist_ok=True)
     try:
         snap = build_snapshot()

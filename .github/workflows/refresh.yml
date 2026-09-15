@@ -1,36 +1,39 @@
-name: Refresh stats
+name: Full refresh
 
-# 07:40 UTC = 3:40am Eastern in season, after the late games have settled.
-# Cron here is always UTC, so this drifts an hour when the clocks change.
-# That is fine: nothing depends on the exact minute.
+# 09:30 UTC daily. Two constraints fix this time:
+#   * ESPN's FPI run publishes at 09:00 UTC. Running before it - as this did
+#     at 07:40 - fetches yesterday's win probabilities every single night.
+#   * The latest game of any slate ends around 04:00 UTC, so 09:30 is safely
+#     after last night's results have settled.
 on:
   schedule:
-    - cron: "40 7 * * *"
-  workflow_dispatch:        # lets you run it by hand from the Actions tab
+    - cron: "30 9 * * *"
+  workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: site-refresh          # never let this and the lines job collide
+  cancel-in-progress: false
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
-      - name: Pull fresh data and rebuild pages
+      - name: Pull the league and rebuild
         run: python3 refresh.py
-
-      - name: Commit only if something actually changed
+      - name: Commit only if something changed
         run: |
           git config user.name  "stats-refresh"
           git config user.email "actions@github.com"
           git add index.html schedule.html league.html parlay.html team/ snapshots/ athletes.json
           if git diff --staged --quiet; then
-            echo "No change today. Nothing to commit."
+            echo "No change today."
           else
             git commit -m "Stats refresh $(date -u +%Y-%m-%d)"
             git push

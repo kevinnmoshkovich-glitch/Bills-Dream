@@ -18,10 +18,25 @@ roughly 15 seconds.
       1  byteam statistics   all 32 clubs, 93 stats each, with league ranks
    ~256  predictor           published win probability per unplayed game
 
-There is no server, so the schedule lives in
-`.github/workflows/refresh.yml` - 07:40 UTC daily, plus a manual trigger
-from the Actions tab. It commits only when something changed, and the push
-is what makes Cloudflare Pages redeploy.
+There is no server, so the schedules live in `.github/workflows/`. Both
+commit only when something changed, and the push is what makes Cloudflare
+Pages redeploy. Both can be triggered by hand from the Actions tab.
+
+**Full refresh - 09:30 UTC daily.** Two constraints pin that time. ESPN's
+FPI run publishes at 09:00 UTC, so anything earlier fetches yesterday's win
+probabilities; this job ran at 07:40 for a while and did exactly that. And
+the latest game of any slate ends around 04:00 UTC, so 09:30 is safely
+after last night's results have settled. Verified by checking lastModified
+across 40 predictor responses - all 09:00Z, one run a day.
+
+**Lines refresh - 15:00, 19:00 and 23:00 UTC.** Sportsbook lines move all
+day and are posted game by game as kickoff nears, so once daily is always
+stale on them. `refresh.py --props-only` reuses the nightly snapshot and
+replaces only the lines and gamelogs: about 30 requests instead of 280. It
+refuses to publish if the lines come back empty when it had some before.
+
+Both jobs share a `concurrency` group so they can never run into each
+other and race on a push.
 
 ## When the feed breaks
 
