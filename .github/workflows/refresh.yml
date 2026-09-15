@@ -1,0 +1,37 @@
+name: Refresh stats
+
+# 07:40 UTC = 3:40am Eastern in season, after the late games have settled.
+# Cron here is always UTC, so this drifts an hour when the clocks change.
+# That is fine: nothing depends on the exact minute.
+on:
+  schedule:
+    - cron: "40 7 * * *"
+  workflow_dispatch:        # lets you run it by hand from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Pull fresh data and rebuild pages
+        run: python3 refresh.py
+
+      - name: Commit only if something actually changed
+        run: |
+          git config user.name  "stats-refresh"
+          git config user.email "actions@github.com"
+          git add index.html schedule.html league.html snapshots/
+          if git diff --staged --quiet; then
+            echo "No change today. Nothing to commit."
+          else
+            git commit -m "Stats refresh $(date -u +%Y-%m-%d)"
+            git push
+          fi
