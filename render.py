@@ -155,6 +155,20 @@ def all_divisions(snap):
 
 
 # ------------------------------------------------------------- page build
+NAV_LINKS = [("/", "Head to head"), ("/schedule", "Schedules"), ("/league", "Every division")]
+
+
+def nav(current):
+    """Cloudflare Pages strips the .html extension and 308-redirects anything
+    that still carries it, so link to the extensionless paths directly and
+    save every click a round trip."""
+    out = []
+    for href, label in NAV_LINKS:
+        on = ' class="on"' if href == current else ''
+        out.append(f'<a href="{href}"{on}>{label}</a>')
+    return '<div class="nav">' + "".join(out) + '</div>'
+
+
 def swap(html, marker, content):
     return re.sub(f"<!--{marker}-->.*?<!--/{marker}-->",
                   f"<!--{marker}-->{content}<!--/{marker}-->",
@@ -169,7 +183,8 @@ def build(snap, site_dir):
     # index.html
     tpl_path = os.path.join(site_dir, "index.template.html")
     tpl = open(tpl_path, encoding="utf-8").read()
-    out = swap(tpl, "RECORDS", records(snap))
+    out = swap(tpl, "NAV", nav("/"))
+    out = swap(out, "RECORDS", records(snap))
     out = swap(out, "NEXTGAMES", next_games(snap))
     out = swap(out, "DIVISIONS", home_divisions(snap))
     out = swap(out, "STAMP", f"Updated {stamp}")
@@ -185,7 +200,7 @@ def build(snap, site_dir):
         f'<p class="lede" style="margin-top:18px">Probabilities as published '
         f'{asof or "—"}. Page rebuilt {stamp}.</p>')
     open(os.path.join(site_dir, "schedule.html"), "w", encoding="utf-8").write(
-        shell.replace("<!--NAVON-->", "schedule.html")
+        swap(shell, "NAV", nav("/schedule"))
              .replace("<!--TITLE-->", "Full season schedules")
              .replace("<!--H1-->", "Full season")
              .replace("<!--SUB-->", "Every game for both clubs, with published win "
@@ -198,7 +213,7 @@ def build(snap, site_dir):
         f'<div class="divs four">{all_divisions(snap)}</div>'
         f'<p class="lede" style="margin-top:18px">Rebuilt {stamp}.</p>')
     open(os.path.join(site_dir, "league.html"), "w", encoding="utf-8").write(
-        shell.replace("<!--NAVON-->", "league.html")
+        swap(shell, "NAV", nav("/league"))
              .replace("<!--TITLE-->", "Every division")
              .replace("<!--H1-->", "Every division")
              .replace("<!--SUB-->", "All thirty-two clubs.")
