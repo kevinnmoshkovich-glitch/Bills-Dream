@@ -1,87 +1,100 @@
-# Giants vs Bills — season statistics
+# bills.finecarerx.com
 
-Three pages, rebuilt nightly from ESPN's public JSON feeds.
+    /                 Giants vs Bills - the headline view
+    /schedule         both clubs, full season, with win probabilities
+    /league           all 32 clubs, all 8 divisions
+    /team/<abbr>      one page per club, all 32 (e.g. /team/buf, /team/kc)
 
-    index.html      head-to-head, next games, both home divisions
-    schedule.html   all 34 games, with published win probabilities
-    league.html     all 32 clubs, all 8 divisions
+Everything is rebuilt nightly from ESPN's public JSON feeds.
 
-## Deploying
+## How a run works
 
-Copy the folder to the web root. It is plain static HTML — no server
-runtime, no database, no build step.
+`refresh.py` pulls the league, writes `snapshots/YYYY-MM-DD.json`, then
+`render.py` rebuilds all 35 pages from that snapshot. About 280 requests,
+roughly 15 seconds.
 
-    rsync -av site/ user@host:/var/www/gbstats/
+     18  scoreboard          all 272 games, results and fixtures
+      1  standings           all 32 records, division order, conference seed
+      1  byteam statistics   all 32 clubs, 93 stats each, with league ranks
+   ~256  predictor           published win probability per unplayed game
 
-## Keeping it current
+There is no server, so the schedule lives in
+`.github/workflows/refresh.yml` - 07:40 UTC daily, plus a manual trigger
+from the Actions tab. It commits only when something changed, and the push
+is what makes Cloudflare Pages redeploy.
 
-    40 3 * * *  /usr/bin/python3 /var/www/gbstats/refresh.py >> /var/log/gbstats.log 2>&1
+## When the feed breaks
 
-3:40am, after the late games have settled. One run takes about three
-seconds and makes roughly forty requests.
+These endpoints are undocumented and will break eventually.
 
-`refresh.py` pulls the data and writes `snapshots/YYYY-MM-DD.json`, then
-`render.py` rebuilds the three pages from it. Snapshots are kept, so you
-can always see what the site said on a given day.
+  * Fetch fails      -> yesterday's pages stay up, exit 0, reason logged.
+  * Data implausible -> refuses to publish, keeps yesterday's pages.
 
-## What happens when the feed breaks
+The guard checks game count, division count, team count, and that team
+stats are actually populated rather than merely present. Both paths are
+tested. Same failure several nights running means the feed changed shape
+and the parser needs a look.
 
-These endpoints are undocumented. They will break eventually.
+## Editing pages
 
-  * Fetch fails    → yesterday's pages stay up, exit 0, reason logged.
-  * Data looks wrong (a team with under 16 games, fewer than 8 divisions,
-    no team stats) → refuses to publish, keeps yesterday's pages.
+`index.html` is generated from `index.template.html`. Only marked regions
+are replaced:
 
-The site never goes blank or half-empty because a feed had a bad night.
-Both paths are tested. If the log shows the same failure several nights
-running, the feed has changed shape and the parser needs a look.
+    <!--NAV-->  <!--RECORDS-->  <!--NEXTGAMES-->
+    <!--TALLY-->  <!--COMPARE-->  <!--DIVISIONS-->  <!--STAMP-->
 
-## Editing the pages
+Everything outside them is left as written. **The weekly brief is the one
+part that does not refresh itself** - it is prose, and a template would
+read like a robot wrote it. Rewrite it each Tuesday in
+`index.template.html`. Never edit `index.html`; a refresh overwrites it.
 
-`index.html` is generated from `index.template.html`. Only the marked
-regions are replaced:
-
-    <!--RECORDS-->      hero record strip
-    <!--NEXTGAMES-->    next-game cards
-    <!--DIVISIONS-->    the two home divisions
-    <!--STAMP-->        update timestamp
-
-Everything outside those markers — the written weekly brief above all —
-is left exactly as you wrote it. Edit the template, never index.html; a
-refresh overwrites index.html.
-
-`schedule.html` and `league.html` are generated whole from
+`schedule.html`, `league.html` and `team/*.html` are generated whole from
 `page.template.html`. Don't hand-edit them.
 
-## Two things that were wrong and are worth not reintroducing
+## Four things that were wrong, worth not reintroducing
 
 **Timezone.** The season crosses the DST boundary on 1 November. A fixed
 -4 offset puts every kickoff from Week 9 onward an hour late. `render.py`
-uses the real `America/New_York` zone. Don't replace it with an offset.
+uses the real `America/New_York` zone. Never swap it for an offset.
 
-**Unset kickoffs.** The league flexes late-season games, so Week 18 has no
-real time yet. ESPN parks those at midnight and flags them `timeValid:
-false`. Those render as "time TBD" rather than a midnight kickoff.
+**Unset kickoffs.** The league flexes late-season games. ESPN parks those
+at midnight with `timeValid: false`; they render "time TBD" rather than a
+midnight kickoff that isn't real.
+
+**Stat names.** Each team's stat category carries values, totals and ranks
+but NO names - those live in a top-level glossary, matched by category and
+position. Zipping against `cat["names"]` silently yields nothing, which is
+what this did for a while: 32 clubs, zero stats, no error.
+
+**Marker nesting.** Template markers must wrap a div's contents exactly.
+An over-wide region once swallowed the block after it, so rebuilding one
+section deleted another. `render.py` has no opinion about this - the
+template has to be right.
 
 ## Win probabilities
 
-Published by ESPN's FPI model and refreshed each morning; the site
-displays them and computes nothing of its own. Games already played show
-the result instead.
+Published by ESPN's FPI model, refreshed each morning. The site displays
+them and computes nothing of its own. Played games show the result.
 
 ## Division position, early season
 
-Division order comes from the order ESPN returns clubs in. At 1-0 with no
+Division order is the order ESPN returns clubs in. At 1-0 with no
 head-to-head and no division games played, the NFL's tiebreakers have
 almost nothing to work with, and ESPN's own feeds don't always agree with
-each other on who leads. Treat the position as soft until October.
+each other. Treat position as soft until October.
+
+## Not yet done
+
+Player statistics. The rosters, per-player lines and cross-team
+leaderboards were frozen at Week 1, so they were removed rather than left
+to go stale. Adding them back means pulling box scores per completed game
+and accumulating across the season.
 
 ## Data source
 
-Undocumented ESPN endpoints. No key, no terms of use, no support, no SLA.
-Fine for a fan page; it is not a supported API and could change without
-notice. If it goes away for good, a paid feed (SportsDataIO, API-Sports;
-roughly $20-50/month) covers the same ground — swap the fetch functions in
-`refresh.py` and leave `render.py` alone.
+Undocumented ESPN endpoints. No key, no terms, no support, no SLA. Fine
+for a fan page; not a supported API. If it goes for good, a paid feed
+(SportsDataIO, API-Sports, roughly $20-50/month) covers the same ground:
+swap the fetch functions in `refresh.py` and leave `render.py` alone.
 
 Names and records only. No logos, no team marks.

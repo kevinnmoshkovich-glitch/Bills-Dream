@@ -28,7 +28,7 @@ jobs:
         run: |
           git config user.name  "stats-refresh"
           git config user.email "actions@github.com"
-          git add index.html schedule.html league.html snapshots/
+          git add index.html schedule.html league.html team/ snapshots/
           if git diff --staged --quiet; then
             echo "No change today. Nothing to commit."
           else
