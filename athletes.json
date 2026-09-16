@@ -1,6 +1,62 @@
 {
+"12483": {
+"name": "Matthew Stafford",
+"pos": "QB"
+},
+"14880": {
+"name": "Kirk Cousins",
+"pos": "QB"
+},
+"15818": {
+"name": "Keenan Allen",
+"pos": "WR"
+},
+"15847": {
+"name": "Travis Kelce",
+"pos": "TE"
+},
+"16800": {
+"name": "Davante Adams",
+"pos": "WR"
+},
+"2573079": {
+"name": "Carson Wentz",
+"pos": "QB"
+},
+"2577417": {
+"name": "Dak Prescott",
+"pos": "QB"
+},
+"2976212": {
+"name": "Stefon Diggs",
+"pos": "WR"
+},
+"3043078": {
+"name": "Derrick Henry",
+"pos": "RB"
+},
 "3046779": {
 "name": "Jared Goff",
+"pos": "QB"
+},
+"3116164": {
+"name": "Mike Gesicki",
+"pos": "TE"
+},
+"3117256": {
+"name": "Dalton Schultz",
+"pos": "TE"
+},
+"3121422": {
+"name": "Terry McLaurin",
+"pos": "WR"
+},
+"3128429": {
+"name": "Courtland Sutton",
+"pos": "WR"
+},
+"3139477": {
+"name": "Patrick Mahomes",
 "pos": "QB"
 },
 "3915416": {
@@ -11,6 +67,14 @@
 "name": "Joe Burrow",
 "pos": "QB"
 },
+"3916387": {
+"name": "Lamar Jackson",
+"pos": "QB"
+},
+"3917792": {
+"name": "Daniel Jones",
+"pos": "QB"
+},
 "3918298": {
 "name": "Josh Allen",
 "pos": "QB"
@@ -19,8 +83,84 @@
 "name": "Dawson Knox",
 "pos": "TE"
 },
+"4035538": {
+"name": "David Montgomery",
+"pos": "RB"
+},
+"4038941": {
+"name": "Justin Herbert",
+"pos": "QB"
+},
+"4239993": {
+"name": "Tee Higgins",
+"pos": "WR"
+},
+"4241389": {
+"name": "CeeDee Lamb",
+"pos": "WR"
+},
+"4241985": {
+"name": "J.K. Dobbins",
+"pos": "RB"
+},
+"4242335": {
+"name": "Jonathan Taylor",
+"pos": "RB"
+},
 "4242433": {
 "name": "Joshua Palmer",
+"pos": "WR"
+},
+"4258173": {
+"name": "Nico Collins",
+"pos": "WR"
+},
+"4259545": {
+"name": "D'Andre Swift",
+"pos": "RB"
+},
+"4262921": {
+"name": "Justin Jefferson",
+"pos": "WR"
+},
+"4360078": {
+"name": "Alec Pierce",
+"pos": "WR"
+},
+"4360310": {
+"name": "Trevor Lawrence",
+"pos": "QB"
+},
+"4360689": {
+"name": "Tyler Shough",
+"pos": "QB"
+},
+"4361050": {
+"name": "Isaiah Likely",
+"pos": "TE"
+},
+"4361370": {
+"name": "Chris Olave",
+"pos": "WR"
+},
+"4361579": {
+"name": "Javonte Williams",
+"pos": "RB"
+},
+"4362238": {
+"name": "Chase Brown",
+"pos": "RB"
+},
+"4362628": {
+"name": "Ja'Marr Chase",
+"pos": "WR"
+},
+"4362921": {
+"name": "Tyquan Thornton",
+"pos": "WR"
+},
+"4372016": {
+"name": "Jaylen Waddle",
 "pos": "WR"
 },
 "4373678": {
@@ -39,8 +179,36 @@
 "name": "Dalton Kincaid",
 "pos": "TE"
 },
+"4426338": {
+"name": "Bo Nix",
+"pos": "QB"
+},
+"4426348": {
+"name": "Jayden Daniels",
+"pos": "QB"
+},
+"4426354": {
+"name": "George Pickens",
+"pos": "WR"
+},
 "4426388": {
 "name": "Jameson Williams",
+"pos": "WR"
+},
+"4426515": {
+"name": "Puka Nacua",
+"pos": "WR"
+},
+"4428331": {
+"name": "Rashee Rice",
+"pos": "WR"
+},
+"4429096": {
+"name": "Blake Corum",
+"pos": "RB"
+},
+"4429205": {
+"name": "Jordan Addison",
 "pos": "WR"
 },
 "4429795": {
@@ -51,16 +219,96 @@
 "name": "Sam LaPorta",
 "pos": "TE"
 },
+"4430737": {
+"name": "Kyren Williams",
+"pos": "RB"
+},
+"4431452": {
+"name": "Drake Maye",
+"pos": "QB"
+},
+"4431459": {
+"name": "Tyler Warren",
+"pos": "TE"
+},
+"4431611": {
+"name": "Caleb Williams",
+"pos": "QB"
+},
 "4432577": {
 "name": "C.J. Stroud",
 "pos": "QB"
+},
+"4432620": {
+"name": "Parker Washington",
+"pos": "WR"
+},
+"4567048": {
+"name": "Kenneth Walker III",
+"pos": "RB"
+},
+"4569559": {
+"name": "Devaughn Vele",
+"pos": "WR"
+},
+"4575131": {
+"name": "Jacory Croskey-Merritt",
+"pos": "RB"
+},
+"4595348": {
+"name": "Malik Nabers",
+"pos": "WR"
+},
+"4608686": {
+"name": "Kyle Monangai",
+"pos": "RB"
 },
 "4635008": {
 "name": "Keon Coleman",
 "pos": "WR"
 },
+"4683062": {
+"name": "Xavier Worthy",
+"pos": "WR"
+},
+"4685278": {
+"name": "Luther Burden III",
+"pos": "WR"
+},
+"4686422": {
+"name": "Xavier Hutchinson",
+"pos": "WR"
+},
+"4688813": {
+"name": "Josh Downs",
+"pos": "WR"
+},
+"4689114": {
+"name": "Jaxson Dart",
+"pos": "QB"
+},
+"4696981": {
+"name": "Cam Skattebo",
+"pos": "RB"
+},
+"4723086": {
+"name": "Colston Loveland",
+"pos": "TE"
+},
+"4832955": {
+"name": "Emmett Johnson",
+"pos": "RB"
+},
+"4882093": {
+"name": "Bhayshul Tuten",
+"pos": "RB"
+},
 "5123663": {
 "name": "Isaac TeSlaa",
 "pos": "WR"
+},
+"8439": {
+"name": "Aaron Rodgers",
+"pos": "QB"
 }
 }
