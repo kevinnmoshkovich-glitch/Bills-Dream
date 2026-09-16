@@ -15,6 +15,10 @@
 "name": "Travis Kelce",
 "pos": "TE"
 },
+"15864": {
+"name": "Geno Smith",
+"pos": "QB"
+},
 "16800": {
 "name": "Davante Adams",
 "pos": "WR"
@@ -67,6 +71,10 @@
 "name": "Joe Burrow",
 "pos": "QB"
 },
+"3916148": {
+"name": "Tony Pollard",
+"pos": "RB"
+},
 "3916387": {
 "name": "Lamar Jackson",
 "pos": "QB"
@@ -79,6 +87,10 @@
 "name": "Josh Allen",
 "pos": "QB"
 },
+"3929630": {
+"name": "Saquon Barkley",
+"pos": "RB"
+},
 "3930086": {
 "name": "Dawson Knox",
 "pos": "TE"
@@ -87,8 +99,16 @@
 "name": "David Montgomery",
 "pos": "RB"
 },
+"4036378": {
+"name": "Jordan Love",
+"pos": "QB"
+},
 "4038941": {
 "name": "Justin Herbert",
+"pos": "QB"
+},
+"4040715": {
+"name": "Jalen Hurts",
 "pos": "QB"
 },
 "4239993": {
@@ -97,6 +117,10 @@
 },
 "4241389": {
 "name": "CeeDee Lamb",
+"pos": "WR"
+},
+"4241478": {
+"name": "DeVonta Smith",
 "pos": "WR"
 },
 "4241985": {
@@ -109,6 +133,10 @@
 },
 "4242433": {
 "name": "Joshua Palmer",
+"pos": "WR"
+},
+"4248528": {
+"name": "Christian Watson",
 "pos": "WR"
 },
 "4258173": {
@@ -199,6 +227,10 @@
 "name": "Puka Nacua",
 "pos": "WR"
 },
+"4427366": {
+"name": "Breece Hall",
+"pos": "RB"
+},
 "4428331": {
 "name": "Rashee Rice",
 "pos": "WR"
@@ -251,6 +283,18 @@
 "name": "Devaughn Vele",
 "pos": "WR"
 },
+"4569587": {
+"name": "Wan'Dale Robinson",
+"pos": "WR"
+},
+"4569618": {
+"name": "Garrett Wilson",
+"pos": "WR"
+},
+"4572680": {
+"name": "Tucker Kraft",
+"pos": "TE"
+},
 "4575131": {
 "name": "Jacory Croskey-Merritt",
 "pos": "RB"
@@ -275,9 +319,25 @@
 "name": "Luther Burden III",
 "pos": "WR"
 },
+"4685382": {
+"name": "Omarion Hampton",
+"pos": "RB"
+},
+"4685472": {
+"name": "Tetairoa McMillan",
+"pos": "WR"
+},
+"4685720": {
+"name": "Bryce Young",
+"pos": "QB"
+},
 "4686422": {
 "name": "Xavier Hutchinson",
 "pos": "WR"
+},
+"4688380": {
+"name": "Cam Ward",
+"pos": "QB"
 },
 "4688813": {
 "name": "Josh Downs",
@@ -286,6 +346,10 @@
 "4689114": {
 "name": "Jaxson Dart",
 "pos": "QB"
+},
+"4695883": {
+"name": "Jalen Coker",
+"pos": "WR"
 },
 "4696981": {
 "name": "Cam Skattebo",
@@ -299,8 +363,16 @@
 "name": "Emmett Johnson",
 "pos": "RB"
 },
+"4871023": {
+"name": "Carnell Tate",
+"pos": "WR"
+},
 "4882093": {
 "name": "Bhayshul Tuten",
+"pos": "RB"
+},
+"4890973": {
+"name": "Ashton Jeanty",
 "pos": "RB"
 },
 "5123663": {
