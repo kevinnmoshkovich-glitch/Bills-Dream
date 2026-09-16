@@ -43,6 +43,10 @@
 "name": "Stefon Diggs",
 "pos": "WR"
 },
+"2991662": {
+"name": "Mack Hollins",
+"pos": "WR"
+},
 "3040151": {
 "name": "George Kittle",
 "pos": "TE"
@@ -55,8 +59,16 @@
 "name": "Demarcus Robinson",
 "pos": "WR"
 },
+"3046439": {
+"name": "Hunter Henry",
+"pos": "TE"
+},
 "3046779": {
 "name": "Jared Goff",
+"pos": "QB"
+},
+"3052587": {
+"name": "Baker Mayfield",
 "pos": "QB"
 },
 "3116164": {
@@ -74,6 +86,10 @@
 "3121422": {
 "name": "Terry McLaurin",
 "pos": "WR"
+},
+"3122840": {
+"name": "Deshaun Watson",
+"pos": "QB"
 },
 "3126486": {
 "name": "Deebo Samuel Sr.",
@@ -127,9 +143,17 @@
 "name": "David Montgomery",
 "pos": "RB"
 },
+"4035687": {
+"name": "Michael Pittman Jr.",
+"pos": "WR"
+},
 "4036378": {
 "name": "Jordan Love",
 "pos": "QB"
+},
+"4038815": {
+"name": "Rico Dowdle",
+"pos": "RB"
 },
 "4038941": {
 "name": "Justin Herbert",
@@ -138,6 +162,10 @@
 "4040715": {
 "name": "Jalen Hurts",
 "pos": "QB"
+},
+"4047650": {
+"name": "DK Metcalf",
+"pos": "WR"
 },
 "4239993": {
 "name": "Tee Higgins",
@@ -211,6 +239,14 @@
 "name": "Chris Olave",
 "pos": "WR"
 },
+"4361411": {
+"name": "Pat Freiermuth",
+"pos": "TE"
+},
+"4361432": {
+"name": "Romeo Doubs",
+"pos": "WR"
+},
 "4361579": {
 "name": "Javonte Williams",
 "pos": "RB"
@@ -275,6 +311,10 @@
 "name": "Puka Nacua",
 "pos": "WR"
 },
+"4427095": {
+"name": "DeMario Douglas",
+"pos": "WR"
+},
 "4427366": {
 "name": "Breece Hall",
 "pos": "RB"
@@ -307,6 +347,14 @@
 "name": "Kyren Williams",
 "pos": "RB"
 },
+"4430802": {
+"name": "Darnell Washington",
+"pos": "TE"
+},
+"4430807": {
+"name": "Bijan Robinson",
+"pos": "RB"
+},
 "4430878": {
 "name": "Jaxon Smith-Njigba",
 "pos": "WR"
@@ -318,6 +366,10 @@
 "4431459": {
 "name": "Tyler Warren",
 "pos": "TE"
+},
+"4431492": {
+"name": "Roman Wilson",
+"pos": "WR"
 },
 "4431611": {
 "name": "Caleb Williams",
@@ -335,8 +387,16 @@
 "name": "Marvin Harrison Jr.",
 "pos": "WR"
 },
+"4432710": {
+"name": "TreVeyon Henderson",
+"pos": "RB"
+},
 "4567048": {
 "name": "Kenneth Walker III",
+"pos": "RB"
+},
+"4569173": {
+"name": "Rhamondre Stevenson",
 "pos": "RB"
 },
 "4569559": {
@@ -355,6 +415,10 @@
 "name": "Garrett Wilson",
 "pos": "WR"
 },
+"4569987": {
+"name": "Jaylen Warren",
+"pos": "RB"
+},
 "4572680": {
 "name": "Tucker Kraft",
 "pos": "TE"
@@ -366,6 +430,10 @@
 "4595348": {
 "name": "Malik Nabers",
 "pos": "WR"
+},
+"4596448": {
+"name": "Bucky Irving",
+"pos": "RB"
 },
 "4608686": {
 "name": "Kyle Monangai",
@@ -395,6 +463,10 @@
 "name": "Jadarian Price",
 "pos": "RB"
 },
+"4685702": {
+"name": "Quinshon Judkins",
+"pos": "RB"
+},
 "4685720": {
 "name": "Bryce Young",
 "pos": "QB"
@@ -418,6 +490,10 @@
 "4695883": {
 "name": "Jalen Coker",
 "pos": "WR"
+},
+"4696044": {
+"name": "Kaelon Black",
+"pos": "RB"
 },
 "4696981": {
 "name": "Cam Skattebo",
