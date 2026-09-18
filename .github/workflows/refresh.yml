@@ -25,6 +25,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Check the model rules
+        run: python3 test_model.py
       - name: Pull the league and rebuild
         run: python3 refresh.py
       - name: Commit only if something changed

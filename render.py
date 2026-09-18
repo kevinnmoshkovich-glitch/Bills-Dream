@@ -253,20 +253,41 @@ def player_props(snap):
                     continue
                 cv = STAT_CV.get(key, 0.4)
                 ladder = [t for t in v.get("ladder", []) if t > 0]
-                # a handful of rungs spread either side of the line
+                # A handful of rungs spread either side of the line.
+                #
+                # The multipliers must be filtered to positive values. A line of
+                # 0.5 — ordinary for receptions or touchdowns — gives
+                # round(0.5 * 0.6) = 0, and a threshold of zero is meaningless:
+                # "0 or more receptions" is certain, not a prediction. model_prob
+                # rightly returns None for it, and multiplying that None by 100
+                # is what took the whole rebuild down on 17 September.
                 if ladder:
                     picks = sorted(set(
                         [min(ladder, key=lambda t: abs(t - line * m))
                          for m in (0.6, 0.8, 1.0, 1.25, 1.5)]))
                 else:
-                    picks = [round(line * m) for m in (0.6, 0.8, 1.0, 1.25, 1.5)]
+                    picks = sorted(set(
+                        t for t in (round(line * m) for m in (0.6, 0.8, 1.0, 1.25, 1.5))
+                        if t > 0))
+
+                # Belt and braces: a None from model_prob drops its rung rather
+                # than crashing the page. One unusable threshold should never
+                # cost the site a day and a half of updates.
+                rungs = []
+                for t in picks:
+                    p = model_prob(line, t, cv)
+                    if p is None:
+                        continue
+                    rungs.append({"t": t, "p": round(p * 100, 1)})
+                if not rungs:
+                    continue          # nothing sensible to offer on this stat
+
                 out.append({
                     "eid": eid, "aid": aid, "name": a["name"], "pos": a["pos"],
                     "stat": key, "label": STAT_LABEL.get(key, key),
                     "line": line, "cv": cv,
                     "match": f"{g['away']['abbr']} at {g['home']['abbr']}",
-                    "rungs": [{"t": t, "p": round(model_prob(line, t, cv) * 100, 1)}
-                              for t in picks],
+                    "rungs": rungs,
                 })
     out.sort(key=lambda r: (r["name"], r["label"]))
     return out

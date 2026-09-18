@@ -174,3 +174,33 @@ When there is a real sample, the other thing to do is replace the generic
 `STAT_CV` with each player's own variance from his gamelog. That is the
 single biggest improvement available to this model, and it is not possible
 in September.
+
+
+## The 17 September outage
+
+The nightly rebuild died for a day and a half on a `TypeError: unsupported
+operand type(s) for *: 'NoneType' and 'int'`.
+
+Cause: `player_props` built its thresholds as `round(line * m)` when a player
+had no milestone ladder. A line of **0.5** — ordinary for receptions or
+touchdowns — gives `round(0.5 * 0.6) = 0`. `model_prob` correctly returns None
+for a zero threshold, because "0 or more receptions" is a certainty rather than
+a prediction. The caller then multiplied that None by 100.
+
+It only appeared once the books posted the rest of the week's props: the run
+before it had 169 players, the one that broke had 199. The extra thirty brought
+the first 0.5 lines with them.
+
+Two fixes, deliberately both:
+  * thresholds are filtered to `> 0` before they are priced
+  * a None from `model_prob` drops that rung instead of raising, and a stat
+    left with no rungs is skipped entirely
+
+`test_model.py` covers it and now runs as a step in BOTH workflows before the
+rebuild, so a model that cannot price its own thresholds fails the job rather
+than the site.
+
+The fallback worked exactly as intended throughout: every failed run kept the
+previous day's pages, so the site stayed up and stale rather than going blank.
+Stale is the correct failure here — but three consecutive red runs is the
+signal to look, and nothing was watching for it.
