@@ -43,6 +43,10 @@
 "name": "Jacoby Brissett",
 "pos": "QB"
 },
+"2972515": {
+"name": "Cooper Rush",
+"pos": "QB"
+},
 "2973405": {
 "name": "Kalif Raymond",
 "pos": "WR"
@@ -131,6 +135,10 @@
 "name": "Deshaun Watson",
 "pos": "QB"
 },
+"3123076": {
+"name": "David Njoku",
+"pos": "TE"
+},
 "3126486": {
 "name": "Deebo Samuel Sr.",
 "pos": "WR"
@@ -214,6 +222,10 @@
 "4035687": {
 "name": "Michael Pittman Jr.",
 "pos": "WR"
+},
+"4036131": {
+"name": "Noah Fant",
+"pos": "TE"
 },
 "4036133": {
 "name": "T.J. Hockenson",
@@ -355,6 +367,10 @@
 "name": "Chris Olave",
 "pos": "WR"
 },
+"4361409": {
+"name": "Jahan Dotson",
+"pos": "WR"
+},
 "4361411": {
 "name": "Pat Freiermuth",
 "pos": "TE"
@@ -478,6 +494,10 @@
 "4429023": {
 "name": "MarShawn Lloyd",
 "pos": "RB"
+},
+"4429025": {
+"name": "Quentin Johnston",
+"pos": "WR"
 },
 "4429059": {
 "name": "Woody Marks",
@@ -623,6 +643,10 @@
 "name": "Jaylin Noel",
 "pos": "WR"
 },
+"4595342": {
+"name": "Oronde Gadsden",
+"pos": "TE"
+},
 "4595348": {
 "name": "Malik Nabers",
 "pos": "WR"
@@ -638,6 +662,10 @@
 "4600981": {
 "name": "Pat Bryant",
 "pos": "WR"
+},
+"4601080": {
+"name": "Raheim Sanders",
+"pos": "RB"
 },
 "4608686": {
 "name": "Kyle Monangai",
@@ -658,6 +686,10 @@
 "4685247": {
 "name": "Braelon Allen",
 "pos": "RB"
+},
+"4685261": {
+"name": "Germie Bernard",
+"pos": "WR"
 },
 "4685278": {
 "name": "Luther Burden III",
@@ -685,6 +717,10 @@
 },
 "4686422": {
 "name": "Xavier Hutchinson",
+"pos": "WR"
+},
+"4686612": {
+"name": "Tre' Harris",
 "pos": "WR"
 },
 "4686658": {
