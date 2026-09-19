@@ -574,6 +574,7 @@ def parlay_page(snap):
             for s in stats:
                 rungs = "".join(
                     f'<button class="leg rung" data-p="{x["p"]}" '
+                    f'data-id="{s["aid"]}-{s["stat"]}-{x["t"]:.0f}" data-eid="{g["id"]}" '
                     f'data-t="{name.split()[-1]} {x["t"]:.0f}+ {s["label"].split()[-1]}">'
                     f'<span class="lt">{x["t"]:.0f}+</span>'
                     f'<span class="lp">{x["p"]}%</span></button>'
@@ -608,10 +609,10 @@ def parlay_page(snap):
             f'<div class="gch"><span class="gcd">{day} · {tm}</span>'
             f'<span class="gcp">{len(rows)} player line{"s" if len(rows) != 1 else ""}</span></div>'
             f'<div class="pg"><span class="pgw">Winner</span>'
-            f'<button class="leg{on_a}" data-p="{pa}" data-t="{a["abbr"]} win">'
+            f'<button class="leg{on_a}" data-p="{pa}" data-id="win-{g["id"]}-a" data-eid="{g["id"]}" data-t="{a["abbr"]} win">'
             f'<span class="lt">{a["abbr"]}</span><span class="lp">{pa}%</span></button>'
             f'<span class="pat">at</span>'
-            f'<button class="leg{on_h}" data-p="{ph}" data-t="{h["abbr"]} win">'
+            f'<button class="leg{on_h}" data-p="{ph}" data-id="win-{g["id"]}-h" data-eid="{g["id"]}" data-t="{h["abbr"]} win">'
             f'<span class="lt">{h["abbr"]}</span><span class="lp">{ph}%</span></button></div>'
             f'<div class="gcbody">{pick_html}{players}</div></div>')
 
@@ -620,6 +621,65 @@ def parlay_page(snap):
         f'data-game="{g["id"]}">{g["away"]["abbr"]} at {g["home"]["abbr"]}'
         f'<span class="gtn">{len(by_game.get(g["id"], []))}</span></button>'
         for g in games)
+
+
+    # ---- build-me-one ------------------------------------------------------
+    # The page showed numbers and left the assembling to the reader. This
+    # picks the legs.
+    #
+    # Ranked the same way the shortlist is — on production the model does not
+    # already know — with one leg per player, because two legs on the same man
+    # are the most correlated pair you can construct and the calculator treats
+    # them as independent.
+    pool = []
+    for r in props:
+        if not r.get("games"):
+            continue
+        if injury_for(snap, r.get("aid"), r.get("name")):
+            continue
+        for x in r["rungs"]:
+            if not x.get("cleared"):
+                continue
+            hit = x["cleared"] / r["games"]
+            w = r["games"] / (r["games"] + 4.0)
+            pool.append({
+                "id": f'{r["aid"]}-{r["stat"]}-{x["t"]:.0f}',
+                "eid": r["eid"], "aid": r["aid"],
+                "label": f'{r["name"]} {x["t"]:.0f}+ {r["label"].lower()}',
+                "p": x["p"],
+                "score": round(((1 - w) * (x["p"] / 100) + w * hit) * 100, 1),
+            })
+    for g in games:
+        h, a = g["home"], g["away"]
+        ph, pa = g["prob"]["home"], g["prob"]["away"]
+        fav_home = ph >= pa
+        pool.append({
+            "id": f'win-{g["id"]}-{"h" if fav_home else "a"}',
+            "eid": g["id"], "aid": f'team-{g["id"]}',
+            "label": f'{(h if fav_home else a)["abbr"]} win',
+            "p": max(ph, pa), "score": max(ph, pa),
+        })
+    pool.sort(key=lambda c: (-c["score"], -c["p"]))
+
+    game_opts = "".join(
+        f'<option value="{g["id"]}">{g["away"]["abbr"]} at {g["home"]["abbr"]}</option>'
+        for g in games)
+
+    builder = (
+        '<h2>Build me one <span class="thru">pick how many legs</span></h2>'
+        '<div class="bld">'
+        '<div class="bldrow"><span class="bldl">Legs</span>'
+        '<div class="blegs">'
+        + "".join(f'<button class="bl{" on" if n == 4 else ""}" data-n="{n}">{n}</button>'
+                  for n in (2, 3, 4, 5, 6, 8, 10))
+        + '</div></div>'
+        '<div class="bldrow"><span class="bldl">From</span>'
+        f'<select id="bScope"><option value="all">Any game this week</option>{game_opts}</select>'
+        '</div>'
+        '<button class="bgo" id="bGo">Build it</button>'
+        '<div class="bout" id="bOut"></div>'
+        '</div>'
+        f'<script>window.__POOL__={json.dumps(pool)};</script>')
 
     if picks:
         n_games = max((p["games"] for p in picks), default=0)
@@ -671,7 +731,7 @@ def parlay_page(snap):
         '<div class="pnote" id="pList">Pick anything below.</div>'
         '<button class="pclear" id="pClear">Clear all</button></div>'
         '<div class="pcol">'
-        f'{short_html}'
+        f'{builder}{short_html}'
         f'<h2>By game <span class="thru">week {wk}</span></h2>'
         '<p class="lede">Winner probabilities are ESPN&rsquo;s published figures. Player '
         'numbers are modelled from the sportsbook line. Pick a game to narrow the list.</p>'
@@ -699,6 +759,37 @@ def parlay_page(snap):
         'document.getElementById("pClear").addEventListener("click",function(){'
         'document.querySelectorAll(".leg.on").forEach(function(b){b.classList.remove("on")});'
         'calc()});'
+'document.querySelectorAll(".bl").forEach(function(b){'
+        'b.addEventListener("click",function(){'
+        'document.querySelectorAll(".bl").forEach(function(x){x.classList.remove("on")});'
+        'b.classList.add("on")})});'
+        'var bg=document.getElementById("bGo");'
+        'if(bg)bg.addEventListener("click",function(){'
+        'var n=parseInt((document.querySelector(".bl.on")||{dataset:{n:4}}).dataset.n,10)||4;'
+        'var scope=document.getElementById("bScope").value;'
+        'var pool=(window.__POOL__||[]).filter(function(c){return scope==="all"||c.eid===scope});'
+        # one leg per player: two legs on the same man are the most correlated
+        # pair you can build, and this calculator multiplies as if they are not.
+        'var seen={},chosen=[];'
+        'for(var i=0;i<pool.length&&chosen.length<n;i++){'
+        'if(seen[pool[i].aid])continue;seen[pool[i].aid]=1;chosen.push(pool[i])}'
+        'document.querySelectorAll(".leg.on").forEach(function(b){b.classList.remove("on")});'
+        'var got=0;chosen.forEach(function(c){'
+        'var el=document.querySelector(\'.leg[data-id="\'+c.id+\'"]\');'
+        'if(el){var box=el.closest(".pg")||el.closest(".pstat");'
+        'if(box)box.querySelectorAll(".leg").forEach(function(x){x.classList.remove("on")});'
+        'el.classList.add("on");got++}});'
+        'var out=document.getElementById("bOut");'
+        'if(!got){out.innerHTML="<b>Nothing to build from.</b> No player in that game has cleared a number yet.";'
+        'calc();return}'
+        # Same-game legs are correlated and this multiplies as if they are not,
+        # so the figure is a FLOOR there rather than an estimate.
+        'var sameGame=scope!=="all";'
+        'out.innerHTML="<b>"+got+" legs in.</b> "+(sameGame'
+        '?"All in one game, so these move together — a quarterback\\u2019s yards and his receiver\\u2019s go up at the same time. The number below multiplies them as if they do not, which makes it a FLOOR: the real chance is higher. A book priced a same-game slip at roughly seven times this."'
+        ':"Different games, so multiplying them is the right maths.");'
+        'calc();'
+        'document.querySelector(".pout").scrollIntoView({behavior:"smooth",block:"nearest"})});'
         'document.querySelectorAll(".gtab").forEach(function(t){'
         't.addEventListener("click",function(){'
         'document.querySelectorAll(".gtab").forEach(function(x){x.classList.remove("on")});'
