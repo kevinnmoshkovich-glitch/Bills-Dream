@@ -218,6 +218,12 @@ PROP_STATS = {
                  "ladder": "Passing Attempts Milestones","cv": 0.20},
     "rush_att": {"label": "Rushing attempts","line": "Total Rushing Attempts (incl. overtime)",
                  "ladder": "Rushing Attempts Milestones","cv": 0.35},
+    # Passing touchdowns are the ONLY touchdown market the feed prices. The
+    # ones people actually ask about - Anytime Touchdown Scorer, First TD,
+    # 2+ TDs - are yes/no markets carrying no line and no price, so there is
+    # nothing to anchor to and they are deliberately absent rather than guessed.
+    "pass_td":  {"label": "Passing touchdowns","line": "Total Passing Touchdowns (incl. overtime)",
+                 "ladder": "Passing Touchdown Milestones","cv": None},   # counts use Poisson, not CV
 }
 
 ATHLETE_CACHE = os.path.join(SITE_DIR, "athletes.json")
@@ -348,6 +354,41 @@ def fetch_gamelogs(ids):
     return out
 
 
+def fetch_injuries():
+    """League-wide injury report, one request.
+
+    The model does not price this in - it cannot, the line already has it
+    baked in and we have no way to separate the two. What it does is SHOW it,
+    so nobody stakes a leg on a receiver who is listed doubtful without the
+    page having said so.
+    """
+    d = try_get(f"{API}/injuries")
+    if not d:
+        return {}
+    out = {}
+    for team in d.get("injuries", []):
+        for e in team.get("injuries", []):
+            ath = e.get("athlete") or {}
+            aid = str(ath.get("id") or "")
+            # the athlete id is not always on the entry; fall back to the name
+            key = aid or (ath.get("displayName") or "").strip().lower()
+            if not key:
+                continue
+            status = e.get("status")
+            if status in ("Active", None):
+                continue                       # only carry what changes a decision
+            det = e.get("details") or {}
+            out[key] = {
+                "status": status,
+                "type": det.get("type") or "",
+                "returnDate": det.get("returnDate") or "",
+                "note": (e.get("shortComment") or "")[:220],
+                "team": team.get("displayName", ""),
+                "name": ath.get("displayName", ""),
+            }
+    return out
+
+
 # ----------------------------------------------------------------- assemble
 def build_snapshot():
     snap = {"builtAt": datetime.now(NY).isoformat(), "season": SEASON}
@@ -413,6 +454,9 @@ def build_snapshot():
         snap["athletes"] = {i: cache[i] for i in ids if i in cache}
         log("  per-game production for those players")
         snap["gamelogs"] = fetch_gamelogs(ids)
+        log("  injury report")
+        snap["injuries"] = fetch_injuries()
+        log(f"    {len(snap['injuries'])} players carrying a status")
         with_lines = sum(1 for pl in props.values() if pl)
         log(f"  {with_lines}/{len(props)} games have lines, "
             f"{sum(len(p) for p in props.values())} players")

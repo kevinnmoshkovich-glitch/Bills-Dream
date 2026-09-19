@@ -218,18 +218,52 @@ import math
 
 STAT_CV = {"pass_yds": 0.30, "rush_yds": 0.50, "rec_yds": 0.60,
            "rec": 0.40, "pass_att": 0.20, "rush_att": 0.35}
+
+# Stats that are a small COUNT rather than a total. A quarterback's passing
+# touchdowns sit at 1 or 2, and a log-normal around a 1.5 line is the wrong
+# shape for that - it is a continuous, right-skewed curve being asked about
+# whole numbers. Poisson is the distribution for counts, and it needs no
+# variance assumption at all: the mean fixes the spread. One less invented
+# parameter.
+COUNT_STATS = {"pass_td"}
 STAT_LABEL = {"pass_yds": "Passing yards", "rush_yds": "Rushing yards",
               "rec_yds": "Receiving yards", "rec": "Receptions",
-              "pass_att": "Passing attempts", "rush_att": "Rushing attempts"}
+              "pass_att": "Passing attempts", "rush_att": "Rushing attempts",
+              "pass_td": "Passing touchdowns"}
 
 
 def norm_cdf(z):
     return 0.5 * (1.0 + math.erf(z / math.sqrt(2.0)))
 
 
-def model_prob(line, threshold, cv):
-    """P(stat >= threshold) given the book's line as the median."""
+def poisson_at_least(k, lam):
+    """P(X >= k) for a Poisson count. Sums the tail directly; k is tiny here."""
+    if lam <= 0 or k <= 0:
+        return None
+    # P(X >= k) = 1 - P(X <= k-1)
+    cum = 0.0
+    term = math.exp(-lam)
+    for i in range(0, int(k)):
+        if i:
+            term *= lam / i
+        cum += term
+    return max(0.001, min(0.999, 1 - cum))
+
+
+def model_prob(line, threshold, cv, stat=None):
+    """P(stat >= threshold) given the book's line as the middle.
+
+    Counts go through Poisson, totals through a log-normal. Both return None
+    for a threshold of zero, because "0 or more" is a certainty and not a
+    prediction - and the caller must handle that rather than multiply it.
+    """
     if not line or line <= 0 or threshold <= 0:
+        return None
+    if stat in COUNT_STATS:
+        # A 1.5 line means the book sits between 1 and 2; the implied mean is
+        # the line itself, which is the convention for an over/under on a count.
+        return poisson_at_least(threshold, line)
+    if not cv:
         return None
     sigma = math.sqrt(math.log(1 + cv * cv))
     mu = math.log(line)
@@ -252,6 +286,7 @@ def player_props(snap):
                 if not line:
                     continue
                 cv = STAT_CV.get(key, 0.4)
+                is_count = key in COUNT_STATS
                 ladder = [t for t in v.get("ladder", []) if t > 0]
                 # A handful of rungs spread either side of the line.
                 #
@@ -265,6 +300,10 @@ def player_props(snap):
                     picks = sorted(set(
                         [min(ladder, key=lambda t: abs(t - line * m))
                          for m in (0.6, 0.8, 1.0, 1.25, 1.5)]))
+                elif is_count:
+                    # whole numbers either side of the line: 1.5 -> 1, 2, 3
+                    lo = max(1, int(math.floor(line)))
+                    picks = [lo, lo + 1, lo + 2]
                 else:
                     picks = sorted(set(
                         t for t in (round(line * m) for m in (0.6, 0.8, 1.0, 1.25, 1.5))
@@ -275,7 +314,7 @@ def player_props(snap):
                 # cost the site a day and a half of updates.
                 rungs = []
                 for t in picks:
-                    p = model_prob(line, t, cv)
+                    p = model_prob(line, t, cv, key)
                     if p is None:
                         continue
                     rungs.append({"t": t, "p": round(p * 100, 1)})
@@ -430,6 +469,58 @@ def shortlist(snap, rows, n=6):
     return out
 
 
+def injury_for(snap, aid, name):
+    """The player's listed status, if the league report carries one.
+
+    NOT priced in — it cannot be. The book's line already reflects it and
+    there is no way to separate the two. This exists so the page can SAY it,
+    rather than quietly offering a receiver who is listed doubtful.
+    """
+    inj = snap.get("injuries") or {}
+    return inj.get(str(aid)) or inj.get((name or "").strip().lower())
+
+
+def best_per_game(snap, rows, per_game=1):
+    """The pick worth a look in EACH game, rather than six across the week.
+
+    Same ranking as the shortlist — production the model does not already
+    know — but resolved per fixture, because that is how anyone actually
+    uses this: they are looking at one game.
+
+    A player carrying an injury status is never the suggestion. The model
+    cannot price a hamstring, so the honest move is to step around it rather
+    than recommend into it.
+    """
+    by_game = {}
+    for r in rows:
+        if not r.get("games"):
+            continue
+        if injury_for(snap, r.get("aid"), r.get("name")):
+            continue                      # not our call to make on a doubtful player
+        for x in r["rungs"]:
+            if not x.get("cleared"):
+                continue
+            hit = x["cleared"] / r["games"]
+            w = r["games"] / (r["games"] + 4.0)
+            score = round(((1 - w) * (x["p"] / 100) + w * hit) * 100, 1)
+            by_game.setdefault(r["eid"], []).append(
+                {**r, "t": x["t"], "p": x["p"], "cleared": x["cleared"], "score": score})
+
+    out = {}
+    for eid, cands in by_game.items():
+        cands.sort(key=lambda c: (-c["score"], -c["p"]))
+        seen, keep = set(), []
+        for c in cands:
+            if c["aid"] in seen:
+                continue
+            seen.add(c["aid"])
+            keep.append(c)
+            if len(keep) >= per_game:
+                break
+        out[eid] = keep
+    return out
+
+
 def parlay_page(snap):
     """The parlay tab, grouped by game.
 
@@ -446,6 +537,7 @@ def parlay_page(snap):
                     if g["week"] == wk and g.get("prob")], key=lambda x: x["date"])
     props = with_support(snap, player_props(snap))
     picks = shortlist(snap, props)
+    best = best_per_game(snap, props)
     by_game = {}
     for p in props:
         by_game.setdefault(p["eid"], []).append(p)
@@ -463,6 +555,18 @@ def parlay_page(snap):
         bypl = {}
         for p in rows:
             bypl.setdefault((p["name"], p["pos"]), []).append(p)
+
+        pick = (best.get(g["id"]) or [None])[0]
+        pick_html = ""
+        if pick:
+            pick_html = (
+                f'<div class="gpick"><span class="gpl">Worth a look</span>'
+                f'<span class="gpn">{pick["name"]} — {pick["t"]:.0f}+ {pick["label"].lower()}</span>'
+                f'<span class="gpm">{pick["p"]}% modelled · cleared it '
+                f'{pick["cleared"]}/{pick["games"]}</span>'
+                f'<button class="leg gpb" data-p="{pick["p"]}" '
+                f'data-t="{pick["name"].split()[-1]} {pick["t"]:.0f}+ {pick["label"].split()[-1]}">'
+                f'<span class="lt">add</span><span class="lp">{pick["p"]}%</span></button></div>')
 
         players = ""
         for (name, pos), stats in bypl.items():
@@ -486,8 +590,14 @@ def parlay_page(snap):
                            f'<span class="psline">line {s["line"]:g}</span></div>'
                            f'<div class="psrow">{prod}</div>'
                            f'<div class="rungs">{rungs}</div></div>')
-            players += (f'<div class="pplayer"><div class="ppn">{name}'
-                        f'<span class="ppp">{pos}</span></div>{blocks}</div>')
+            inj = injury_for(snap, (stats[0] or {}).get("aid"), name)
+            injchip = ""
+            if inj:
+                sev = "out" if inj["status"] in ("Out", "Injured Reserve", "Doubtful") else "q"
+                injchip = (f'<span class="injc {sev}">{inj["status"]}'
+                           + (f' · {inj["type"]}' if inj.get("type") else '') + '</span>')
+            players += (f'<div class="pplayer{" hurt" if inj else ""}"><div class="ppn">{name}'
+                        f'<span class="ppp">{injchip or pos}</span></div>{blocks}</div>')
 
         if not players:
             players = ('<div class="noprops">No player lines posted for this game yet. '
@@ -503,7 +613,7 @@ def parlay_page(snap):
             f'<span class="pat">at</span>'
             f'<button class="leg{on_h}" data-p="{ph}" data-t="{h["abbr"]} win">'
             f'<span class="lt">{h["abbr"]}</span><span class="lp">{ph}%</span></button></div>'
-            f'<div class="gcbody">{players}</div></div>')
+            f'<div class="gcbody">{pick_html}{players}</div></div>')
 
     tabs = "".join(
         f'<button class="gtab{" mine" if (g["home"]["abbr"] in FEATURED or g["away"]["abbr"] in FEATURED) else ""}" '
@@ -527,7 +637,15 @@ def parlay_page(snap):
         short_html = (
             '<h2>Best chances <span class="thru">ranked on production, not on the '
             'model</span></h2>'
-            '<p class="lede"><b>Read this before trusting the order.</b> Ranking by the '
+            '<div class="knows"><b>What this model does not know.</b> '
+        'It has no injury data feeding the numbers, no matchup, no defence faced, no weather '
+        'and no depth chart. The percentages are the sportsbook&rsquo;s own line spread across '
+        'thresholds — the book has priced all of that in, but we are not computing any of it. '
+        'Nor is a player&rsquo;s own history in the probability: the spread comes from a '
+        'generic league figure per stat, not from him. His record only affects the ORDER of the '
+        'suggestions below. Injury statuses are shown where the league lists one, and a player '
+        'carrying one is never suggested.</div>'
+        '<p class="lede"><b>Read this before trusting the order.</b> Ranking by the '
             'modelled probability alone would be circular - the model puts the median at '
             'the book&rsquo;s line, so the highest probability is always the lowest '
             'threshold, for every player, every time. That says nothing about who is '
