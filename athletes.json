@@ -155,6 +155,10 @@
 "name": "Deebo Samuel Sr.",
 "pos": "WR"
 },
+"3127310": {
+"name": "Drew Sample",
+"pos": "TE"
+},
 "3128429": {
 "name": "Courtland Sutton",
 "pos": "WR"
@@ -166,6 +170,10 @@
 "3149687": {
 "name": "Chris Brooks",
 "pos": "RB"
+},
+"3843945": {
+"name": "Foster Moreau",
+"pos": "TE"
 },
 "3886598": {
 "name": "Jauan Jennings",
@@ -274,6 +282,10 @@
 "4047650": {
 "name": "DK Metcalf",
 "pos": "WR"
+},
+"4048228": {
+"name": "John Bates",
+"pos": "TE"
 },
 "4239993": {
 "name": "Tee Higgins",
@@ -654,6 +666,10 @@
 "4569173": {
 "name": "Rhamondre Stevenson",
 "pos": "RB"
+},
+"4569371": {
+"name": "Isaiah Williams",
+"pos": "WR"
 },
 "4569559": {
 "name": "Devaughn Vele",
