@@ -279,9 +279,17 @@
 "name": "Justin Herbert",
 "pos": "QB"
 },
+"4040655": {
+"name": "Darnell Mooney",
+"pos": "WR"
+},
 "4040715": {
 "name": "Jalen Hurts",
 "pos": "QB"
+},
+"4040761": {
+"name": "Devin Singletary",
+"pos": "RB"
 },
 "4047650": {
 "name": "DK Metcalf",
@@ -575,6 +583,10 @@
 "name": "Blake Corum",
 "pos": "RB"
 },
+"4429148": {
+"name": "Theo Johnson",
+"pos": "TE"
+},
 "4429160": {
 "name": "De'Von Achane",
 "pos": "RB"
@@ -814,6 +826,10 @@
 "4686422": {
 "name": "Xavier Hutchinson",
 "pos": "WR"
+},
+"4686468": {
+"name": "Seth McGowan",
+"pos": "RB"
 },
 "4686612": {
 "name": "Tre' Harris",
