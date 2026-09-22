@@ -122,6 +122,9 @@ table.dv td.n{text-align:right;font-family:'IBM Plex Mono'}
 table.dv tr.me td{color:var(--g);font-weight:700}
 .notes{font-size:11.5px;color:var(--mut);line-height:1.6;margin-top:26px;border-top:1px solid var(--line);padding-top:14px}
 .notes b{color:#c6d5f2;font-weight:600}
+.hurt{background:rgba(255,90,110,.1);border:1px solid rgba(255,90,110,.45);color:#ffd9df;border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.45;margin-bottom:10px}
+.hurt b{color:#fff}
+.ch.hr{border-color:rgba(255,90,110,.6);color:#ff9aa8}
 .err{background:rgba(255,194,75,.1);border:1px solid rgba(255,194,75,.4);color:var(--amb);border-radius:10px;padding:9px 12px;font-size:12.5px;margin-bottom:10px}
 .loading{padding:60px 0;text-align:center;color:var(--mut)}
 .toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:20;display:flex;flex-direction:column;gap:8px;width:min(92vw,440px);pointer-events:none}
@@ -204,14 +207,40 @@ function clockFrac(st,state){
   if(c==null){const m=String(st.displayClock||'15:00').split(':');c=num(m[0])*60+num(m[1]);}
   return Math.min(1,Math.max(0,((p-1)*900+(900-c))/3600));
 }
+function allPlays(sum){
+  const dr=sum.drives||{},seen=new Set(),out=[];
+  for(const d of (dr.previous||[]).concat(dr.current?[dr.current]:[]))for(const p of d.plays||[]){
+    const k=p.id||p.sequenceNumber||p.text;if(seen.has(k))continue;seen.add(k);out.push(p);}
+  return out.sort((a,b)=>num(a.sequenceNumber)-num(b.sequenceNumber));
+}
+const PER=['','1st','2nd','3rd','4th','OT'];
+/* A player the play-by-play says "was injured during the play", and who hasn't
+   appeared in any play since, is treated as out: his open legs drop to 0%.
+   The flag clears by itself the moment he shows up in a play again. */
+function hurtMap(ev,plays){
+  const m={},names=new Map();
+  for(const s of ev.slips)for(const l of s.legs)if(l.p&&!l.void)names.set(l.pid||norm(l.p),l.p);
+  for(const [k,n] of names){
+    const w=String(n).replace(/\b(Jr|Sr)\.?|\b(II|III|IV)\b/g,'').trim().split(/\s+/);
+    const a=(w[0][0]+'.'+w[w.length-1]).replace('.','\\.');
+    const any=new RegExp('\\b'+a+'\\b'),inj=new RegExp('\\b'+a+' was injured');
+    let st=null;
+    for(const p of plays){const t=p.text||'';if(!any.test(t))continue;
+      if(inj.test(t))st={when:((p.clock&&p.clock.displayValue)||'')+' in the '+(PER[(p.period&&p.period.number)||0]||'game')};else st=null;}
+    if(st)m[k]=Object.assign(st,{name:n});
+  }
+  return m;
+}
 function buildGame(ev,sum){
   const comp=(sum.header&&sum.header.competitions&&sum.header.competitions[0])||{};
   const st=comp.status||{};const state=(st.type&&st.type.state)||'pre';
-  const cur=sum.drives&&sum.drives.current;const plays=(cur&&cur.plays)||[];
+  const plays=allPlays(sum);
   return{ev,sum,comp,st,state,comps:comp.competitors||[],box:parseBox(sum),
     tdTexts:(sum.scoringPlays||[]).filter(isTD).map(p=>norm(p.text)+' '),
-    frac:clockFrac(st,state),lastPlay:plays[plays.length-1]||null};
+    frac:clockFrac(st,state),lastPlay:plays[plays.length-1]||null,
+    hurt:state==='in'?hurtMap(ev,plays):{}};
 }
+const hurtOf=(g,l)=>l.p&&g.hurt?g.hurt[l.pid||norm(l.p)]:null;
 
 /* ---------- legs ---------- */
 const player=(g,l)=>(l.pid&&g.box.byId[l.pid])||g.box.byName[norm(l.p)]||null;
@@ -265,6 +294,7 @@ function chance(ev,g,l,r){
   if(l.stat==='ml')return r.wp;
   if(HIT(r.st))return 1;
   if(r.st==='lost'||g.state==='post')return 0;
+  if(hurtOf(g,l))return 0;
   const f=g.frac,rem=1-f;if(rem<=.0005)return 0;
   // full-game rate: the line counts as 1.5 games of evidence, tonight's output as f games
   const K=1.5,base=prior(ev,l);
@@ -391,7 +421,7 @@ function board(ev,g,flash){
   for(const p of arr){
     const r=player(g,p.l);
     const allVoid=[...p.stats.values()].every(m=>[...m.values()].every(e=>e.voids===e.slips.length));
-    h+='<div class="card pc'+(allVoid?' lost':'')+'"><h3>'+esc(p.l.p)+' <em>'+[...p.slips].sort().join(' ')+'</em></h3><div class="sl">'+esc(allVoid?(p.l.why||'void'):statLine(r))+'</div>';
+    h+='<div class="card pc'+(allVoid?' lost':'')+'"><h3>'+esc(p.l.p)+' <em>'+[...p.slips].sort().join(' ')+'</em></h3><div class="sl">'+esc(allVoid?(p.l.why||'void'):statLine(r))+'</div>'+(!allVoid&&hurtOf(g,p.l)?'<div class="chs" style="margin:4px 0 2px"><span class="ch hr">Hurt at '+esc(hurtOf(g,p.l).when)+' · not in a play since</span></div>':'');
     if(allVoid){h+='</div>';continue;}
     const stats=[...p.stats.keys()].sort((a,b)=>ORDER.indexOf(a)-ORDER.indexOf(b));
     for(const k of stats){
@@ -427,12 +457,12 @@ function slipCard(ev,g,s,res,flash){
       sub=r.wp!=null&&g.state!=='post'?Math.round(r.wp*100)+'% win chance':'';
     }else if(l.stat==='atd'){
       right=r.cur>0?r.cur+' TD':'no TD yet';
-      if(r.st==='live'&&x.p!=null)sub=pct(x.p)+' chance';
+      if(r.st==='live'&&x.p!=null)sub=hurtOf(g,l)?'hurt, out since '+hurtOf(g,l).when:pct(x.p)+' chance';
       if(g.state==='post'&&r.cur===0)right='no TD';
     }else{
       right=r.cur+' / '+r.t;
       if(r.st==='clear')sub='over so far';
-      else if(r.st==='live')sub='needs '+r.need+(x.p!=null?' · '+pct(x.p)+' chance':'');
+      else if(r.st==='live')sub=hurtOf(g,l)?'needs '+r.need+' · hurt, out since '+hurtOf(g,l).when:'needs '+r.need+(x.p!=null?' · '+pct(x.p)+' chance':'');
       right+='<div class="mb"><i style="width:'+Math.min(100,r.cur/r.t*100).toFixed(1)+'%"></i></div>';
     }
     const k=legKey(l);
@@ -441,7 +471,7 @@ function slipCard(ev,g,s,res,flash){
   const live=res.legs.filter(x=>x.r.st==='live');
   const need=res.st==='alive'&&live.length?'<div class="need">Still needs: '+live.map(x=>needText(g,x)).join(', ')+'</div>':'';
   const tag=res.st==='won'?'Won':res.st==='lost'?'Lost':(res.hit+' of '+res.act.length+' in');
-  const odds=res.st==='alive'&&res.p!=null?'<span class="od">~'+pct1(res.p)+' to cash</span>':'';
+  const odds=res.st==='alive'&&res.p!=null?'<span class="od">'+(res.p<.001?'':'~')+pct1(res.p)+' to cash</span>':'';
   return '<div class="card slip '+res.st+'" id="slip-'+esc(s.id)+'"><div class="hd"><span class="id">'+esc(s.id)+'</span><span class="tag '+res.st+'">'+esc(tag)+'</span><span class="od">'+esc(s.odds||'')+'</span>'+odds
     +'<span class="pay">'+money0(s.stake)+' to win<b>'+money(s.payout)+'</b></span></div>'+need+'<div style="margin-top:6px">'+rows+'</div></div>';
 }
@@ -490,6 +520,10 @@ function toast(msg,bad){
 function render(){
   const flash=new Set();let html='';
   if(errMsg)html+='<div class="err">'+esc(errMsg)+'</div>';
+  for(const ev of BETS.games){const g=G[ev.event];if(!g)continue;
+    for(const k in g.hurt){const h=g.hurt[k];
+      const ids=ev.slips.filter(s=>s.legs.some(l=>!l.void&&(l.pid||norm(l.p))===k)).map(s=>s.id);
+      html+='<div class="hurt"><b>'+esc(h.name)+' was injured at '+esc(h.when)+'</b> and hasn’t been in a play since. His legs count as 0% until he’s back'+(ids.length?' (on slips '+ids.join(', ')+')':'')+'.</div>';}}
   const newly=[];
   for(const ev of BETS.games){
     const g=G[ev.event];if(!g)continue;
