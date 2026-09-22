@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#080c16">
+<title>Live bets</title>
+<link rel="preconnect" href="https://site.api.espn.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080c16;--panel:#111a2c;--panel2:#0d1524;--line:#1f2b44;--mut:#7e91b4;--ink:#eaf0ff;--g:#5b8cff;--opp:#f2c14e;--win:#39d98a;--amb:#ffc24b;--lose:#ff5a6e}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;-webkit-text-size-adjust:100%}
+a{color:inherit}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.top{position:sticky;top:0;z-index:10;background:rgba(8,12,22,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.sb{max-width:760px;margin:0 auto;padding:10px 16px 8px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
+.tm{display:flex;align-items:center;gap:10px}
+.tm.r{justify-content:flex-end}
+.ab{font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-weight:800;font-size:19px;letter-spacing:.04em}
+.sc{font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-weight:900;font-size:42px;line-height:.9;min-width:28px;text-align:center}
+.tm.me .ab{color:var(--g)} .tm.op .ab{color:var(--opp)}
+.lead .sc{color:#fff} .trail .sc{color:#9fb0cf}
+.mid{text-align:center;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;color:var(--mut);cursor:pointer;user-select:none;min-width:110px}
+.mid b{display:block;color:#fff;font-size:14px;letter-spacing:.02em;margin:2px 0}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--lose);margin-right:5px;vertical-align:1px;animation:pulse 1.4s infinite}
+.dot.off{background:var(--mut);animation:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,90,110,.65)}70%{box-shadow:0 0 0 7px rgba(255,90,110,0)}100%{box-shadow:0 0 0 0 rgba(255,90,110,0)}}
+.stale{color:var(--amb)}
+.wpw{max-width:760px;margin:0 auto;padding:0 16px 8px}
+.wpb{height:5px;border-radius:3px;background:var(--opp);overflow:hidden;display:flex}
+.wpb i{display:block;height:100%;background:var(--g);transition:width .6s}
+.wpl{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10.5px;color:var(--mut);margin-top:4px}
+.wpl b{color:#fff}
+.lp{max-width:760px;margin:0 auto;padding:0 16px 9px;font-size:11.5px;color:#aebcd8;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lp b{color:#fff;font-weight:600}
+.wrap{max-width:760px;margin:0 auto;padding:14px 16px 60px}
+h2{font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-size:22px;text-transform:uppercase;letter-spacing:.06em;margin:26px 0 10px;font-weight:800}
+h2 small{font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:.04em;color:var(--mut);font-weight:500;text-transform:none;margin-left:6px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
+.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.sum div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.sum span{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);font-weight:700}
+.sum b{display:block;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:18px;margin-top:3px}
+.sum b.g{color:var(--win)}
+.strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px;margin-top:10px}
+.chip{display:block;text-decoration:none;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:9px 10px;position:relative}
+.chip .id{font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-weight:900;font-size:22px;line-height:1}
+.chip .st{position:absolute;top:9px;right:10px;font-size:9.5px;letter-spacing:.12em;font-weight:800;text-transform:uppercase}
+.chip .ct{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:#cfe0ff;margin-top:4px}
+.chip .po{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;color:var(--mut)}
+.chip .dots{display:flex;gap:3px;margin-top:6px;flex-wrap:wrap}
+.chip .dots i{width:8px;height:8px;border-radius:2px;background:#26344f}
+.dots i.h{background:var(--win)} .dots i.c{background:var(--win);opacity:.7} .dots i.l{background:var(--lose)} .dots i.v{background:transparent;border:1px dashed #3a4a6a}
+.alive .st{color:var(--g)} .won{border-color:rgba(57,217,138,.6)} .won .st{color:var(--win)} .lost{opacity:.55} .lost .st{color:var(--lose)}
+.pc{margin-top:10px}
+.pc h3{margin:0;display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-size:20px;font-weight:800;letter-spacing:.02em;text-transform:uppercase}
+.pc h3 em{font-style:normal;font-family:Inter,system-ui,sans-serif;font-size:10.5px;letter-spacing:.06em;color:var(--mut);font-weight:600;text-transform:none;text-align:right}
+.sl{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11.5px;color:#9fb0cf;margin:3px 0 4px}
+.row{padding:10px 0 4px;border-top:1px solid var(--line);margin-top:8px}
+.row:first-of-type{border-top:0}
+.rh{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.rh span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:700}
+.rh b{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:20px;color:#fff}
+.rh b small{font-size:11px;color:var(--mut);font-weight:500;margin-left:5px}
+.bar{position:relative;height:10px;background:#0b1322;border:1px solid #22314d;border-radius:6px;margin:9px 0 17px}
+.bar .fill{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:linear-gradient(90deg,#3d6fe8,var(--g));transition:width .6s}
+.bar .fill.done{background:linear-gradient(90deg,#20a86a,var(--win))}
+.tk{position:absolute;top:-4px;bottom:-4px;width:2px;margin-left:-1px;background:#c6d5f2;border-radius:1px}
+.tk.on{background:var(--win)}
+.tk span{position:absolute;top:17px;left:50%;transform:translateX(-50%);font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:9.5px;color:var(--mut);white-space:nowrap}
+.tk.on span{color:var(--win)}
+.chs{display:flex;flex-wrap:wrap;gap:6px}
+.ch{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;padding:3px 8px;border-radius:999px;border:1px solid var(--line);background:var(--panel2);color:#c6d5f2}
+.ch.ok{border-color:rgba(57,217,138,.55);color:var(--win)}
+.ch.so{border-color:rgba(57,217,138,.4);color:#8fe6b8}
+.ch.no{border-color:rgba(255,90,110,.5);color:var(--lose)}
+.ch.vd{text-decoration:line-through;color:var(--mut)}
+.pace{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10.5px;color:var(--mut);margin-left:auto}
+.pips{display:flex;gap:5px;margin:9px 0 10px}
+.pips i{width:16px;height:16px;border-radius:4px;background:#0b1322;border:1px solid #2a3a5a}
+.pips i.on{background:var(--win);border-color:var(--win)}
+.pips i.x{border-style:dashed}
+.slip{margin-top:12px;scroll-margin-top:150px}
+.slip .hd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.slip .hd .id{font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-weight:900;font-size:30px;line-height:1}
+.slip .hd .od{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:var(--mut)}
+.slip .hd .pay{margin-left:auto;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:13px;text-align:right}
+.slip .hd .pay b{display:block;font-size:17px;color:#fff}
+.slip.won .hd .pay b{color:var(--win)}
+.tag{display:inline-block;font-size:10px;letter-spacing:.12em;font-weight:800;text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid}
+.tag.alive{color:var(--g);border-color:rgba(91,140,255,.5)} .tag.won{color:var(--win);border-color:rgba(57,217,138,.6)} .tag.lost{color:var(--lose);border-color:rgba(255,90,110,.5)}
+.need{font-size:12px;color:#aebcd8;margin:8px 0 2px;line-height:1.45}
+.need b{color:#fff;font-weight:600}
+.lg{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center;padding:8px 0;border-top:1px solid #192540}
+.lg:first-of-type{border-top:0}
+.ic{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;border:1.5px solid #34466a;color:var(--mut)}
+.lg.h .ic,.lg.w .ic{background:var(--win);border-color:var(--win);color:#062414}
+.lg.c .ic{border-color:var(--win);color:var(--win)}
+.lg.l .ic{background:var(--lose);border-color:var(--lose);color:#2a0710}
+.lg.v{opacity:.5} .lg.v .nm{text-decoration:line-through}
+.nm{font-size:13.5px;line-height:1.25}
+.nm small{display:block;font-size:10.5px;color:var(--mut);margin-top:2px}
+.vl{text-align:right;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:13px;white-space:nowrap}
+.vl small{display:block;font-size:10px;color:var(--mut)}
+.mb{height:4px;background:#0b1322;border-radius:2px;margin-top:4px;overflow:hidden;width:78px;margin-left:auto}
+.mb i{display:block;height:100%;background:var(--g)}
+.lg.h .mb i,.lg.w .mb i,.lg.c .mb i{background:var(--win)}
+.fl{animation:flash 1.6s ease-out}
+@keyframes flash{0%{background:rgba(91,140,255,.35)}100%{background:transparent}}
+.fut{margin-top:10px}
+.fut .hd{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.fut .hd b{font-size:14px}
+.fut .hd span{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:var(--mut);white-space:nowrap}
+.fut p{font-size:12.5px;color:#aebcd8;margin:8px 0 0;line-height:1.5}
+.fut p b{color:#fff}
+table.dv{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px}
+table.dv td{padding:6px 4px;border-top:1px solid var(--line)}
+table.dv td.n{text-align:right;font-family:'IBM Plex Mono'}
+table.dv tr.me td{color:var(--g);font-weight:700}
+.notes{font-size:11.5px;color:var(--mut);line-height:1.6;margin-top:26px;border-top:1px solid var(--line);padding-top:14px}
+.notes b{color:#c6d5f2;font-weight:600}
+.err{background:rgba(255,194,75,.1);border:1px solid rgba(255,194,75,.4);color:var(--amb);border-radius:10px;padding:9px 12px;font-size:12.5px;margin-bottom:10px}
+.loading{padding:60px 0;text-align:center;color:var(--mut)}
+.toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:20;display:flex;flex-direction:column;gap:8px;width:min(92vw,440px);pointer-events:none}
+.toast{background:#0f2a1f;border:1px solid rgba(57,217,138,.6);color:#d9ffe9;border-radius:12px;padding:10px 14px;font-size:13px;box-shadow:0 8px 30px rgba(0,0,0,.45);animation:tin .3s ease-out}
+.toast.bad{background:#2a0f16;border-color:rgba(255,90,110,.6);color:#ffd9df}
+@keyframes tin{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
+.home{display:inline-block;margin-top:10px;font-size:11.5px;color:var(--mut)}
+@media (max-width:420px){.sc{font-size:36px}.sum b{font-size:15px}.rh b{font-size:18px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="sb" id="sb"><div></div><div class="mid"><b>Loading…</b></div><div></div></div>
+  <div class="wpw" id="wp"></div>
+  <div class="lp" id="lp"></div>
+</header>
+<main class="wrap" id="app"><div class="loading">Loading your slips…</div></main>
+<div class="toasts" id="toasts"></div>
+<script type="application/json" id="bets-inline">{"note":"Open bets shown on /live. Edit this file to add or remove slips; the page re-reads it on every load. stat: ml | pass_yds | pass_td | rush_yds | rec_yds | rec | atd. min = the number the leg needs (FanDuel '225+' = 225).","season":2026,"games":[{"event":"401872947","team":"NYG","title":"Giants @ Rams","sub":"Monday Night Football \u00b7 FanDuel same-game parlays","lines":{"4689114":{"pass_yds":214.5,"pass_td":1.5,"rush_yds":34.5},"4696981":{"rush_yds":51.5,"rec_yds":10.5,"rec":1.5},"4361050":{"rec_yds":44.5,"rec":4.5},"4682648":{"rec_yds":25.5,"rec":2.5},"4595348":{"rec_yds":61.5,"rec":5.5},"16733":{"rec_yds":3.5},"4040761":{"rush_yds":11.5,"rec_yds":7.5,"rec":1.5}},"slips":[{"id":"A","odds":"+1555","stake":10,"payout":165.51,"legs":[{"p":"Jaxson Dart","pid":"4689114","stat":"pass_yds","min":200},{"p":"Jaxson Dart","pid":"4689114","stat":"rush_yds","min":20},{"p":"Cam Skattebo","pid":"4696981","stat":"rush_yds","min":40},{"p":"Isaiah Likely","pid":"4361050","stat":"rec_yds","min":30},{"p":"Malachi Fields","pid":"4682648","stat":"rec_yds","min":25},{"p":"Isaiah Likely","pid":"4361050","stat":"rec","min":4},{"p":"Malik Nabers","pid":"4595348","stat":"atd","min":1}]},{"id":"B","odds":"+47610","stake":10,"payout":4771.04,"legs":[{"stat":"ml","team":"NYG"},{"p":"Cam Skattebo","pid":"4696981","stat":"atd","min":1},{"p":"Odell Beckham Jr.","pid":"16733","stat":"atd","min":1},{"p":"Jaxson Dart","pid":"4689114","stat":"pass_yds","min":225},{"p":"Isaiah Likely","pid":"4361050","stat":"rec_yds","min":50},{"p":"Jaxson Dart","pid":"4689114","stat":"rush_yds","min":30},{"p":"Cam Skattebo","pid":"4696981","stat":"rush_yds","min":60}]},{"id":"C","odds":"+32040","stake":10,"payout":3214.0,"legs":[{"stat":"ml","team":"NYG"},{"p":"Cam Skattebo","pid":"4696981","stat":"atd","min":1},{"p":"Devin Singletary","pid":"4040761","stat":"atd","min":1},{"p":"Jaxson Dart","pid":"4689114","stat":"pass_yds","min":225},{"p":"Malik Nabers","pid":"4595348","stat":"rec_yds","min":60},{"p":"Isaiah Likely","pid":"4361050","stat":"rec_yds","min":40},{"p":"Jaxson Dart","pid":"4689114","stat":"rush_yds","min":30},{"p":"Cam Skattebo","pid":"4696981","stat":"rush_yds","min":70}]},{"id":"D","odds":"+4479","stake":10,"payout":457.9,"legs":[{"p":"Jaxson Dart","pid":"4689114","stat":"pass_yds","min":225},{"p":"Malik Nabers","pid":"4595348","stat":"rec_yds","min":60},{"p":"Isaiah Likely","pid":"4361050","stat":"rec_yds","min":40},{"p":"Jaxson Dart","pid":"4689114","stat":"rush_yds","min":30},{"p":"Cam Skattebo","pid":"4696981","stat":"rush_yds","min":70},{"p":"Puka Nacua","pid":"4426515","stat":"rec_yds","min":40,"void":true,"why":"Nacua ruled out; FanDuel voided the leg"},{"p":"Isaiah Likely","pid":"4361050","stat":"rec","min":4},{"p":"Malik Nabers","pid":"4595348","stat":"rec","min":4},{"p":"Jaxson Dart","pid":"4689114","stat":"pass_td","min":1}]},{"id":"E","odds":"+2222","stake":10,"payout":232.26,"legs":[{"p":"Jaxson Dart","pid":"4689114","stat":"atd","min":1},{"p":"Jaxson Dart","pid":"4689114","stat":"pass_yds","min":225},{"p":"Jaxson Dart","pid":"4689114","stat":"rush_yds","min":30},{"p":"Jaxson Dart","pid":"4689114","stat":"pass_td","min":1},{"stat":"ml","team":"NYG"}]},{"id":"F","odds":"50% profit boost","stake":10,"payout":1799.7,"legs":[{"stat":"ml","team":"NYG"},{"p":"Malik Nabers","pid":"4595348","stat":"atd","min":1},{"p":"Isaiah Likely","pid":"4361050","stat":"atd","min":1},{"p":"Jaxson Dart","pid":"4689114","stat":"pass_yds","min":225},{"p":"Isaiah Likely","pid":"4361050","stat":"rec_yds","min":20},{"p":"Malik Nabers","pid":"4595348","stat":"rec_yds","min":30},{"p":"Jaxson Dart","pid":"4689114","stat":"rush_yds","min":25},{"p":"Cam Skattebo","pid":"4696981","stat":"rush_yds","min":60},{"p":"Isaiah Likely","pid":"4361050","stat":"rec","min":4}]}]}],"futures":[{"id":"G","team":"NYG","market":"division","label":"Giants to win the NFC East","odds":"+550","stake":60,"payout":390},{"id":"H","team":"NYG","market":"wins_over","line":7.5,"label":"Giants over 7.5 regular-season wins","odds":"+105","stake":100,"payout":205}]}</script>
+<script>
+'use strict';
+const API='https://site.api.espn.com/apis/site/v2/sports/football/nfl/';
+const STAT={
+  pass_yds:{cat:'passing',key:'passingYards',lab:'passing yds',short:'pass yds',yards:1},
+  pass_td:{cat:'passing',key:'passingTouchdowns',lab:'passing TD',short:'pass TD'},
+  rush_yds:{cat:'rushing',key:'rushingYards',lab:'rushing yds',short:'rush yds',yards:1},
+  rec_yds:{cat:'receiving',key:'receivingYards',lab:'receiving yds',short:'rec yds',yards:1},
+  rec:{cat:'receiving',key:'receptions',lab:'receptions',short:'catches'},
+  atd:{lab:'anytime TD',short:'TD'},
+  ml:{lab:'to win',short:'win'}
+};
+const ORDER=['pass_yds','pass_td','rush_yds','rec_yds','rec','atd'];
+const LIVE_MS=15000;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>'$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const money0=n=>'$'+Math.round(Number(n)).toLocaleString('en-US');
+const num=v=>{const n=parseFloat(v);return Number.isFinite(n)?n:0};
+const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z ]+/g,' ').replace(/\b(jr|sr|ii|iii|iv)\b/g,' ').replace(/\s+/g,' ').trim();
+const surname=n=>{const w=String(n||'').split(' ').filter(x=>!/^(jr\.?|sr\.?|ii|iii|iv)$/i.test(x));return w[w.length-1]||n};
+
+let BETS=null,G={},SCHED={},schedAt=0,lastOk=0,timer=null,errMsg='',booted=false;
+let prevVal={},prevLeg={},prevSlip={};
+
+async function getJSON(url){
+  const r=await fetch(url,{cache:'no-store'});
+  if(!r.ok)throw new Error('HTTP '+r.status);
+  return r.json();
+}
+
+/* ---------- parse ESPN summary ---------- */
+function parseBox(sum){
+  const byId={},byName={};
+  const teams=(sum.boxscore&&sum.boxscore.players)||[];
+  for(const tp of teams){
+    const team=tp.team&&tp.team.abbreviation;
+    for(const cat of tp.statistics||[]){
+      const keys=cat.keys||[];
+      for(const a of cat.athletes||[]){
+        const at=a.athlete||{};
+        let r=byId[at.id];
+        if(!r){r=byId[at.id]={id:at.id,name:at.displayName,team,c:{},s:{}};byName[norm(at.displayName)]=r;}
+        const row={},raw={};
+        keys.forEach((k,i)=>{row[k]=num(a.stats&&a.stats[i]);raw[k]=a.stats?a.stats[i]:'';});
+        r.c[cat.name]=row;r.s[cat.name]=raw;
+      }
+    }
+  }
+  return{byId,byName};
+}
+function isTD(p){
+  const a=[p.scoringType&&p.scoringType.name,p.scoringType&&p.scoringType.abbreviation,p.type&&p.type.text,p.type&&p.type.abbreviation].join(' ');
+  return /touchdown|\bTD\b/i.test(a);
+}
+function clockFrac(st,state){
+  if(state==='pre')return 0;
+  if(state==='post')return 1;
+  const p=st.period||1;if(p>4)return 1;
+  let c=st.clock;
+  if(c==null){const m=String(st.displayClock||'15:00').split(':');c=num(m[0])*60+num(m[1]);}
+  return Math.min(1,Math.max(0,((p-1)*900+(900-c))/3600));
+}
+function buildGame(ev,sum){
+  const comp=(sum.header&&sum.header.competitions&&sum.header.competitions[0])||{};
+  const st=comp.status||{};const state=(st.type&&st.type.state)||'pre';
+  const cur=sum.drives&&sum.drives.current;const plays=(cur&&cur.plays)||[];
+  return{ev,sum,comp,st,state,comps:comp.competitors||[],box:parseBox(sum),
+    tdTexts:(sum.scoringPlays||[]).filter(isTD).map(p=>norm(p.text)+' '),
+    frac:clockFrac(st,state),lastPlay:plays[plays.length-1]||null};
+}
+
+/* ---------- legs ---------- */
+const player=(g,l)=>(l.pid&&g.box.byId[l.pid])||g.box.byName[norm(l.p)]||null;
+function tds(g,l){
+  const r=player(g,l);let n=0;
+  if(r)for(const cat in r.c)for(const k in r.c[cat])if(/Touchdowns$/.test(k)&&k!=='passingTouchdowns'&&k!=='defensiveTouchdowns')n+=r.c[cat][k];
+  const nn=norm(l.p)+' ';let s=0;for(const t of g.tdTexts)if(t.startsWith(nn))s++;
+  return Math.max(n,s);
+}
+function value(g,l){
+  if(l.stat==='atd')return tds(g,l);
+  const d=STAT[l.stat],r=player(g,l);
+  return r&&r.c[d.cat]?(r.c[d.cat][d.key]||0):0;
+}
+function moneyline(g,team){
+  const me=g.comps.find(c=>c.team&&c.team.abbreviation===team)||{},op=g.comps.find(c=>c!==me)||{};
+  const a=num(me.score),b=num(op.score);let wp=null;
+  const w=g.sum.winprobability;
+  if(g.state==='in'&&w&&w.length){let h=num(w[w.length-1].homeWinPercentage);if(h>1)h/=100;wp=me.homeAway==='home'?h:1-h;}
+  else if(g.state==='pre'&&g.sum.predictor){const s=me.homeAway==='home'?g.sum.predictor.homeTeam:g.sum.predictor.awayTeam;if(s&&s.gameProjection!=null)wp=num(s.gameProjection)/100;}
+  else if(g.state==='post')wp=a>b?1:a<b?0:null;
+  return{a,b,wp,me,op};
+}
+function evalLeg(g,l){
+  if(l.void)return{st:'void'};
+  const post=g.state==='post';
+  if(l.stat==='ml'){const m=moneyline(g,l.team);return Object.assign(m,{st:post?(m.a>m.b?'won':m.a<m.b?'lost':'void'):'live'});}
+  const d=STAT[l.stat],cur=value(g,l),t=l.min;let st;
+  if(cur>=t)st=post?'won':(d.yards?'clear':'hit');else st=post?'lost':'live';
+  return{cur,t,need:Math.max(0,t-cur),st};
+}
+const HIT=s=>s==='hit'||s==='won'||s==='clear';
+/* ---------- live chance (rough) ----------
+   Each leg starts from the sportsbook line for that player (bets.json "lines",
+   the same lines the parlay page uses) and blends in how the player is actually
+   going: the observed pace gets weight equal to the share of the game played.
+   Yardage: log-normal around that expectation for the time left, spread widening
+   as time runs out. Catches / TDs: Poisson for the time left. Anytime TD prior =
+   expected scrimmage yards / 110. Slip chance multiplies the legs as if they were
+   independent, so it's a guide, not a price. */
+const CV={pass_yds:.30,rush_yds:.50,rec_yds:.60};
+function ncdf(x){const t=1/(1+.2316419*Math.abs(x)),d=.3989423*Math.exp(-x*x/2);const q=d*t*(.3193815+t*(-.3565638+t*(1.781478+t*(-1.821256+t*1.330274))));return x>0?1-q:q}
+function poisAtLeast(k,lam){if(k<=0)return 1;if(lam<=0)return 0;let term=Math.exp(-lam),cdf=term;for(let i=1;i<k;i++){term*=lam/i;cdf+=term}return Math.max(0,Math.min(1,1-cdf))}
+function prior(ev,l){
+  const L=(ev.lines||{})[l.pid]||{};
+  if(l.stat==='atd'){const y=(L.rush_yds||0)+(L.rec_yds||0);return y?Math.max(.03,y/110):null}
+  return L[l.stat]!=null?L[l.stat]:null;
+}
+function chance(ev,g,l,r){
+  if(r.st==='void')return null;
+  if(l.stat==='ml')return r.wp;
+  if(HIT(r.st))return 1;
+  if(r.st==='lost'||g.state==='post')return 0;
+  const f=g.frac,rem=1-f;if(rem<=.0005)return 0;
+  // full-game rate: the line counts as 1.5 games of evidence, tonight's output as f games
+  const K=1.5,base=prior(ev,l);
+  let full;
+  if(base==null){if(f<=.02)return null;full=r.cur/f}
+  else full=(K*base+r.cur)/(K+f);
+  const need=r.t-r.cur;
+  if(!STAT[l.stat].yards)return poisAtLeast(need,Math.max(1e-4,full*rem));
+  const m=Math.max(.5,full*rem),cv=Math.min(2.5,(CV[l.stat]||.5)/Math.sqrt(rem)),sg=Math.sqrt(Math.log(1+cv*cv));
+  let pr=1-ncdf((Math.log(need)-Math.log(m))/sg);
+  // a low-volume receiver can simply not be thrown to again: scale by the chance of at least one more catch
+  const L=(ev.lines||{})[l.pid]||{};
+  if(l.stat==='rec_yds'&&L.rec){const rc=value(g,{stat:'rec',p:l.p,pid:l.pid}),rate=(K*L.rec+rc)/(K+f);pr*=1-Math.exp(-rate*rem)}
+  return pr;
+}
+const pct=p=>p==null?'':p>=.995?'99%':p<.01?(p<=0?'0%':'<1%'):Math.round(p*100)+'%';
+const pct1=p=>p==null?'':p>=.995?'99%':p<.001?(p<=0?'0%':'<0.1%'):p<.1?(p*100).toFixed(1)+'%':Math.round(p*100)+'%';
+function evalSlip(ev,g,s){
+  const legs=s.legs.map(l=>{const r=evalLeg(g,l);return{l,r,p:chance(ev,g,l,r)}});
+  const act=legs.filter(x=>x.r.st!=='void');
+  const hit=act.filter(x=>HIT(x.r.st)).length;
+  let st='alive';
+  if(act.some(x=>x.r.st==='lost'))st='lost';
+  else if(g.state==='post'&&act.every(x=>x.r.st==='won'))st='won';
+  let p=st==='won'?1:st==='lost'?0:act.reduce((a,x)=>a==null||x.p==null?null:a*x.p,1);
+  return{legs,act,hit,st,p};
+}
+function legName(g,l,withName){
+  const d=STAT[l.stat];
+  if(l.stat==='ml'){const m=g.comps.find(c=>c.team&&c.team.abbreviation===l.team);return (m?m.team.name:l.team)+' to win';}
+  const who=withName?surname(l.p)+' ':'';
+  if(l.stat==='atd')return who+'anytime TD';
+  return who+l.min+'+ '+d.lab;
+}
+function legKey(l){return l.stat==='ml'?'ml:'+l.team:(l.pid||norm(l.p))+':'+l.stat}
+function needText(g,x){
+  const l=x.l,r=x.r;
+  if(l.stat==='ml')return '<b>'+esc(legName(g,l))+'</b>'+(r.wp!=null?' ('+Math.round(r.wp*100)+'%)':'');
+  if(l.stat==='atd')return '<b>'+esc(surname(l.p))+' TD</b>';
+  return '<b>'+esc(surname(l.p))+' +'+r.need+'</b> '+STAT[l.stat].short;
+}
+
+/* ---------- render ---------- */
+function renderTop(){
+  const ev=BETS.games[0],g=G[ev.event];if(!g)return;
+  const away=g.comps.find(c=>c.homeAway==='away')||{},home=g.comps.find(c=>c.homeAway==='home')||{};
+  const side=(c,right)=>{
+    const ab=(c.team&&c.team.abbreviation)||'';const mine=ab===ev.team;
+    const other=c===away?home:away;const lead=num(c.score)>num(other.score)?'lead':num(c.score)<num(other.score)?'trail':'';
+    const sc='<span class="sc">'+(g.state==='pre'?'–':esc(c.score||'0'))+'</span>',tag='<span class="ab">'+esc(ab)+'</span>';
+    return '<div class="tm '+(right?'r ':'')+(mine?'me ':'op ')+lead+'">'+(right?sc+tag:tag+sc)+'</div>';
+  };
+  let mid;
+  if(g.state==='pre'){
+    const d=new Date(g.comp.date);
+    mid='<span class="dot off"></span>Kickoff<b>'+d.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})+'</b>';
+  }else if(g.state==='in'){
+    mid='<span class="dot"></span>Live<b>'+esc(g.st.type.shortDetail||'')+'</b>';
+  }else mid='Final<b>'+esc(g.st.type.shortDetail||'Final')+'</b>';
+  $('sb').innerHTML=side(away,false)+'<div class="mid" id="mid" title="Tap to refresh">'+mid+'<span id="ago"></span></div>'+side(home,true);
+  $('mid').onclick=()=>tick(true);
+  const m=moneyline(g,ev.team);
+  if(m.wp!=null&&g.state!=='post'){
+    const p=Math.round(m.wp*100),mine=m.me.team.abbreviation,opp=m.op.team.abbreviation;
+    $('wp').innerHTML='<div class="wpb"><i style="width:'+p+'%"></i></div><div class="wpl"><span>'+esc(mine)+' win chance <b>'+p+'%</b></span><span>'+esc(opp)+' <b>'+(100-p)+'%</b></span></div>';
+  }else $('wp').innerHTML='';
+  const lp=g.lastPlay;
+  if(g.state==='in'&&lp){
+    const dd=lp.end&&lp.end.downDistanceText;
+    $('lp').innerHTML=(dd?'<b>'+esc(dd)+'</b> · ':'')+esc(String(lp.text||'').trim());
+  }else $('lp').innerHTML='';
+  updAgo();
+}
+function updAgo(){
+  const el=$('ago');if(!el)return;
+  if(!lastOk){el.textContent='';return;}
+  const s=Math.round((Date.now()-lastOk)/1000);
+  const live=Object.values(G).some(g=>g.state==='in');
+  el.textContent=errMsg?'retrying…':(s<5?'just updated':'updated '+(s<90?s+'s':Math.round(s/60)+'m')+' ago');
+  el.className=(errMsg||(live&&s>60))?'stale':'';
+}
+function bar(cur,ts){
+  const top=ts[ts.length-1].t;const mx=Math.max(top*1.15,cur*1.04,1);
+  const w=Math.max(0,Math.min(100,cur/mx*100));
+  const ticks=ts.map(x=>'<i class="tk'+(cur>=x.t?' on':'')+'" style="left:'+(x.t/mx*100).toFixed(2)+'%"><span>'+x.t+'</span></i>').join('');
+  return '<div class="bar"><div class="fill'+(cur>=ts[0].t?' done':'')+'" style="width:'+w.toFixed(2)+'%"></div>'+ticks+'</div>';
+}
+function pips(cur,t){
+  const n=Math.max(t,Math.min(cur,t+4));let s='';
+  for(let i=0;i<n;i++)s+='<i class="'+(i<cur?'on':'')+(i>=t?' x':'')+'"></i>';
+  return '<div class="pips">'+s+'</div>';
+}
+function statLine(r){
+  if(!r)return 'no stats yet';
+  const o=[];
+  const p=r.s.passing;if(p)o.push(p['completions/passingAttempts']+' · '+p.passingYards+' yds · '+p.passingTouchdowns+' TD'+(num(p.interceptions)?' · '+p.interceptions+' INT':''));
+  const ru=r.s.rushing;if(ru)o.push(ru.rushingAttempts+' car '+ru.rushingYards+' yds'+(num(ru.rushingTouchdowns)?' · '+ru.rushingTouchdowns+' TD':''));
+  const re=r.s.receiving;if(re)o.push(re.receptions+' rec '+re.receivingYards+' yds'+(re.receivingTargets!=null&&re.receivingTargets!==''?' ('+re.receivingTargets+' tgt)':'')+(num(re.receivingTouchdowns)?' · '+re.receivingTouchdowns+' TD':''));
+  return o.join('  ·  ')||'no stats yet';
+}
+function board(ev,g,flash){
+  // group legs: player -> stat -> threshold -> slips
+  const P=new Map();let ml=null;
+  for(const s of ev.slips)for(const l of s.legs){
+    if(l.stat==='ml'){ml=ml||{l,slips:[]};ml.slips.push(s.id);continue;}
+    const pk=l.pid||norm(l.p);
+    if(!P.has(pk))P.set(pk,{l,slips:new Set(),stats:new Map()});
+    const p=P.get(pk);p.slips.add(s.id);
+    if(!p.stats.has(l.stat))p.stats.set(l.stat,new Map());
+    const m=p.stats.get(l.stat);
+    if(!m.has(l.min))m.set(l.min,{t:l.min,slips:[],voids:0});
+    const e=m.get(l.min);e.slips.push(s.id);if(l.void)e.voids++;
+  }
+  let h='';
+  if(ml){
+    const r=evalLeg(g,ml.l),mine=r.me.team?r.me.team.name:ev.team;
+    const lead=r.a>r.b?'leads':r.a<r.b?'trails':'tied';
+    const state=g.state==='pre'?'Not started':g.state==='post'?(r.st==='won'?'Won':r.st==='lost'?'Lost':'Tie'):(mine+' '+lead+' '+r.a+'–'+r.b);
+    h+='<div class="card pc"><h3>'+esc(mine)+' to win <em>'+ml.slips.length+' slips</em></h3>'
+      +'<div class="rh" style="margin-top:8px"><span>'+esc(state)+'</span><b>'+(r.wp!=null?Math.round(r.wp*100)+'%':'')+(r.wp!=null?'<small>win chance</small>':'')+'</b></div>'
+      +'<div class="chs" style="margin-top:8px"><span class="ch '+(r.st==='won'?'ok':r.st==='lost'?'no':'')+'">'+ml.slips.join(' ')+'</span></div></div>';
+  }
+  const arr=[...P.values()].sort((a,b)=>b.slips.size-a.slips.size);
+  for(const p of arr){
+    const r=player(g,p.l);
+    const allVoid=[...p.stats.values()].every(m=>[...m.values()].every(e=>e.voids===e.slips.length));
+    h+='<div class="card pc'+(allVoid?' lost':'')+'"><h3>'+esc(p.l.p)+' <em>'+[...p.slips].sort().join(' ')+'</em></h3><div class="sl">'+esc(allVoid?(p.l.why||'void'):statLine(r))+'</div>';
+    if(allVoid){h+='</div>';continue;}
+    const stats=[...p.stats.keys()].sort((a,b)=>ORDER.indexOf(a)-ORDER.indexOf(b));
+    for(const k of stats){
+      const d=STAT[k],ts=[...p.stats.get(k).values()].sort((a,b)=>a.t-b.t);
+      const cur=value(g,{stat:k,p:p.l.p,pid:p.l.pid});
+      const key=(p.l.pid||norm(p.l.p))+':'+k;
+      const post=g.state==='post';
+      let pace='';
+      if(d.yards&&g.state==='in'&&g.frac>=0.12)pace='<span class="pace">on pace for '+Math.round(cur/g.frac)+'</span>';
+      h+='<div class="row'+(flash.has(key)?' fl':'')+'"><div class="rh"><span>'+(k==='atd'?'Anytime TD':d.lab)+'</span>'+pace+'<b>'+cur+'</b></div>';
+      h+=d.yards?bar(cur,ts):pips(cur,ts[ts.length-1].t);
+      h+='<div class="chs">'+ts.map(e=>{
+        const allv=e.voids===e.slips.length;
+        const cls=allv?'vd':cur>=e.t?(post||!d.yards?'ok':'so'):post?'no':'';
+        const lg={stat:k,p:p.l.p,pid:p.l.pid,min:e.t},rr=evalLeg(g,lg),pp=allv?null:chance(ev,g,lg,rr);
+        const lab=(k==='atd'?'TD':e.t+'+')+' · '+e.slips.join(' ')+(cur>=e.t&&!allv?' ✓':(pp!=null&&rr.st==='live'?' · '+pct(pp):''));
+        return '<span class="ch '+cls+'">'+esc(lab)+'</span>';
+      }).join('')+'</div></div>';
+    }
+    h+='</div>';
+  }
+  return h;
+}
+function slipCard(ev,g,s,res,flash){
+  const icon={hit:'✓',won:'✓',clear:'✓',lost:'✕',void:'–',live:''};
+  const cls={hit:'h',won:'w',clear:'c',lost:'l',void:'v',live:''};
+  let rows='';
+  for(const x of res.legs){
+    const l=x.l,r=x.r;let right='',sub='';
+    if(r.st==='void')right='void',sub=l.why||'';
+    else if(l.stat==='ml'){
+      right=g.state==='pre'?'—':r.a+'–'+r.b;
+      sub=r.wp!=null&&g.state!=='post'?Math.round(r.wp*100)+'% win chance':'';
+    }else if(l.stat==='atd'){
+      right=r.cur>0?r.cur+' TD':'no TD yet';
+      if(r.st==='live'&&x.p!=null)sub=pct(x.p)+' chance';
+      if(g.state==='post'&&r.cur===0)right='no TD';
+    }else{
+      right=r.cur+' / '+r.t;
+      if(r.st==='clear')sub='over so far';
+      else if(r.st==='live')sub='needs '+r.need+(x.p!=null?' · '+pct(x.p)+' chance':'');
+      right+='<div class="mb"><i style="width:'+Math.min(100,r.cur/r.t*100).toFixed(1)+'%"></i></div>';
+    }
+    const k=legKey(l);
+    rows+='<div class="lg '+cls[r.st]+(flash.has(k)?' fl':'')+'"><span class="ic">'+icon[r.st]+'</span><div class="nm">'+esc(legName(g,l,true))+(sub?'<small>'+esc(sub)+'</small>':'')+'</div><div class="vl">'+right+'</div></div>';
+  }
+  const live=res.legs.filter(x=>x.r.st==='live');
+  const need=res.st==='alive'&&live.length?'<div class="need">Still needs: '+live.map(x=>needText(g,x)).join(', ')+'</div>':'';
+  const tag=res.st==='won'?'Won':res.st==='lost'?'Lost':(res.hit+' of '+res.act.length+' in');
+  const odds=res.st==='alive'&&res.p!=null?'<span class="od">~'+pct1(res.p)+' to cash</span>':'';
+  return '<div class="card slip '+res.st+'" id="slip-'+esc(s.id)+'"><div class="hd"><span class="id">'+esc(s.id)+'</span><span class="tag '+res.st+'">'+esc(tag)+'</span><span class="od">'+esc(s.odds||'')+'</span>'+odds
+    +'<span class="pay">'+money0(s.stake)+' to win<b>'+money(s.payout)+'</b></span></div>'+need+'<div style="margin-top:6px">'+rows+'</div></div>';
+}
+function futures(){
+  const F=BETS.futures||[];if(!F.length)return '';
+  let h='<h2>Season futures<small>settle later in the season</small></h2>';
+  for(const f of F){
+    const sc=SCHED[f.team];
+    let w=0,l=0,t=0,played=0,total=0,live=false;
+    if(sc)for(const e of sc.events||[]){
+      const c=e.competitions&&e.competitions[0];if(!c)continue;total++;
+      const ty=c.status&&c.status.type;
+      if(ty&&ty.completed){played++;const me=c.competitors.find(x=>x.team&&x.team.abbreviation===f.team),op=c.competitors.find(x=>x!==me);
+        if(me&&me.winner)w++;else if(op&&op.winner)l++;else t++;}
+      else if(ty&&ty.state==='in')live=true;
+    }
+    const rec=sc?(w+'–'+l+(t?'–'+t:'')):'';
+    let body='';
+    if(f.market==='wins_over'&&sc){
+      const needW=Math.floor(f.line)+1,left=(total||17)-played,more=Math.max(0,needW-w);
+      body=more===0?'<p><b>Cashed:</b> '+w+' wins already clears '+f.line+'.</p>'
+        :more>left?'<p>'+w+' wins with '+left+' games left: can’t reach '+needW+'.</p>'
+        :'<p>Record <b>'+rec+'</b>'+(live?' (tonight not counted yet)':'')+'. Needs <b>'+more+' more wins</b> from '+left+' games left ('+needW+' total).</p>';
+    }
+    if(f.market==='division'){
+      const g0=G[BETS.games[0].event];const grp=g0&&g0.sum.standings&&(g0.sum.standings.groups||[]).find(x=>(x.standings&&x.standings.entries||[]).some(e=>abbr(e)===f.team));
+      if(grp){
+        const rows=grp.standings.entries.map(e=>{const s=k=>{const x=(e.stats||[]).find(y=>y.name===k);return x?num(x.value):0};return{ab:abbr(e),name:e.team,w:s('wins'),l:s('losses'),t:s('ties')}});
+        rows.sort((a,b)=>(b.w+b.t/2)/Math.max(1,b.w+b.l+b.t)-(a.w+a.t/2)/Math.max(1,a.w+a.l+a.t)||b.w-a.w);
+        const lead=rows[0],me=rows.find(r=>r.ab===f.team);
+        const gb=me?((lead.w-me.w)+(me.l-lead.l))/2:0;
+        body='<p>'+(me===lead?'<b>'+esc(f.team)+' lead the division</b>':'<b>'+gb+' game'+(gb===1?'':'s')+' back</b> of '+esc(lead.name))+(live?' — standings before tonight’s result.':'.')+'</p>'
+          +'<table class="dv">'+rows.map(r=>'<tr class="'+(r.ab===f.team?'me':'')+'"><td>'+esc(r.name)+'</td><td class="n">'+r.w+'–'+r.l+(r.t?'–'+r.t:'')+'</td></tr>').join('')+'</table>';
+      }
+    }
+    h+='<div class="card fut"><div class="hd"><b>'+esc(f.id)+' · '+esc(f.label)+'</b><span>'+esc(f.odds)+' · '+money0(f.stake)+' → '+money0(f.payout)+'</span></div>'+body+'</div>';
+  }
+  return h;
+}
+function abbr(e){const m=/\/name\/([a-z]+)\//i.exec(e.link||'');return m?m[1].toUpperCase().replace('WSH','WSH'):'';}
+function toast(msg,bad){
+  const el=document.createElement('div');el.className='toast'+(bad?' bad':'');el.textContent=msg;
+  $('toasts').appendChild(el);setTimeout(()=>el.remove(),7000);
+  if(navigator.vibrate)try{navigator.vibrate(bad?[80,60,80]:60)}catch(e){}
+}
+function render(){
+  const flash=new Set();let html='';
+  if(errMsg)html+='<div class="err">'+esc(errMsg)+'</div>';
+  const newly=[];
+  for(const ev of BETS.games){
+    const g=G[ev.event];if(!g)continue;
+    // detect changed values for flashes
+    for(const s of ev.slips)for(const l of s.legs){
+      if(l.void)continue;const k=legKey(l);
+      const v=l.stat==='ml'?moneyline(g,l.team).a+':'+moneyline(g,l.team).b:value(g,l);
+      if(booted&&prevVal[k]!==undefined&&prevVal[k]!==v)flash.add(k);
+      prevVal[k]=v;
+    }
+    const res=ev.slips.map(s=>evalSlip(ev,g,s));
+    // toasts for legs that just came in and slips that just died
+    const seen=new Set();
+    res.forEach((r,i)=>{const s=ev.slips[i];
+      r.legs.forEach((x,j)=>{const pk=ev.event+s.id+j,was=prevLeg[pk];prevLeg[pk]=x.r.st;
+        if(booted&&was&&!HIT(was)&&HIT(x.r.st)){const k=legKey(x.l)+':'+x.l.min;if(!seen.has(k)){seen.add(k);newly.push({l:x.l,ids:res.map((rr,ii)=>rr.legs.some(y=>legKey(y.l)===legKey(x.l)&&y.l.min===x.l.min&&HIT(y.r.st))?ev.slips[ii].id:null).filter(Boolean)});}}
+      });
+      const ps=prevSlip[ev.event+s.id];prevSlip[ev.event+s.id]=r.st;
+      if(booted&&ps&&ps!==r.st){if(r.st==='lost')toast('Slip '+s.id+' is out',true);if(r.st==='won')toast('Slip '+s.id+' cashed: '+money(s.payout));}
+    });
+    newly.forEach(n=>toast('✓ '+legName(g,n.l,true)+' — '+n.ids.join(' ')));
+    const staked=ev.slips.reduce((a,s)=>a+s.stake,0),max=ev.slips.reduce((a,s)=>a+s.payout,0);
+    const alive=res.reduce((a,r,i)=>a+(r.st!=='lost'?ev.slips[i].payout:0),0);
+    const nAlive=res.filter(r=>r.st!=='lost').length;
+    const worth=res.reduce((a,r,i)=>a+(r.p==null?0:r.p*ev.slips[i].payout),0),known=res.every(r=>r.p!=null);
+    html+='<div class="sum"><div><span>Staked</span><b>'+money0(staked)+'</b></div><div><span>'+(g.state==='post'?'Returned':'Still alive')+'</span><b class="g">'+(g.state==='post'?money(res.reduce((a,r,i)=>a+(r.st==='won'?ev.slips[i].payout:0),0)):money0(alive))+'</b></div><div><span>'+(g.state==='post'?'Slips won':'Slips alive')+'</span><b>'+(g.state==='post'?res.filter(r=>r.st==='won').length:nAlive)+' / '+ev.slips.length+'</b></div>'+(g.state!=='post'&&known?'<div><span>Worth now*</span><b>'+money0(worth)+'</b></div>':'')+'</div>';
+    html+='<div class="strip">'+res.map((r,i)=>{const s=ev.slips[i];
+      const dots=r.legs.map(x=>'<i class="'+({hit:'h',won:'h',clear:'c',lost:'l',void:'v',live:''}[x.r.st])+'"></i>').join('');
+      const lab=r.st==='won'?'won':r.st==='lost'?'out':'alive';
+      return '<a class="chip '+r.st+'" href="#slip-'+esc(s.id)+'"><span class="id">'+esc(s.id)+'</span><span class="st">'+lab+'</span><div class="ct">'+r.hit+'/'+r.act.length+' in'+(r.st==='alive'&&r.p!=null?' · '+pct1(r.p):'')+'</div><div class="po">'+money0(s.payout)+'</div><div class="dots">'+dots+'</div></a>';
+    }).join('')+'</div>';
+    html+='<h2>By player<small>every line you need, live</small></h2>'+board(ev,g,flash);
+    html+='<h2>Your slips<small>'+esc(ev.sub||'')+'</small></h2>'+res.map((r,i)=>slipCard(ev,g,ev.slips[i],r,flash)).join('');
+  }
+  html+=futures();
+  html+='<div class="notes"><b>How legs are counted.</b> Anytime TD = a rushing, receiving or return touchdown (a passing TD doesn’t count for the passer). A yardage leg over its number shows <b>“over so far”</b> until the final whistle, because a sack, kneel-down or loss can pull the total back under. Numbers come from ESPN’s live box score and refresh every 15 seconds while the game is on; FanDuel settles on official stats. Puka Nacua was ruled out, so that leg on slip D is void.<br><b>*Chances are a rough guide.</b> Each leg starts from the sportsbook line for that player and shifts toward how he’s actually playing as the game goes on (the line counts as about a game and a half of evidence); a slip’s chance multiplies its legs as if they were unrelated. “Worth now” is each slip’s payout times its chance, added up. It is not a cash-out price.'
+    +'<br><a class="home" href="/">← Back to the site</a></div>';
+  $('app').innerHTML=html;
+  renderTop();
+  booted=true;
+}
+
+/* ---------- loop ---------- */
+async function loadSched(force){
+  if(!force&&Date.now()-schedAt<600000)return;
+  const teams=[...new Set((BETS.futures||[]).map(f=>f.team))];
+  await Promise.all(teams.map(async t=>{try{SCHED[t]=await getJSON(API+'teams/'+t.toLowerCase()+'/schedule?season='+(BETS.season||'')+'&seasontype=2');}catch(e){}}));
+  schedAt=Date.now();
+}
+async function tick(manual){
+  clearTimeout(timer);let next=60000;
+  try{
+    const before=Object.fromEntries(Object.entries(G).map(([k,g])=>[k,g.state]));
+    await Promise.all(BETS.games.map(async ev=>{G[ev.event]=buildGame(ev,await getJSON(API+'summary?event='+ev.event));}));
+    const states=Object.values(G).map(g=>g.state);
+    const ended=Object.entries(G).some(([k,g])=>before[k]&&before[k]!=='post'&&g.state==='post');
+    await loadSched(ended);
+    lastOk=Date.now();errMsg='';
+    if(states.includes('in'))next=LIVE_MS;
+    else if(states.includes('pre')){const soon=Object.values(G).some(g=>g.state==='pre'&&new Date(g.comp.date)-Date.now()<15*60000);next=soon?30000:120000;}
+    else next=300000;
+  }catch(e){
+    errMsg='Can’t reach ESPN right now ('+(e.message||e)+'). Showing the last numbers; retrying.';
+    next=20000;
+  }
+  if(Object.keys(G).length)render();else if(errMsg)$('app').innerHTML='<div class="err">'+esc(errMsg)+'</div>';
+  if(!document.hidden)timer=setTimeout(tick,next);
+}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)clearTimeout(timer);else if(BETS)tick();});
+setInterval(updAgo,1000);
+(async()=>{
+  try{BETS=await getJSON('/bets.json');}
+  catch(e){
+    // bets.json missing (or the page opened as a file): use the copy baked into this page
+    try{BETS=JSON.parse($('bets-inline').textContent);}
+    catch(e2){$('app').innerHTML='<div class="err">Couldn’t load the bets list ('+esc(e.message)+').</div>';return;}
+  }
+  if(BETS.games&&BETS.games[0]&&BETS.games[0].title)document.title='Live · '+BETS.games[0].title;
+  tick();
+})();
+</script>
+</body>
+</html>
