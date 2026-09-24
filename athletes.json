@@ -43,12 +43,20 @@
 "name": "Darren Waller",
 "pos": "TE"
 },
+"2576980": {
+"name": "Marcus Mariota",
+"pos": "QB"
+},
 "2577417": {
 "name": "Dak Prescott",
 "pos": "QB"
 },
 "2578570": {
 "name": "Jacoby Brissett",
+"pos": "QB"
+},
+"2969939": {
+"name": "Jameis Winston",
 "pos": "QB"
 },
 "2972515": {
@@ -691,6 +699,10 @@
 "name": "Parker Washington",
 "pos": "WR"
 },
+"4432665": {
+"name": "Brock Bowers",
+"pos": "TE"
+},
 "4432708": {
 "name": "Marvin Harrison Jr.",
 "pos": "WR"
@@ -958,6 +970,10 @@
 "4882093": {
 "name": "Bhayshul Tuten",
 "pos": "RB"
+},
+"4883647": {
+"name": "Elic Ayomanor",
+"pos": "WR"
 },
 "4890973": {
 "name": "Ashton Jeanty",
