@@ -7,6 +7,10 @@
 "name": "Kirk Cousins",
 "pos": "QB"
 },
+"15168": {
+"name": "Case Keenum",
+"pos": "QB"
+},
 "15818": {
 "name": "Keenan Allen",
 "pos": "WR"
@@ -583,6 +587,10 @@
 "name": "Breece Hall",
 "pos": "RB"
 },
+"4427834": {
+"name": "Erick All Jr.",
+"pos": "TE"
+},
 "4428331": {
 "name": "Rashee Rice",
 "pos": "WR"
@@ -751,6 +759,10 @@
 "name": "Emeka Egbuka",
 "pos": "WR"
 },
+"4568490": {
+"name": "RJ Harvey",
+"pos": "RB"
+},
 "4569173": {
 "name": "Rhamondre Stevenson",
 "pos": "RB"
@@ -842,6 +854,10 @@
 "4635008": {
 "name": "Keon Coleman",
 "pos": "WR"
+},
+"4678006": {
+"name": "Elijah Arroyo",
+"pos": "TE"
 },
 "4678008": {
 "name": "Jonathon Brooks",
