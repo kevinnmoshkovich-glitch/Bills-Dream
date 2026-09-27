@@ -204,3 +204,31 @@ The fallback worked exactly as intended throughout: every failed run kept the
 previous day's pages, so the site stayed up and stale rather than going blank.
 Stale is the correct failure here — but three consecutive red runs is the
 signal to look, and nothing was watching for it.
+
+## /live
+
+`live.html` is hand-written, not rendered from a template, and it is the
+only page that runs code in the browser: it polls ESPN's game summaries and
+scores the open slips against the live box scores.
+
+The bets are the JSON block with id `bets-inline` near the bottom of the
+file (the page tries `/bets.json` first and falls back to the block). Shape:
+
+    games   [{event, away, home, kick}]      ESPN event id per game
+    lines   {pid: {stat: line}}              FanDuel main lines, rough-chance priors only
+    slips   [{id, title, odds, stake, payout, legs:[{ev, p, pid, stat, min}]}]
+    futures [...]                            season bets, settled from the schedule feed
+
+`stat` is one of ml | pass_yds | pass_td | rush_yds | rec_yds | rec | atd;
+`min` is the number the leg needs ("225+" = 225; "to score 2+ TDs" = atd
+with min 2). Player ids and lines come from `snapshots/latest.json`
+(`athletes`, `props`). A leg with `void: true` and a `why` is shown struck
+through and left out of the slip's arithmetic.
+
+Layout: on a screen 1000px or wider it is a dashboard - summary and slips on
+the left, the by-player board on the right, each pane scrolling on its own,
+cards packed in columns. Narrower than that it is one column. A slip card
+wider than 500px shows its legs two across (container query).
+
+Polling: each game on its own clock - 20 s while it is on, 30 s inside the
+last 15 minutes before kickoff, 2 min before that, 5 min after the final.

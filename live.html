@@ -20,11 +20,12 @@ a{color:inherit}
 .dot.off{background:var(--mut);animation:none}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,90,110,.65)}70%{box-shadow:0 0 0 7px rgba(255,90,110,0)}100%{box-shadow:0 0 0 0 rgba(255,90,110,0)}}
 .stale{color:var(--amb)}
-.mid{max-width:760px;margin:0 auto;padding:8px 16px 6px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;color:var(--mut);cursor:pointer;user-select:none;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.hb{display:flex;align-items:center;gap:10px;padding:7px 12px 6px}
+.mid{flex:0 0 auto;padding:0 6px 0 2px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;color:var(--mut);cursor:pointer;user-select:none;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .mid .tap{color:#4d5f80}
-.games{max-width:760px;margin:0 auto;padding:0 12px 8px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.games{flex:1;min-width:0;padding:0;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .games::-webkit-scrollbar{display:none}
-.gt{flex:0 0 auto;min-width:96px;text-decoration:none;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:6px 9px 5px;display:flex;flex-direction:column;gap:2px}
+.gt{flex:0 0 auto;min-width:104px;text-decoration:none;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:6px 9px 5px;display:flex;flex-direction:column;gap:2px}
 .gt.in{border-color:rgba(91,140,255,.6);background:#101d36}
 .gt.post{opacity:.7}
 .tms{display:flex;justify-content:space-between;gap:10px;font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-weight:800;font-size:15px;letter-spacing:.03em;color:#c6d5f2}
@@ -33,26 +34,36 @@ a{color:inherit}
 .gst{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;color:var(--mut);white-space:nowrap}
 .gt.in .gst{color:#dfe8ff}
 .gn{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:#4d5f80;font-weight:700}
-.gh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:18px 0 2px;font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-size:19px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#dfe8ff;scroll-margin-top:110px}
+.gh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:14px 0 8px;font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-size:19px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#dfe8ff;scroll-margin-top:12px}
 .gh b{color:#fff;margin-left:6px}
 .gh em{font-style:normal;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;color:var(--mut);text-transform:none;letter-spacing:0;white-space:nowrap}
 .gh em.in{color:#dfe8ff}
 .lp{font-size:11.5px;color:#aebcd8;line-height:1.35;margin:4px 0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lp b{color:#fff;font-weight:600}
 .ttl{font-size:11.5px;color:var(--mut);margin-top:6px;line-height:1.4}
-.slip{scroll-margin-top:110px}
-.wrap{max-width:760px;margin:0 auto;padding:14px 16px 60px}
-h2{font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-size:22px;text-transform:uppercase;letter-spacing:.06em;margin:26px 0 10px;font-weight:800}
+.legs{margin-top:6px}
+#app{display:grid;grid-template-columns:minmax(420px,5fr) 7fr;grid-template-rows:auto minmax(0,1fr);grid-template-areas:"sum board" "slips board";height:calc(100vh - var(--hh,120px))}
+#sum{grid-area:sum;padding:12px 14px 0}
+#slips{grid-area:slips;overflow-y:auto;overscroll-behavior:contain;padding:0 14px 40px;min-height:0}
+#board{grid-area:board;overflow-y:auto;overscroll-behavior:contain;padding:0 16px 40px;min-height:0;border-left:1px solid var(--line)}
+#slips::-webkit-scrollbar,#board::-webkit-scrollbar{width:8px} #slips::-webkit-scrollbar-thumb,#board::-webkit-scrollbar-thumb{background:#22314d;border-radius:4px}
+.slips{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:10px;align-items:start}
+.pcs{display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:10px;align-items:start}
+.slip,.pc{container-type:inline-size}
+@container (min-width:500px){.legs{display:grid;grid-template-columns:1fr 1fr;column-gap:18px}.legs .lg:nth-child(2){border-top:0}}
+@media(max-width:999px){#app{display:block;height:auto}#sum{padding:12px 16px 0}#slips,#board{overflow:visible;padding:0 16px 30px;border:0}}
+@media(max-width:640px){.hb{display:block;padding:8px 12px 6px}.mid{padding:0 0 6px}.games{padding-bottom:2px}.slips,.pcs{grid-template-columns:1fr}}
+h2{font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-size:22px;text-transform:uppercase;letter-spacing:.06em;margin:16px 0 10px;font-weight:800}
 h2 small{font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:.04em;color:var(--mut);font-weight:500;text-transform:none;margin-left:6px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
-.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
 .sum div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
 .sum span{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);font-weight:700}
 .sum b{display:block;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:18px;margin-top:3px}
 .sum b.g{color:var(--win)}
-.strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px;margin-top:10px}
-.chip{display:block;text-decoration:none;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:9px 10px;position:relative}
-.chip .id{font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-weight:900;font-size:22px;line-height:1}
+.strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px;margin-top:8px}
+.chip{display:block;text-decoration:none;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 9px;position:relative}
+.chip .id{font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-weight:900;font-size:21px;line-height:1}
 .chip .st{position:absolute;top:9px;right:10px;font-size:9.5px;letter-spacing:.12em;font-weight:800;text-transform:uppercase}
 .chip .ct{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:#cfe0ff;margin-top:4px}
 .chip .po{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;color:var(--mut)}
@@ -60,7 +71,7 @@ h2 small{font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:.0
 .chip .dots i{width:8px;height:8px;border-radius:2px;background:#26344f}
 .dots i.h{background:var(--win)} .dots i.c{background:var(--win);opacity:.7} .dots i.l{background:var(--lose)} .dots i.v{background:transparent;border:1px dashed #3a4a6a}
 .alive .st{color:var(--g)} .won{border-color:rgba(57,217,138,.6)} .won .st{color:var(--win)} .lost{opacity:.55} .lost .st{color:var(--lose)}
-.pc{margin-top:10px}
+.pc{margin-top:0}
 .pc h3{margin:0;display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-size:20px;font-weight:800;letter-spacing:.02em;text-transform:uppercase}
 .pc h3 em{font-style:normal;font-family:Inter,system-ui,sans-serif;font-size:10.5px;letter-spacing:.06em;color:var(--mut);font-weight:600;text-transform:none;text-align:right}
 .sl{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11.5px;color:#9fb0cf;margin:3px 0 4px}
@@ -70,7 +81,7 @@ h2 small{font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:.0
 .rh span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:700}
 .rh b{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:20px;color:#fff}
 .rh b small{font-size:11px;color:var(--mut);font-weight:500;margin-left:5px}
-.bar{position:relative;height:10px;background:#0b1322;border:1px solid #22314d;border-radius:6px;margin:9px 0 17px}
+.bar{position:relative;height:10px;background:#0b1322;border:1px solid #22314d;border-radius:6px;margin:8px 0 16px}
 .bar .fill{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:linear-gradient(90deg,#3d6fe8,var(--g));transition:width .6s}
 .bar .fill.done{background:linear-gradient(90deg,#20a86a,var(--win))}
 .tk{position:absolute;top:-4px;bottom:-4px;width:2px;margin-left:-1px;background:#c6d5f2;border-radius:1px}
@@ -88,7 +99,7 @@ h2 small{font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:.0
 .pips i{width:16px;height:16px;border-radius:4px;background:#0b1322;border:1px solid #2a3a5a}
 .pips i.on{background:var(--win);border-color:var(--win)}
 .pips i.x{border-style:dashed}
-.slip{margin-top:12px;scroll-margin-top:150px}
+.slip{margin-top:0;scroll-margin-top:12px}
 .slip .hd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .slip .hd .id{font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-weight:900;font-size:30px;line-height:1}
 .slip .hd .od{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:var(--mut)}
@@ -141,11 +152,15 @@ table.dv tr.me td{color:var(--g);font-weight:700}
 </style>
 </head>
 <body>
-<header class="top">
+<header class="top" id="top"><div class="hb">
   <div class="mid" id="mid"><b>Loading…</b></div>
   <div class="games" id="games"></div>
-</header>
-<main class="wrap" id="app"><div class="loading">Loading your slips…</div></main>
+</div></header>
+<main id="app">
+  <section id="sum"><div class="loading">Loading your slips…</div></section>
+  <section id="slips"></section>
+  <section id="board"></section>
+</main>
 <div class="toasts" id="toasts"></div>
 <script type="application/json" id="bets-inline">{"note":"Open bets shown on /live. Edit this block to add or remove slips; the page re-reads it on every load. Each leg names its game (ev = ESPN event id). stat: ml | pass_yds | pass_td | rush_yds | rec_yds | rec | atd. min = the number the leg needs (FanDuel '225+' = 225; 'to score 2+ TDs' = atd with min 2). lines = FanDuel's main line per player, used only for the rough chance figures.","season":2026,"week":3,"placed":"2026-09-27","games":[{"event":"401872950","away":"CIN","home":"PIT","kick":"2026-09-27T17:00Z"},{"event":"401872952","away":"KC","home":"MIA","kick":"2026-09-27T17:00Z"},{"event":"401872953","away":"LAC","home":"BUF","kick":"2026-09-27T17:00Z"},{"event":"401872954","away":"NYJ","home":"DET","kick":"2026-09-27T17:00Z"},{"event":"401872955","away":"SEA","home":"WSH","kick":"2026-09-27T17:00Z"},{"event":"401872956","away":"TEN","home":"NYG","kick":"2026-09-27T17:00Z"},{"event":"401872958","away":"ARI","home":"SF","kick":"2026-09-27T20:05Z"},{"event":"401872959","away":"MIN","home":"TB","kick":"2026-09-27T20:05Z"},{"event":"401872961","away":"LV","home":"NO","kick":"2026-09-27T20:25Z"}],"lines":{"3918298":{"pass_yds":239.5,"pass_td":1.5,"rush_yds":34.5},"3915416":{"rec_yds":46.5,"rec":3.5},"4373678":{"rec_yds":41.5,"rec":3.5},"4385690":{"rec_yds":59.5,"rec":4.5},"4379399":{"rush_yds":80.5,"rec_yds":12.5,"rec":1.5},"4696981":{"rush_yds":58.5,"rec_yds":12.5,"rec":1.5},"4595348":{"rec_yds":54.5,"rec":4.5},"4361050":{"rec_yds":39.5,"rec":3.5},"2969939":{"pass_yds":199.5,"pass_td":0.5,"rush_yds":5.5},"4682648":{"rec_yds":23.5,"rec":1.5},"3139477":{"pass_yds":236.5,"pass_td":1.5,"rush_yds":15.5},"4567048":{"rush_yds":85.5,"rec_yds":23.5,"rec":3.5},"15847":{"rec_yds":51.5,"rec":4.5},"4239993":{"rec_yds":53.5,"rec":4.5},"4362628":{"rec_yds":76.5,"rec":6.5},"4362238":{"rush_yds":63.5,"rec_yds":22.5,"rec":3.5},"4374302":{"rec_yds":75.5,"rec":7.5},"4429795":{"rush_yds":89.5,"rec_yds":34.5,"rec":4.5},"4430878":{"rec_yds":93.5,"rec":6.5},"4262921":{"rec_yds":73.5,"rec":5.5},"3117251":{"rush_yds":57.5,"rec_yds":38.5,"rec":4.5},"16737":{"rec_yds":52.5,"rec":4.5},"4890973":{"rush_yds":69.5,"rec_yds":22.5,"rec":3.5}},"slips":[{"id":"A","title":"Chargers @ Bills same-game parlay","odds":"+42702","boost":"50% profit boost (was +28457)","stake":10,"payout":4280.21,"legs":[{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"pass_yds","min":200},{"ev":"401872953","p":"D.J. Moore","pid":"3915416","stat":"rec_yds","min":25},{"ev":"401872953","p":"Khalil Shakir","pid":"4373678","stat":"rec_yds","min":25},{"ev":"401872953","p":"Dalton Kincaid","pid":"4385690","stat":"rec_yds","min":50},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"rush_yds","min":15},{"ev":"401872953","p":"James Cook","pid":"4379399","stat":"rush_yds","min":50},{"ev":"401872953","p":"D.J. Moore","pid":"3915416","stat":"rec","min":4},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"atd","min":1},{"ev":"401872953","p":"Dalton Kincaid","pid":"4385690","stat":"atd","min":2},{"ev":"401872953","p":"D.J. Moore","pid":"3915416","stat":"atd","min":1}]},{"id":"B","title":"Titans @ Giants same-game parlay","odds":"+11295","stake":10,"payout":1139.5,"legs":[{"ev":"401872956","p":"Cam Skattebo","pid":"4696981","stat":"atd","min":1},{"ev":"401872956","p":"Malik Nabers","pid":"4595348","stat":"atd","min":1},{"ev":"401872956","p":"Isaiah Likely","pid":"4361050","stat":"atd","min":1},{"ev":"401872956","p":"Jameis Winston","pid":"2969939","stat":"pass_yds","min":175},{"ev":"401872956","p":"Isaiah Likely","pid":"4361050","stat":"rec_yds","min":25},{"ev":"401872956","p":"Malik Nabers","pid":"4595348","stat":"rec_yds","min":30},{"ev":"401872956","p":"Malachi Fields","pid":"4682648","stat":"rec_yds","min":25},{"ev":"401872956","p":"Cam Skattebo","pid":"4696981","stat":"rush_yds","min":40}]},{"id":"C","title":"SGP+ \u00b7 Chiefs @ Dolphins (+1644) and Bengals @ Steelers (+1401)","odds":"+26095","stake":10,"payout":2619.51,"legs":[{"ev":"401872952","p":"Patrick Mahomes","pid":"3139477","stat":"pass_yds","min":250},{"ev":"401872952","p":"Kenneth Walker III","pid":"4567048","stat":"rush_yds","min":90},{"ev":"401872952","p":"Travis Kelce","pid":"15847","stat":"rec_yds","min":60},{"ev":"401872952","p":"Travis Kelce","pid":"15847","stat":"atd","min":1},{"ev":"401872950","p":"Tee Higgins","pid":"4239993","stat":"atd","min":1},{"ev":"401872950","p":"Ja'Marr Chase","pid":"4362628","stat":"atd","min":1},{"ev":"401872950","p":"Chase Brown","pid":"4362238","stat":"atd","min":1}]},{"id":"D","title":"SGP+ \u00b7 Jets @ Lions (+376) plus five picks","odds":"+45525","stake":10,"payout":4562.58,"legs":[{"ev":"401872954","p":"Amon-Ra St. Brown","pid":"4374302","stat":"rec_yds","min":80},{"ev":"401872954","p":"Jahmyr Gibbs","pid":"4429795","stat":"atd","min":2},{"ev":"401872950","p":"Ja'Marr Chase","pid":"4362628","stat":"rec_yds","min":80},{"ev":"401872955","p":"Jaxon Smith-Njigba","pid":"4430878","stat":"rec_yds","min":80},{"ev":"401872953","p":"James Cook","pid":"4379399","stat":"atd","min":2},{"ev":"401872959","p":"Justin Jefferson","pid":"4262921","stat":"rec_yds","min":80},{"ev":"401872958","p":"Christian McCaffrey","pid":"3117251","stat":"atd","min":2}]},{"id":"E","title":"SGP+ \u00b7 Cardinals @ 49ers (+282), Chargers @ Bills (+239) plus two picks","odds":"+6080","stake":10,"payout":618.01,"legs":[{"ev":"401872958","p":"Christian McCaffrey","pid":"3117251","stat":"atd","min":1},{"ev":"401872958","p":"Mike Evans","pid":"16737","stat":"atd","min":1},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"atd","min":1},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"pass_yds","min":225},{"ev":"401872953","p":"Dalton Kincaid","pid":"4385690","stat":"rec_yds","min":40},{"ev":"401872959","p":"Justin Jefferson","pid":"4262921","stat":"atd","min":1},{"ev":"401872961","p":"Ashton Jeanty","pid":"4890973","stat":"atd","min":1}]},{"id":"F","title":"Chargers @ Bills same-game parlay","odds":"+239","stake":45,"payout":152.7,"legs":[{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"atd","min":1},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"pass_yds","min":225},{"ev":"401872953","p":"Dalton Kincaid","pid":"4385690","stat":"rec_yds","min":40}]}],"futures":[{"id":"G","team":"NYG","market":"division","label":"Giants to win the NFC East","odds":"+550","stake":60,"payout":390},{"id":"H","team":"NYG","market":"wins_over","line":7.5,"label":"Giants over 7.5 regular-season wins","odds":"+105","stake":100,"payout":205}]}</script>
 <script>
@@ -448,6 +463,7 @@ function board(flash){
     const sc=g&&g.state!=='pre'?' <b>'+score(g,cfg.away)+'–'+score(g,cfg.home)+'</b>':'';
     h+='<h3 class="gh" id="g-'+cfg.event+'"><span>'+esc(cfg.away)+' @ '+esc(cfg.home)+sc+'</span><em class="'+s.cls+'">'+(s.cls==='in'?'<span class="dot"></span>':'')+esc(s.txt)+'</em></h3>';
     if(g&&g.state==='in'&&g.lastPlay){const lp=g.lastPlay,dd=lp.end&&lp.end.downDistanceText;h+='<div class="lp">'+(dd?'<b>'+esc(dd)+'</b> · ':'')+esc(String(lp.text||'').trim())+'</div>';}
+    h+='<div class="pcs">';
     for(const ml of mls){
       const r=evalLeg(g,ml.l),mine=r.me&&r.me.team?r.me.team.name:ml.l.team;
       const lead=r.a>r.b?'leads':r.a<r.b?'trails':'tied';
@@ -480,6 +496,7 @@ function board(flash){
       }
       h+='</div>';
     }
+    h+='</div>';
   }
   return h;
 }
@@ -522,7 +539,7 @@ function slipCard(s,res,flash){
   const odds=res.st==='alive'&&res.p!=null?'<span class="od">'+(res.p<.001?'':'~')+pct1(res.p)+' to cash</span>':'';
   return '<div class="card slip '+res.st+'" id="slip-'+esc(s.id)+'"><div class="hd"><span class="id">'+esc(s.id)+'</span><span class="tag '+res.st+'">'+esc(tag)+'</span><span class="od">'+esc(s.odds||'')+'</span>'+odds
     +'<span class="pay">'+money0(s.stake)+' to win<b>'+money(s.payout)+'</b></span></div>'
-    +'<div class="ttl">'+esc(s.title||'')+(s.boost?' · '+esc(s.boost):'')+'</div>'+need+'<div style="margin-top:6px">'+rows+'</div></div>';
+    +'<div class="ttl">'+esc(s.title||'')+(s.boost?' · '+esc(s.boost):'')+'</div>'+need+'<div class="legs">'+rows+'</div></div>';
 }
 function futures(){
   const F=BETS.futures||[];if(!F.length)return '';
@@ -568,13 +585,14 @@ function toast(msg,bad){
   $('toasts').appendChild(el);setTimeout(()=>el.remove(),7000);
   if(navigator.vibrate)try{navigator.vibrate(bad?[80,60,80]:60)}catch(e){}
 }
+function fitHeader(){document.documentElement.style.setProperty('--hh',$('top').offsetHeight+'px');}
 function render(){
-  const flash=new Set();let html='';
-  if(errMsg)html+='<div class="err">'+esc(errMsg)+'</div>';
+  const flash=new Set();let top='';
+  if(errMsg)top+='<div class="err">'+esc(errMsg)+'</div>';
   for(const ev in G){const g=G[ev];
     for(const k in g.hurt){const h=g.hurt[k];
       const ids=BETS.slips.filter(s=>s.legs.some(l=>!l.void&&l.ev===ev&&(l.pid||norm(l.p))===k)).map(s=>s.id);
-      html+='<div class="hurt"><b>'+esc(h.name)+' was injured at '+esc(h.when)+'</b> ('+esc(gtag(ev))+') and hasn’t been in a play since. His legs count as 0% until he’s back'+(ids.length?' (on slips '+ids.join(', ')+')':'')+'.</div>';}}
+      top+='<div class="hurt"><b>'+esc(h.name)+' was injured at '+esc(h.when)+'</b> ('+esc(gtag(ev))+') and hasn’t been in a play since. His legs count as 0% until he’s back'+(ids.length?' (on slips '+ids.join(', ')+')':'')+'.</div>';}}
   // detect changed values for flashes
   for(const s of BETS.slips)for(const l of s.legs){
     if(l.void)continue;const g=gameOf(l);if(!g)continue;const k=legKey(l);
@@ -599,19 +617,18 @@ function render(){
   const nAlive=res.filter(r=>r.st!=='lost').length;
   const worth=res.reduce((a,r,i)=>a+(r.p==null?0:r.p*BETS.slips[i].payout),0),known=res.every(r=>r.p!=null);
   const won=res.reduce((a,r,i)=>a+(r.st==='won'?BETS.slips[i].payout:0),0);
-  html+='<div class="sum"><div><span>Staked</span><b>'+money0(staked)+'</b></div><div><span>'+(allDone?'Returned':'Still alive')+'</span><b class="g">'+(allDone?money(won):money0(alive))+'</b></div><div><span>'+(allDone?'Slips won':'Slips alive')+'</span><b>'+(allDone?res.filter(r=>r.st==='won').length:nAlive)+' / '+BETS.slips.length+'</b></div>'+(!allDone&&known?'<div><span>Worth now*</span><b>'+money0(worth)+'</b></div>':'')+'</div>';
-  html+='<div class="strip">'+res.map((r,i)=>{const s=BETS.slips[i];
+  top+='<div class="sum"><div><span>Staked</span><b>'+money0(staked)+'</b></div><div><span>'+(allDone?'Returned':'Still alive')+'</span><b class="g">'+(allDone?money(won):money0(alive))+'</b></div><div><span>'+(allDone?'Slips won':'Slips alive')+'</span><b>'+(allDone?res.filter(r=>r.st==='won').length:nAlive)+' / '+BETS.slips.length+'</b></div>'+(!allDone&&known?'<div><span>Worth now*</span><b>'+money0(worth)+'</b></div>':'')+'</div>';
+  top+='<div class="strip">'+res.map((r,i)=>{const s=BETS.slips[i];
     const dots=r.legs.map(x=>'<i class="'+({hit:'h',won:'h',clear:'c',lost:'l',void:'v',live:''}[x.r.st])+'"></i>').join('');
     const lab=r.st==='won'?'won':r.st==='lost'?'out':'alive';
     return '<a class="chip '+r.st+'" href="#slip-'+esc(s.id)+'"><span class="id">'+esc(s.id)+'</span><span class="st">'+lab+'</span><div class="ct">'+r.hit+'/'+r.act.length+' in'+(r.st==='alive'&&r.p!=null?' · '+pct1(r.p):'')+'</div><div class="po">'+money0(s.payout)+'</div><div class="dots">'+dots+'</div></a>';
   }).join('')+'</div>';
-  html+='<h2>By player<small>every line you need, live, game by game</small></h2>'+board(flash);
-  html+='<h2>Your slips<small>'+esc(BETS.sub||'FanDuel · '+BETS.slips.length+' open')+'</small></h2>'+res.map((r,i)=>slipCard(BETS.slips[i],r,flash)).join('');
-  html+=futures();
-  html+='<div class="notes"><b>How legs are counted.</b> Anytime TD = a rushing, receiving or return touchdown (a passing TD doesn’t count for the passer); “2+ TDs” needs two of those. A yardage leg over its number shows <b>“over so far”</b> until the final whistle, because a sack, kneel-down or loss can pull the total back under. Numbers come from ESPN’s live box scores; a game refreshes every 20 seconds while it is on, every couple of minutes before kickoff, and every five minutes after the final. FanDuel settles on official stats.<br><b>*Chances are a rough guide.</b> Each leg starts from the sportsbook line for that player and shifts toward how he’s actually playing as the game goes on (the line counts as about a game and a half of evidence); a slip’s chance multiplies its legs as if they were unrelated, which understates a same-game parlay. “Worth now” is each slip’s payout times its chance, added up. It is not a cash-out price.'
+  $('sum').innerHTML=top;
+  $('slips').innerHTML='<h2>Your slips<small>'+esc(BETS.sub||'FanDuel · '+BETS.slips.length+' open')+'</small></h2><div class="slips">'+res.map((r,i)=>slipCard(BETS.slips[i],r,flash)).join('')+'</div>'+futures()
+    +'<div class="notes"><b>How legs are counted.</b> Anytime TD = a rushing, receiving or return touchdown (a passing TD doesn’t count for the passer); “2+ TDs” needs two of those. A yardage leg over its number shows <b>“over so far”</b> until the final whistle, because a sack, kneel-down or loss can pull the total back under. Numbers come from ESPN’s live box scores; a game refreshes every 20 seconds while it is on, every couple of minutes before kickoff, and every five minutes after the final. FanDuel settles on official stats.<br><b>*Chances are a rough guide.</b> Each leg starts from the sportsbook line for that player and shifts toward how he’s actually playing as the game goes on (the line counts as about a game and a half of evidence); a slip’s chance multiplies its legs as if they were unrelated, which understates a same-game parlay. “Worth now” is each slip’s payout times its chance, added up. It is not a cash-out price.'
     +'<br><a class="home" href="/">← Back to the site</a></div>';
-  $('app').innerHTML=html;
-  renderTop();
+  $('board').innerHTML='<h2>By player<small>every line you need, live, game by game</small></h2>'+board(flash);
+  renderTop();fitHeader();
   booted=true;
 }
 
@@ -653,18 +670,19 @@ async function tick(manual){
     errMsg='Can’t reach ESPN right now ('+(e.message||e)+'). Showing the last numbers; retrying.';
   }
   inflight=false;
-  if(Object.keys(G).length)render();else if(errMsg){$('app').innerHTML='<div class="err">'+esc(errMsg)+'</div>';renderTop();}
+  if(Object.keys(G).length)render();else if(errMsg){$('sum').innerHTML='<div class="err">'+esc(errMsg)+'</div>';renderTop();fitHeader();}
   // wake up when the soonest game is due (never longer than a minute so the clock stays honest)
   const next=Math.max(3000,Math.min(60000,...BETS.games.map(c=>(DUE[c.event]||0)-Date.now())));
   if(!document.hidden)timer=setTimeout(tick,next);
 }
 document.addEventListener('visibilitychange',()=>{if(document.hidden)clearTimeout(timer);else if(BETS)tick(true);});
 setInterval(updAgo,1000);
+window.addEventListener('resize',fitHeader);
 (async()=>{
   try{BETS=await getJSON('/bets.json');}
   catch(e){
     try{BETS=JSON.parse($('bets-inline').textContent);}
-    catch(e2){$('app').innerHTML='<div class="err">Couldn’t load the bets list ('+esc(e.message)+').</div>';return;}
+    catch(e2){$('sum').innerHTML='<div class="err">Couldn’t load the bets list ('+esc(e.message)+').</div>';return;}
   }
   normalizeBets(BETS);
   document.title='Live · Week '+(BETS.week||'');

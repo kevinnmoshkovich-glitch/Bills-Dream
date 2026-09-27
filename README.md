@@ -7,6 +7,7 @@ rebuilt nightly from ESPN's public feeds.
     /schedule         both clubs, full season with win probabilities
     /league           all 32 clubs, all 8 divisions
     /team/<abbr>      any club (e.g. /team/buf, /team/nyg, /team/kc)
+    /live             open FanDuel slips, scored live from ESPN box scores
 
 See SITE.md for how it refreshes, what happens when the feed breaks, and
 which parts are safe to hand-edit.
