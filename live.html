@@ -27,7 +27,7 @@ a{color:inherit}
 .games::-webkit-scrollbar{display:none}
 .gt{flex:0 0 auto;min-width:104px;text-decoration:none;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:6px 9px 5px;display:flex;flex-direction:column;gap:2px}
 .gt.in{border-color:rgba(91,140,255,.6);background:#101d36}
-.gt.post{opacity:.7}
+.gt.post{opacity:.7} .gt.idle{opacity:.45}
 .tms{display:flex;justify-content:space-between;gap:10px;font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-weight:800;font-size:15px;letter-spacing:.03em;color:#c6d5f2}
 .tms .t b{margin-left:5px;font-weight:900;color:#fff;font-size:16px}
 .tms .t.lead{color:#fff}
@@ -128,6 +128,12 @@ h2 small{font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:.0
 .lg.h .mb i,.lg.w .mb i,.lg.c .mb i{background:var(--win)}
 .fl{animation:flash 1.6s ease-out}
 @keyframes flash{0%{background:rgba(91,140,255,.35)}100%{background:transparent}}
+.outbox{margin-top:16px;border-top:1px solid var(--line);padding-top:10px}
+.outhd{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;color:var(--mut);padding:4px 2px 8px}
+.outhd b{color:#c6d5f2;font-weight:600}
+.outbtn{background:var(--panel);border:1px solid var(--line);color:#c6d5f2;border-radius:8px;padding:5px 12px;font:inherit;font-size:11px;font-weight:700;cursor:pointer}
+.chip.outchip{opacity:.7} .chip.outchip .st{color:var(--lose)}
+.none{padding:18px 0;color:var(--mut);font-size:13px}
 .fut{margin-top:10px}
 .fut .hd{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
 .fut .hd b{font-size:14px}
@@ -198,6 +204,8 @@ const clockTime=iso=>new Date(iso).toLocaleTimeString([],{hour:'numeric',minute:
 
 let BETS=null,G={},DUE={},SCHED={},schedAt=0,lastOk=0,timer=null,errMsg='',booted=false,inflight=false;
 let prevVal={},prevLeg={},prevSlip={};
+let LOST=new Set();   // slip ids that are out — their cards and their lines leave the board
+let showOut=false;try{showOut=localStorage.getItem('live_show_out')==='1'}catch(e){}
 
 async function getJSON(url){
   const r=await fetch(url,{cache:'no-store'});
@@ -421,8 +429,8 @@ function renderTop(){
     const g=G[cfg.event],s=gameState(g,cfg);
     const a=g?score(g,cfg.away):'',b=g?score(g,cfg.home):'';
     const la=g&&a>b?' lead':'',lb=g&&b>a?' lead':'';
-    const n=gameLegs(cfg.event).length;
-    h+='<a class="gt '+s.cls+'" href="#g-'+cfg.event+'"><span class="tms"><span class="t'+la+'">'+esc(cfg.away)+'<b>'+(g&&g.state!=='pre'?a:'')+'</b></span><span class="t'+lb+'">'+esc(cfg.home)+'<b>'+(g&&g.state!=='pre'?b:'')+'</b></span></span><span class="gst">'+(s.cls==='in'?'<span class="dot"></span>':'')+esc(s.txt)+'</span><span class="gn">'+n+' leg'+(n===1?'':'s')+'</span></a>';
+    const n=gameLegs(cfg.event).filter(x=>!LOST.has(x.s.id)).length;
+    h+='<a class="gt '+s.cls+(n?'':' idle')+'" href="#g-'+cfg.event+'"><span class="tms"><span class="t'+la+'">'+esc(cfg.away)+'<b>'+(g&&g.state!=='pre'?a:'')+'</b></span><span class="t'+lb+'">'+esc(cfg.home)+'<b>'+(g&&g.state!=='pre'?b:'')+'</b></span></span><span class="gst">'+(s.cls==='in'?'<span class="dot"></span>':'')+esc(s.txt)+'</span><span class="gn">'+(n?n+' leg'+(n===1?'':'s'):'nothing live')+'</span></a>';
   }
   $('games').innerHTML=h;
   $('mid').innerHTML=(live?'<span class="dot"></span>Live':'<span class="dot off"></span>Week '+esc(BETS.week||''))+' <span id="ago"></span><span class="tap">· tap to refresh</span>';
@@ -460,6 +468,7 @@ function board(flash){
   // group legs: game -> player -> stat -> threshold -> slips
   const P=new Map();const ML=new Map();
   for(const s of BETS.slips)for(const l of s.legs){
+    if(LOST.has(s.id))continue;
     if(l.stat==='ml'){const k=l.ev+':'+l.team;if(!ML.has(k))ML.set(k,{l,slips:[]});ML.get(k).slips.push(s.id);continue;}
     const pk=l.ev+':'+(l.pid||norm(l.p));
     if(!P.has(pk))P.set(pk,{l,slips:new Set(),stats:new Map()});
@@ -611,10 +620,6 @@ function fitHeader(){document.documentElement.style.setProperty('--hh',$('top').
 function render(){
   const flash=new Set();let top='';
   if(errMsg)top+='<div class="err">'+esc(errMsg)+'</div>';
-  for(const ev in G){const g=G[ev];
-    for(const k in g.hurt){const h=g.hurt[k];
-      const ids=BETS.slips.filter(s=>s.legs.some(l=>!l.void&&l.ev===ev&&(l.pid||norm(l.p))===k)).map(s=>s.id);
-      top+='<div class="hurt"><b>'+esc(h.name)+' was injured at '+esc(h.when)+'</b> ('+esc(gtag(ev))+') and hasn’t been in a play since. His legs count as 0% until he’s back'+(ids.length?' (on slips '+ids.join(', ')+')':'')+'.</div>';}}
   // detect changed values for flashes
   for(const s of BETS.slips)for(const l of s.legs){
     if(l.void)continue;const g=gameOf(l);if(!g)continue;const k=legKey(l);
@@ -623,6 +628,13 @@ function render(){
     prevVal[k]=v;
   }
   const res=BETS.slips.map(evalSlip);
+  LOST=new Set();res.forEach((r,i)=>{if(r.st==='lost')LOST.add(BETS.slips[i].id)});
+  // injury notices only for players still carrying a live leg
+  for(const ev in G){const g=G[ev];
+    for(const k in g.hurt){const h=g.hurt[k];
+      const ids=BETS.slips.filter(s=>!LOST.has(s.id)&&s.legs.some(l=>!l.void&&l.ev===ev&&(l.pid||norm(l.p))===k)).map(s=>s.id);
+      if(!ids.length)continue;
+      top+='<div class="hurt"><b>'+esc(h.name)+' was injured at '+esc(h.when)+'</b> ('+esc(gtag(ev))+') and hasn’t been in a play since. His legs count as 0% until he’s back'+(ids.length?' (on slips '+ids.join(', ')+')':'')+'.</div>';}}
   // toasts for legs that just came in and slips that just settled
   const newly=[],seen=new Set();
   res.forEach((r,i)=>{const s=BETS.slips[i];
@@ -640,16 +652,21 @@ function render(){
   const worth=res.reduce((a,r,i)=>a+(r.p==null?0:r.p*BETS.slips[i].payout),0),known=res.every(r=>r.p!=null);
   const won=res.reduce((a,r,i)=>a+(r.st==='won'?BETS.slips[i].payout:0),0);
   top+='<div class="sum"><div><span>Staked</span><b>'+money0(staked)+'</b></div><div><span>'+(allDone?'Returned':'Still alive')+'</span><b class="g">'+(allDone?money(won):money0(alive))+'</b></div><div><span>'+(allDone?'Slips won':'Slips alive')+'</span><b>'+(allDone?res.filter(r=>r.st==='won').length:nAlive)+' / '+BETS.slips.length+'</b></div>'+(!allDone&&known?'<div><span>Worth now*</span><b>'+money0(worth)+'</b></div>':'')+'</div>';
-  top+='<div class="strip">'+res.map((r,i)=>{const s=BETS.slips[i];
+  const chip=(r,i)=>{const s=BETS.slips[i];
     const dots=r.legs.map(x=>'<i class="'+({hit:'h',won:'h',clear:'c',lost:'l',void:'v',live:''}[x.r.st])+'"></i>').join('');
     const lab=r.st==='won'?'won':r.st==='lost'?'out':'alive';
     return '<a class="chip '+r.st+'" href="#slip-'+esc(s.id)+'"><span class="id">'+esc(s.id)+'</span><span class="st">'+lab+'</span><div class="ct">'+r.hit+'/'+r.act.length+' in'+(r.st==='alive'&&r.p!=null?' · '+pct1(r.p):'')+'</div><div class="po">'+money0(s.payout)+'</div><div class="dots">'+dots+'</div></a>';
-  }).join('')+'</div>';
+  };
+  const outIdx=res.map((r,i)=>r.st==='lost'?i:-1).filter(i=>i>=0),inIdx=res.map((r,i)=>r.st==='lost'?-1:i).filter(i=>i>=0);
+  top+='<div class="strip">'+inIdx.map(i=>chip(res[i],i)).join('')+(outIdx.length?'<a class="chip lost outchip" href="#out"><span class="id">'+outIdx.length+'</span><span class="st">out</span><div class="ct">'+outIdx.map(i=>BETS.slips[i].id).join(' ')+'</div><div class="po">'+money0(outIdx.reduce((a,i)=>a+BETS.slips[i].stake,0))+' staked</div></a>':'')+'</div>';
   $('sum').innerHTML=top;
-  $('slips').innerHTML='<h2>Your slips<small>'+esc(BETS.sub||'FanDuel · '+BETS.slips.length+' open')+'</small></h2><div class="slips">'+res.map((r,i)=>slipCard(BETS.slips[i],r,flash)).join('')+'</div>'+futures()
+  // slips that are out leave the board: one line at the bottom, tap to see them
+  const outBox=outIdx.length?'<div class="outbox" id="out"><div class="outhd"><span>Out today: <b>'+outIdx.map(i=>BETS.slips[i].id).join(' · ')+'</b> · '+money0(outIdx.reduce((a,i)=>a+BETS.slips[i].stake,0))+' staked</span><button class="outbtn" id="outbtn">'+(showOut?'Hide':'Show')+'</button></div><div class="slips" id="outcards" style="'+(showOut?'':'display:none')+'">'+outIdx.map(i=>slipCard(BETS.slips[i],res[i],flash)).join('')+'</div></div>':'';
+  $('slips').innerHTML='<h2>Your slips<small>'+esc(BETS.sub||'FanDuel · '+inIdx.length+' live of '+BETS.slips.length)+'</small></h2>'+(inIdx.length?'<div class="slips">'+inIdx.map(i=>slipCard(BETS.slips[i],res[i],flash)).join('')+'</div>':'<div class="none">Nothing left alive today.</div>')+outBox+futures()
     +'<div class="notes"><b>How legs are counted.</b> Anytime TD = a rushing, receiving or return touchdown (a passing TD doesn’t count for the passer); “2+ TDs” needs two of those. An <b>under</b> leg is dead the moment the number goes over and only wins at the final whistle, so it never shows a check mark early. A yardage leg over its number shows <b>“over so far”</b> until the final whistle, because a sack, kneel-down or loss can pull the total back under. Numbers come from ESPN’s live box scores; a game refreshes every 20 seconds while it is on, every couple of minutes before kickoff, and every five minutes after the final. FanDuel settles on official stats.<br><b>*Chances are a rough guide.</b> Each leg starts from the sportsbook line for that player and shifts toward how he’s actually playing as the game goes on (the line counts as about a game and a half of evidence); a slip’s chance multiplies its legs as if they were unrelated, which understates a same-game parlay. “Worth now” is each slip’s payout times its chance, added up. It is not a cash-out price.'
     +'<br><a class="home" href="/">← Back to the site</a></div>';
   $('board').innerHTML='<h2>By player<small>every line you need, live, game by game</small></h2>'+board(flash);
+  const ob=$('outbtn');if(ob)ob.onclick=()=>{showOut=!showOut;try{localStorage.setItem('live_show_out',showOut?'1':'0')}catch(e){}$('outcards').style.display=showOut?'':'none';ob.textContent=showOut?'Hide':'Show';};
   renderTop();fitHeader();
   booted=true;
 }
