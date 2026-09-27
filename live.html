@@ -16,26 +16,31 @@ html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,syste
 a{color:inherit}
 .mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
 .top{position:sticky;top:0;z-index:10;background:rgba(8,12,22,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.sb{max-width:760px;margin:0 auto;padding:10px 16px 8px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
-.tm{display:flex;align-items:center;gap:10px}
-.tm.r{justify-content:flex-end}
-.ab{font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-weight:800;font-size:19px;letter-spacing:.04em}
-.sc{font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-weight:900;font-size:42px;line-height:.9;min-width:28px;text-align:center}
-.tm.me .ab{color:var(--g)} .tm.op .ab{color:var(--opp)}
-.lead .sc{color:#fff} .trail .sc{color:#9fb0cf}
-.mid{text-align:center;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;color:var(--mut);cursor:pointer;user-select:none;min-width:110px}
-.mid b{display:block;color:#fff;font-size:14px;letter-spacing:.02em;margin:2px 0}
 .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--lose);margin-right:5px;vertical-align:1px;animation:pulse 1.4s infinite}
 .dot.off{background:var(--mut);animation:none}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,90,110,.65)}70%{box-shadow:0 0 0 7px rgba(255,90,110,0)}100%{box-shadow:0 0 0 0 rgba(255,90,110,0)}}
 .stale{color:var(--amb)}
-.wpw{max-width:760px;margin:0 auto;padding:0 16px 8px}
-.wpb{height:5px;border-radius:3px;background:var(--opp);overflow:hidden;display:flex}
-.wpb i{display:block;height:100%;background:var(--g);transition:width .6s}
-.wpl{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10.5px;color:var(--mut);margin-top:4px}
-.wpl b{color:#fff}
-.lp{max-width:760px;margin:0 auto;padding:0 16px 9px;font-size:11.5px;color:#aebcd8;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mid{max-width:760px;margin:0 auto;padding:8px 16px 6px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;color:var(--mut);cursor:pointer;user-select:none;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.mid .tap{color:#4d5f80}
+.games{max-width:760px;margin:0 auto;padding:0 12px 8px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.games::-webkit-scrollbar{display:none}
+.gt{flex:0 0 auto;min-width:96px;text-decoration:none;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:6px 9px 5px;display:flex;flex-direction:column;gap:2px}
+.gt.in{border-color:rgba(91,140,255,.6);background:#101d36}
+.gt.post{opacity:.7}
+.tms{display:flex;justify-content:space-between;gap:10px;font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-weight:800;font-size:15px;letter-spacing:.03em;color:#c6d5f2}
+.tms .t b{margin-left:5px;font-weight:900;color:#fff;font-size:16px}
+.tms .t.lead{color:#fff}
+.gst{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;color:var(--mut);white-space:nowrap}
+.gt.in .gst{color:#dfe8ff}
+.gn{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:#4d5f80;font-weight:700}
+.gh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:18px 0 2px;font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-size:19px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#dfe8ff;scroll-margin-top:110px}
+.gh b{color:#fff;margin-left:6px}
+.gh em{font-style:normal;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;color:var(--mut);text-transform:none;letter-spacing:0;white-space:nowrap}
+.gh em.in{color:#dfe8ff}
+.lp{font-size:11.5px;color:#aebcd8;line-height:1.35;margin:4px 0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lp b{color:#fff;font-weight:600}
+.ttl{font-size:11.5px;color:var(--mut);margin-top:6px;line-height:1.4}
+.slip{scroll-margin-top:110px}
 .wrap{max-width:760px;margin:0 auto;padding:14px 16px 60px}
 h2{font-family:'Barlow Condensed',Inter,system-ui,sans-serif;font-size:22px;text-transform:uppercase;letter-spacing:.06em;margin:26px 0 10px;font-weight:800}
 h2 small{font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:.04em;color:var(--mut);font-weight:500;text-transform:none;margin-left:6px}
@@ -137,15 +142,19 @@ table.dv tr.me td{color:var(--g);font-weight:700}
 </head>
 <body>
 <header class="top">
-  <div class="sb" id="sb"><div></div><div class="mid"><b>Loading…</b></div><div></div></div>
-  <div class="wpw" id="wp"></div>
-  <div class="lp" id="lp"></div>
+  <div class="mid" id="mid"><b>Loading…</b></div>
+  <div class="games" id="games"></div>
 </header>
 <main class="wrap" id="app"><div class="loading">Loading your slips…</div></main>
 <div class="toasts" id="toasts"></div>
-<script type="application/json" id="bets-inline">{"note":"Open bets shown on /live. Edit this file to add or remove slips; the page re-reads it on every load. stat: ml | pass_yds | pass_td | rush_yds | rec_yds | rec | atd. min = the number the leg needs (FanDuel '225+' = 225).","season":2026,"games":[{"event":"401872947","team":"NYG","title":"Giants @ Rams","sub":"Monday Night Football \u00b7 FanDuel same-game parlays","lines":{"4689114":{"pass_yds":214.5,"pass_td":1.5,"rush_yds":34.5},"4696981":{"rush_yds":51.5,"rec_yds":10.5,"rec":1.5},"4361050":{"rec_yds":44.5,"rec":4.5},"4682648":{"rec_yds":25.5,"rec":2.5},"4595348":{"rec_yds":61.5,"rec":5.5},"16733":{"rec_yds":3.5},"4040761":{"rush_yds":11.5,"rec_yds":7.5,"rec":1.5}},"slips":[{"id":"A","odds":"+1555","stake":10,"payout":165.51,"legs":[{"p":"Jaxson Dart","pid":"4689114","stat":"pass_yds","min":200},{"p":"Jaxson Dart","pid":"4689114","stat":"rush_yds","min":20},{"p":"Cam Skattebo","pid":"4696981","stat":"rush_yds","min":40},{"p":"Isaiah Likely","pid":"4361050","stat":"rec_yds","min":30},{"p":"Malachi Fields","pid":"4682648","stat":"rec_yds","min":25},{"p":"Isaiah Likely","pid":"4361050","stat":"rec","min":4},{"p":"Malik Nabers","pid":"4595348","stat":"atd","min":1}]},{"id":"B","odds":"+47610","stake":10,"payout":4771.04,"legs":[{"stat":"ml","team":"NYG"},{"p":"Cam Skattebo","pid":"4696981","stat":"atd","min":1},{"p":"Odell Beckham Jr.","pid":"16733","stat":"atd","min":1},{"p":"Jaxson Dart","pid":"4689114","stat":"pass_yds","min":225},{"p":"Isaiah Likely","pid":"4361050","stat":"rec_yds","min":50},{"p":"Jaxson Dart","pid":"4689114","stat":"rush_yds","min":30},{"p":"Cam Skattebo","pid":"4696981","stat":"rush_yds","min":60}]},{"id":"C","odds":"+32040","stake":10,"payout":3214.0,"legs":[{"stat":"ml","team":"NYG"},{"p":"Cam Skattebo","pid":"4696981","stat":"atd","min":1},{"p":"Devin Singletary","pid":"4040761","stat":"atd","min":1},{"p":"Jaxson Dart","pid":"4689114","stat":"pass_yds","min":225},{"p":"Malik Nabers","pid":"4595348","stat":"rec_yds","min":60},{"p":"Isaiah Likely","pid":"4361050","stat":"rec_yds","min":40},{"p":"Jaxson Dart","pid":"4689114","stat":"rush_yds","min":30},{"p":"Cam Skattebo","pid":"4696981","stat":"rush_yds","min":70}]},{"id":"D","odds":"+4479","stake":10,"payout":457.9,"legs":[{"p":"Jaxson Dart","pid":"4689114","stat":"pass_yds","min":225},{"p":"Malik Nabers","pid":"4595348","stat":"rec_yds","min":60},{"p":"Isaiah Likely","pid":"4361050","stat":"rec_yds","min":40},{"p":"Jaxson Dart","pid":"4689114","stat":"rush_yds","min":30},{"p":"Cam Skattebo","pid":"4696981","stat":"rush_yds","min":70},{"p":"Puka Nacua","pid":"4426515","stat":"rec_yds","min":40,"void":true,"why":"Nacua ruled out; FanDuel voided the leg"},{"p":"Isaiah Likely","pid":"4361050","stat":"rec","min":4},{"p":"Malik Nabers","pid":"4595348","stat":"rec","min":4},{"p":"Jaxson Dart","pid":"4689114","stat":"pass_td","min":1}]},{"id":"E","odds":"+2222","stake":10,"payout":232.26,"legs":[{"p":"Jaxson Dart","pid":"4689114","stat":"atd","min":1},{"p":"Jaxson Dart","pid":"4689114","stat":"pass_yds","min":225},{"p":"Jaxson Dart","pid":"4689114","stat":"rush_yds","min":30},{"p":"Jaxson Dart","pid":"4689114","stat":"pass_td","min":1},{"stat":"ml","team":"NYG"}]},{"id":"F","odds":"50% profit boost","stake":10,"payout":1799.7,"legs":[{"stat":"ml","team":"NYG"},{"p":"Malik Nabers","pid":"4595348","stat":"atd","min":1},{"p":"Isaiah Likely","pid":"4361050","stat":"atd","min":1},{"p":"Jaxson Dart","pid":"4689114","stat":"pass_yds","min":225},{"p":"Isaiah Likely","pid":"4361050","stat":"rec_yds","min":20},{"p":"Malik Nabers","pid":"4595348","stat":"rec_yds","min":30},{"p":"Jaxson Dart","pid":"4689114","stat":"rush_yds","min":25},{"p":"Cam Skattebo","pid":"4696981","stat":"rush_yds","min":60},{"p":"Isaiah Likely","pid":"4361050","stat":"rec","min":4}]}]}],"futures":[{"id":"G","team":"NYG","market":"division","label":"Giants to win the NFC East","odds":"+550","stake":60,"payout":390},{"id":"H","team":"NYG","market":"wins_over","line":7.5,"label":"Giants over 7.5 regular-season wins","odds":"+105","stake":100,"payout":205}]}</script>
+<script type="application/json" id="bets-inline">{"note":"Open bets shown on /live. Edit this block to add or remove slips; the page re-reads it on every load. Each leg names its game (ev = ESPN event id). stat: ml | pass_yds | pass_td | rush_yds | rec_yds | rec | atd. min = the number the leg needs (FanDuel '225+' = 225; 'to score 2+ TDs' = atd with min 2). lines = FanDuel's main line per player, used only for the rough chance figures.","season":2026,"week":3,"placed":"2026-09-27","games":[{"event":"401872950","away":"CIN","home":"PIT","kick":"2026-09-27T17:00Z"},{"event":"401872952","away":"KC","home":"MIA","kick":"2026-09-27T17:00Z"},{"event":"401872953","away":"LAC","home":"BUF","kick":"2026-09-27T17:00Z"},{"event":"401872954","away":"NYJ","home":"DET","kick":"2026-09-27T17:00Z"},{"event":"401872955","away":"SEA","home":"WSH","kick":"2026-09-27T17:00Z"},{"event":"401872956","away":"TEN","home":"NYG","kick":"2026-09-27T17:00Z"},{"event":"401872958","away":"ARI","home":"SF","kick":"2026-09-27T20:05Z"},{"event":"401872959","away":"MIN","home":"TB","kick":"2026-09-27T20:05Z"},{"event":"401872961","away":"LV","home":"NO","kick":"2026-09-27T20:25Z"}],"lines":{"3918298":{"pass_yds":239.5,"pass_td":1.5,"rush_yds":34.5},"3915416":{"rec_yds":46.5,"rec":3.5},"4373678":{"rec_yds":41.5,"rec":3.5},"4385690":{"rec_yds":59.5,"rec":4.5},"4379399":{"rush_yds":80.5,"rec_yds":12.5,"rec":1.5},"4696981":{"rush_yds":58.5,"rec_yds":12.5,"rec":1.5},"4595348":{"rec_yds":54.5,"rec":4.5},"4361050":{"rec_yds":39.5,"rec":3.5},"2969939":{"pass_yds":199.5,"pass_td":0.5,"rush_yds":5.5},"4682648":{"rec_yds":23.5,"rec":1.5},"3139477":{"pass_yds":236.5,"pass_td":1.5,"rush_yds":15.5},"4567048":{"rush_yds":85.5,"rec_yds":23.5,"rec":3.5},"15847":{"rec_yds":51.5,"rec":4.5},"4239993":{"rec_yds":53.5,"rec":4.5},"4362628":{"rec_yds":76.5,"rec":6.5},"4362238":{"rush_yds":63.5,"rec_yds":22.5,"rec":3.5},"4374302":{"rec_yds":75.5,"rec":7.5},"4429795":{"rush_yds":89.5,"rec_yds":34.5,"rec":4.5},"4430878":{"rec_yds":93.5,"rec":6.5},"4262921":{"rec_yds":73.5,"rec":5.5},"3117251":{"rush_yds":57.5,"rec_yds":38.5,"rec":4.5},"16737":{"rec_yds":52.5,"rec":4.5},"4890973":{"rush_yds":69.5,"rec_yds":22.5,"rec":3.5}},"slips":[{"id":"A","title":"Chargers @ Bills same-game parlay","odds":"+42702","boost":"50% profit boost (was +28457)","stake":10,"payout":4280.21,"legs":[{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"pass_yds","min":200},{"ev":"401872953","p":"D.J. Moore","pid":"3915416","stat":"rec_yds","min":25},{"ev":"401872953","p":"Khalil Shakir","pid":"4373678","stat":"rec_yds","min":25},{"ev":"401872953","p":"Dalton Kincaid","pid":"4385690","stat":"rec_yds","min":50},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"rush_yds","min":15},{"ev":"401872953","p":"James Cook","pid":"4379399","stat":"rush_yds","min":50},{"ev":"401872953","p":"D.J. Moore","pid":"3915416","stat":"rec","min":4},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"atd","min":1},{"ev":"401872953","p":"Dalton Kincaid","pid":"4385690","stat":"atd","min":2},{"ev":"401872953","p":"D.J. Moore","pid":"3915416","stat":"atd","min":1}]},{"id":"B","title":"Titans @ Giants same-game parlay","odds":"+11295","stake":10,"payout":1139.5,"legs":[{"ev":"401872956","p":"Cam Skattebo","pid":"4696981","stat":"atd","min":1},{"ev":"401872956","p":"Malik Nabers","pid":"4595348","stat":"atd","min":1},{"ev":"401872956","p":"Isaiah Likely","pid":"4361050","stat":"atd","min":1},{"ev":"401872956","p":"Jameis Winston","pid":"2969939","stat":"pass_yds","min":175},{"ev":"401872956","p":"Isaiah Likely","pid":"4361050","stat":"rec_yds","min":25},{"ev":"401872956","p":"Malik Nabers","pid":"4595348","stat":"rec_yds","min":30},{"ev":"401872956","p":"Malachi Fields","pid":"4682648","stat":"rec_yds","min":25},{"ev":"401872956","p":"Cam Skattebo","pid":"4696981","stat":"rush_yds","min":40}]},{"id":"C","title":"SGP+ \u00b7 Chiefs @ Dolphins (+1644) and Bengals @ Steelers (+1401)","odds":"+26095","stake":10,"payout":2619.51,"legs":[{"ev":"401872952","p":"Patrick Mahomes","pid":"3139477","stat":"pass_yds","min":250},{"ev":"401872952","p":"Kenneth Walker III","pid":"4567048","stat":"rush_yds","min":90},{"ev":"401872952","p":"Travis Kelce","pid":"15847","stat":"rec_yds","min":60},{"ev":"401872952","p":"Travis Kelce","pid":"15847","stat":"atd","min":1},{"ev":"401872950","p":"Tee Higgins","pid":"4239993","stat":"atd","min":1},{"ev":"401872950","p":"Ja'Marr Chase","pid":"4362628","stat":"atd","min":1},{"ev":"401872950","p":"Chase Brown","pid":"4362238","stat":"atd","min":1}]},{"id":"D","title":"SGP+ \u00b7 Jets @ Lions (+376) plus five picks","odds":"+45525","stake":10,"payout":4562.58,"legs":[{"ev":"401872954","p":"Amon-Ra St. Brown","pid":"4374302","stat":"rec_yds","min":80},{"ev":"401872954","p":"Jahmyr Gibbs","pid":"4429795","stat":"atd","min":2},{"ev":"401872950","p":"Ja'Marr Chase","pid":"4362628","stat":"rec_yds","min":80},{"ev":"401872955","p":"Jaxon Smith-Njigba","pid":"4430878","stat":"rec_yds","min":80},{"ev":"401872953","p":"James Cook","pid":"4379399","stat":"atd","min":2},{"ev":"401872959","p":"Justin Jefferson","pid":"4262921","stat":"rec_yds","min":80},{"ev":"401872958","p":"Christian McCaffrey","pid":"3117251","stat":"atd","min":2}]},{"id":"E","title":"SGP+ \u00b7 Cardinals @ 49ers (+282), Chargers @ Bills (+239) plus two picks","odds":"+6080","stake":10,"payout":618.01,"legs":[{"ev":"401872958","p":"Christian McCaffrey","pid":"3117251","stat":"atd","min":1},{"ev":"401872958","p":"Mike Evans","pid":"16737","stat":"atd","min":1},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"atd","min":1},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"pass_yds","min":225},{"ev":"401872953","p":"Dalton Kincaid","pid":"4385690","stat":"rec_yds","min":40},{"ev":"401872959","p":"Justin Jefferson","pid":"4262921","stat":"atd","min":1},{"ev":"401872961","p":"Ashton Jeanty","pid":"4890973","stat":"atd","min":1}]},{"id":"F","title":"Chargers @ Bills same-game parlay","odds":"+239","stake":45,"payout":152.7,"legs":[{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"atd","min":1},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"pass_yds","min":225},{"ev":"401872953","p":"Dalton Kincaid","pid":"4385690","stat":"rec_yds","min":40}]}],"futures":[{"id":"G","team":"NYG","market":"division","label":"Giants to win the NFC East","odds":"+550","stake":60,"payout":390},{"id":"H","team":"NYG","market":"wins_over","line":7.5,"label":"Giants over 7.5 regular-season wins","odds":"+105","stake":100,"payout":205}]}</script>
 <script>
 'use strict';
+/* /live — every open slip, across every game it touches, refreshed from ESPN's
+   live box scores. Rebuilt 09/27/2026 for a Sunday slate: the first version
+   tracked one game; slips now carry legs in up to six games with three
+   kickoff windows, so each leg names its game and each game polls on its own
+   clock (fast while it is on, slow before and after). */
 const API='https://site.api.espn.com/apis/site/v2/sports/football/nfl/';
 const STAT={
   pass_yds:{cat:'passing',key:'passingYards',lab:'passing yds',short:'pass yds',yards:1},
@@ -157,16 +166,20 @@ const STAT={
   ml:{lab:'to win',short:'win'}
 };
 const ORDER=['pass_yds','pass_td','rush_yds','rec_yds','rec','atd'];
-const LIVE_MS=15000;
+const LIVE_MS=20000;   // a game that is on
+const SOON_MS=30000;   // kickoff inside 15 minutes
+const PRE_MS=120000;   // not started
+const POST_MS=300000;  // final (stat corrections are rare but happen)
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=n=>'$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const money0=n=>'$'+Math.round(Number(n)).toLocaleString('en-US');
 const num=v=>{const n=parseFloat(v);return Number.isFinite(n)?n:0};
-const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z ]+/g,' ').replace(/\b(jr|sr|ii|iii|iv)\b/g,' ').replace(/\s+/g,' ').trim();
+const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z ]+/g,' ').replace(/\b(jr|sr|ii|iii|iv)\b/g,' ').replace(/\s+/g,' ').trim();
 const surname=n=>{const w=String(n||'').split(' ').filter(x=>!/^(jr\.?|sr\.?|ii|iii|iv)$/i.test(x));return w[w.length-1]||n};
+const clockTime=iso=>new Date(iso).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
 
-let BETS=null,G={},SCHED={},schedAt=0,lastOk=0,timer=null,errMsg='',booted=false;
+let BETS=null,G={},DUE={},SCHED={},schedAt=0,lastOk=0,timer=null,errMsg='',booted=false,inflight=false;
 let prevVal={},prevLeg={},prevSlip={};
 
 async function getJSON(url){
@@ -174,6 +187,28 @@ async function getJSON(url){
   if(!r.ok)throw new Error('HTTP '+r.status);
   return r.json();
 }
+
+/* ---------- bets list shape ----------
+   New shape: games[] (event, away, home, kick), lines{pid:{stat:line}},
+   slips[] whose legs each carry ev (the game). The first version kept slips
+   inside a single game; that shape is lifted into the new one here so an old
+   list still renders. */
+function normalizeBets(b){
+  if(!b.slips){
+    b.slips=[];b.lines=b.lines||{};
+    for(const ev of b.games||[]){
+      Object.assign(b.lines,ev.lines||{});
+      for(const s of ev.slips||[]){for(const l of s.legs)l.ev=l.ev||ev.event;b.slips.push(s);}
+    }
+  }
+  b.lines=b.lines||{};
+  for(const g of b.games)g.event=String(g.event);
+  for(const s of b.slips)for(const l of s.legs)l.ev=String(l.ev||'');
+  return b;
+}
+const gameCfg=ev=>BETS.games.find(g=>g.event===String(ev));
+const gameLegs=ev=>{const out=[];for(const s of BETS.slips)for(const l of s.legs)if(l.ev===String(ev))out.push({s,l});return out};
+const gtag=ev=>{const c=gameCfg(ev);return c?c.away+'@'+c.home:''};
 
 /* ---------- parse ESPN summary ---------- */
 function parseBox(sum){
@@ -219,10 +254,10 @@ const PER=['','1st','2nd','3rd','4th','OT'];
    The flag clears by itself the moment he shows up in a play again. */
 function hurtMap(ev,plays){
   const m={},names=new Map();
-  for(const s of ev.slips)for(const l of s.legs)if(l.p&&!l.void)names.set(l.pid||norm(l.p),l.p);
+  for(const {l} of gameLegs(ev))if(l.p&&!l.void)names.set(l.pid||norm(l.p),l.p);
   for(const [k,n] of names){
     const w=String(n).replace(/\b(Jr|Sr)\.?|\b(II|III|IV)\b/g,'').trim().split(/\s+/);
-    const a=(w[0][0]+'.'+w[w.length-1]).replace('.','\\.');
+    const a=(w[0][0]+'.'+w[w.length-1]).replace(/\./g,'\\.').replace(/'/g,"'?");
     const any=new RegExp('\\b'+a+'\\b'),inj=new RegExp('\\b'+a+' was injured');
     let st=null;
     for(const p of plays){const t=p.text||'';if(!any.test(t))continue;
@@ -231,19 +266,27 @@ function hurtMap(ev,plays){
   }
   return m;
 }
-function buildGame(ev,sum){
+function buildGame(cfg,sum){
   const comp=(sum.header&&sum.header.competitions&&sum.header.competitions[0])||{};
   const st=comp.status||{};const state=(st.type&&st.type.state)||'pre';
   const plays=allPlays(sum);
-  return{ev,sum,comp,st,state,comps:comp.competitors||[],box:parseBox(sum),
+  return{cfg,ev:cfg.event,sum,comp,st,state,comps:comp.competitors||[],box:parseBox(sum),
     tdTexts:(sum.scoringPlays||[]).filter(isTD).map(p=>norm(p.text)+' '),
     frac:clockFrac(st,state),lastPlay:plays[plays.length-1]||null,
-    hurt:state==='in'?hurtMap(ev,plays):{}};
+    hurt:state==='in'?hurtMap(cfg.event,plays):{}};
 }
-const hurtOf=(g,l)=>l.p&&g.hurt?g.hurt[l.pid||norm(l.p)]:null;
+const gameOf=l=>G[l.ev]||null;
+const hurtOf=(g,l)=>g&&l.p&&g.hurt?g.hurt[l.pid||norm(l.p)]:null;
+function gameState(g,cfg){
+  if(!g)return{txt:cfg&&cfg.kick?clockTime(cfg.kick):'—',cls:'pre'};
+  if(g.state==='pre')return{txt:clockTime(g.comp.date||g.cfg.kick),cls:'pre'};
+  if(g.state==='in')return{txt:(g.st.type&&g.st.type.shortDetail)||'Live',cls:'in'};
+  return{txt:(g.st.type&&g.st.type.shortDetail)||'Final',cls:'post'};
+}
+const score=(g,ab)=>{const c=g&&g.comps.find(x=>x.team&&x.team.abbreviation===ab);return c?num(c.score):0};
 
 /* ---------- legs ---------- */
-const player=(g,l)=>(l.pid&&g.box.byId[l.pid])||g.box.byName[norm(l.p)]||null;
+const player=(g,l)=>g?((l.pid&&g.box.byId[l.pid])||g.box.byName[norm(l.p)]||null):null;
 function tds(g,l){
   const r=player(g,l);let n=0;
   if(r)for(const cat in r.c)for(const k in r.c[cat])if(/Touchdowns$/.test(k)&&k!=='passingTouchdowns'&&k!=='defensiveTouchdowns')n+=r.c[cat][k];
@@ -251,6 +294,7 @@ function tds(g,l){
   return Math.max(n,s);
 }
 function value(g,l){
+  if(!g)return 0;
   if(l.stat==='atd')return tds(g,l);
   const d=STAT[l.stat],r=player(g,l);
   return r&&r.c[d.cat]?(r.c[d.cat][d.key]||0):0;
@@ -266,6 +310,7 @@ function moneyline(g,team){
 }
 function evalLeg(g,l){
   if(l.void)return{st:'void'};
+  if(!g)return{cur:0,t:l.min,need:l.min,st:'live',nog:true};
   const post=g.state==='post';
   if(l.stat==='ml'){const m=moneyline(g,l.team);return Object.assign(m,{st:post?(m.a>m.b?'won':m.a<m.b?'lost':'void'):'live'});}
   const d=STAT[l.stat],cur=value(g,l),t=l.min;let st;
@@ -274,30 +319,30 @@ function evalLeg(g,l){
 }
 const HIT=s=>s==='hit'||s==='won'||s==='clear';
 /* ---------- live chance (rough) ----------
-   Each leg starts from the sportsbook line for that player (bets.json "lines",
-   the same lines the parlay page uses) and blends in how the player is actually
-   going: the observed pace gets weight equal to the share of the game played.
-   Yardage: log-normal around that expectation for the time left, spread widening
-   as time runs out. Catches / TDs: Poisson for the time left. Anytime TD prior =
-   expected scrimmage yards / 110. Slip chance multiplies the legs as if they were
-   independent, so it's a guide, not a price. */
+   Each leg starts from the sportsbook line for that player ("lines" in the bets
+   list) and blends in how the player is actually going: the observed pace gets
+   weight equal to the share of the game played. Yardage: log-normal around that
+   expectation for the time left, spread widening as time runs out. Catches /
+   TDs: Poisson for the time left. Anytime TD prior = expected scrimmage yards /
+   110. Slip chance multiplies the legs as if they were independent, so it's a
+   guide, not a price. */
 const CV={pass_yds:.30,rush_yds:.50,rec_yds:.60};
 function ncdf(x){const t=1/(1+.2316419*Math.abs(x)),d=.3989423*Math.exp(-x*x/2);const q=d*t*(.3193815+t*(-.3565638+t*(1.781478+t*(-1.821256+t*1.330274))));return x>0?1-q:q}
 function poisAtLeast(k,lam){if(k<=0)return 1;if(lam<=0)return 0;let term=Math.exp(-lam),cdf=term;for(let i=1;i<k;i++){term*=lam/i;cdf+=term}return Math.max(0,Math.min(1,1-cdf))}
-function prior(ev,l){
-  const L=(ev.lines||{})[l.pid]||{};
+function prior(l){
+  const L=(BETS.lines||{})[l.pid]||{};
   if(l.stat==='atd'){const y=(L.rush_yds||0)+(L.rec_yds||0);return y?Math.max(.03,y/110):null}
   return L[l.stat]!=null?L[l.stat]:null;
 }
-function chance(ev,g,l,r){
+function chance(g,l,r){
   if(r.st==='void')return null;
+  if(!g)return null;
   if(l.stat==='ml')return r.wp;
   if(HIT(r.st))return 1;
   if(r.st==='lost'||g.state==='post')return 0;
   if(hurtOf(g,l))return 0;
   const f=g.frac,rem=1-f;if(rem<=.0005)return 0;
-  // full-game rate: the line counts as 1.5 games of evidence, tonight's output as f games
-  const K=1.5,base=prior(ev,l);
+  const K=1.5,base=prior(l);
   let full;
   if(base==null){if(f<=.02)return null;full=r.cur/f}
   else full=(K*base+r.cur)/(K+f);
@@ -305,67 +350,53 @@ function chance(ev,g,l,r){
   if(!STAT[l.stat].yards)return poisAtLeast(need,Math.max(1e-4,full*rem));
   const m=Math.max(.5,full*rem),cv=Math.min(2.5,(CV[l.stat]||.5)/Math.sqrt(rem)),sg=Math.sqrt(Math.log(1+cv*cv));
   let pr=1-ncdf((Math.log(need)-Math.log(m))/sg);
-  // a low-volume receiver can simply not be thrown to again: scale by the chance of at least one more catch
-  const L=(ev.lines||{})[l.pid]||{};
+  const L=(BETS.lines||{})[l.pid]||{};
   if(l.stat==='rec_yds'&&L.rec){const rc=value(g,{stat:'rec',p:l.p,pid:l.pid}),rate=(K*L.rec+rc)/(K+f);pr*=1-Math.exp(-rate*rem)}
   return pr;
 }
 const pct=p=>p==null?'':p>=.995?'99%':p<.01?(p<=0?'0%':'<1%'):Math.round(p*100)+'%';
 const pct1=p=>p==null?'':p>=.995?'99%':p<.001?(p<=0?'0%':'<0.1%'):p<.1?(p*100).toFixed(1)+'%':Math.round(p*100)+'%';
-function evalSlip(ev,g,s){
-  const legs=s.legs.map(l=>{const r=evalLeg(g,l);return{l,r,p:chance(ev,g,l,r)}});
+function evalSlip(s){
+  const legs=s.legs.map(l=>{const g=gameOf(l),r=evalLeg(g,l);return{l,g,r,p:chance(g,l,r)}});
   const act=legs.filter(x=>x.r.st!=='void');
   const hit=act.filter(x=>HIT(x.r.st)).length;
   let st='alive';
   if(act.some(x=>x.r.st==='lost'))st='lost';
-  else if(g.state==='post'&&act.every(x=>x.r.st==='won'))st='won';
-  let p=st==='won'?1:st==='lost'?0:act.reduce((a,x)=>a==null||x.p==null?null:a*x.p,1);
-  return{legs,act,hit,st,p};
+  else if(act.length&&act.every(x=>x.r.st==='won'))st='won';
+  const p=st==='won'?1:st==='lost'?0:act.reduce((a,x)=>a==null||x.p==null?null:a*x.p,1);
+  const evs=[...new Set(s.legs.map(l=>l.ev))];
+  const done=evs.every(ev=>G[ev]&&G[ev].state==='post');
+  return{legs,act,hit,st,p,evs,done};
 }
 function legName(g,l,withName){
   const d=STAT[l.stat];
-  if(l.stat==='ml'){const m=g.comps.find(c=>c.team&&c.team.abbreviation===l.team);return (m?m.team.name:l.team)+' to win';}
+  if(l.stat==='ml'){const m=g&&g.comps.find(c=>c.team&&c.team.abbreviation===l.team);return (m?m.team.name:l.team)+' to win';}
   const who=withName?surname(l.p)+' ':'';
-  if(l.stat==='atd')return who+'anytime TD';
+  if(l.stat==='atd')return who+(l.min>=2?l.min+'+ TDs':'anytime TD');
   return who+l.min+'+ '+d.lab;
 }
-function legKey(l){return l.stat==='ml'?'ml:'+l.team:(l.pid||norm(l.p))+':'+l.stat}
-function needText(g,x){
+function legKey(l){return l.ev+':'+(l.stat==='ml'?'ml:'+l.team:(l.pid||norm(l.p))+':'+l.stat)}
+function needText(x){
   const l=x.l,r=x.r;
-  if(l.stat==='ml')return '<b>'+esc(legName(g,l))+'</b>'+(r.wp!=null?' ('+Math.round(r.wp*100)+'%)':'');
-  if(l.stat==='atd')return '<b>'+esc(surname(l.p))+' TD</b>';
+  if(l.stat==='ml')return '<b>'+esc(legName(x.g,l))+'</b>'+(r.wp!=null?' ('+Math.round(r.wp*100)+'%)':'');
+  if(l.stat==='atd')return '<b>'+esc(surname(l.p))+' '+(l.min>=2?(l.min-r.cur)+' more TD'+(l.min-r.cur===1?'':'s'):'TD')+'</b>';
   return '<b>'+esc(surname(l.p))+' +'+r.need+'</b> '+STAT[l.stat].short;
 }
 
 /* ---------- render ---------- */
 function renderTop(){
-  const ev=BETS.games[0],g=G[ev.event];if(!g)return;
-  const away=g.comps.find(c=>c.homeAway==='away')||{},home=g.comps.find(c=>c.homeAway==='home')||{};
-  const side=(c,right)=>{
-    const ab=(c.team&&c.team.abbreviation)||'';const mine=ab===ev.team;
-    const other=c===away?home:away;const lead=num(c.score)>num(other.score)?'lead':num(c.score)<num(other.score)?'trail':'';
-    const sc='<span class="sc">'+(g.state==='pre'?'–':esc(c.score||'0'))+'</span>',tag='<span class="ab">'+esc(ab)+'</span>';
-    return '<div class="tm '+(right?'r ':'')+(mine?'me ':'op ')+lead+'">'+(right?sc+tag:tag+sc)+'</div>';
-  };
-  let mid;
-  if(g.state==='pre'){
-    const d=new Date(g.comp.date);
-    mid='<span class="dot off"></span>Kickoff<b>'+d.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})+'</b>';
-  }else if(g.state==='in'){
-    mid='<span class="dot"></span>Live<b>'+esc(g.st.type.shortDetail||'')+'</b>';
-  }else mid='Final<b>'+esc(g.st.type.shortDetail||'Final')+'</b>';
-  $('sb').innerHTML=side(away,false)+'<div class="mid" id="mid" title="Tap to refresh">'+mid+'<span id="ago"></span></div>'+side(home,true);
-  $('mid').onclick=()=>tick(true);
-  const m=moneyline(g,ev.team);
-  if(m.wp!=null&&g.state!=='post'){
-    const p=Math.round(m.wp*100),mine=m.me.team.abbreviation,opp=m.op.team.abbreviation;
-    $('wp').innerHTML='<div class="wpb"><i style="width:'+p+'%"></i></div><div class="wpl"><span>'+esc(mine)+' win chance <b>'+p+'%</b></span><span>'+esc(opp)+' <b>'+(100-p)+'%</b></span></div>';
-  }else $('wp').innerHTML='';
-  const lp=g.lastPlay;
-  if(g.state==='in'&&lp){
-    const dd=lp.end&&lp.end.downDistanceText;
-    $('lp').innerHTML=(dd?'<b>'+esc(dd)+'</b> · ':'')+esc(String(lp.text||'').trim());
-  }else $('lp').innerHTML='';
+  // one tile per game, in kickoff order; the tile lights up while the game is on
+  const live=Object.values(G).some(g=>g.state==='in');
+  let h='';
+  for(const cfg of BETS.games){
+    const g=G[cfg.event],s=gameState(g,cfg);
+    const a=g?score(g,cfg.away):'',b=g?score(g,cfg.home):'';
+    const la=g&&a>b?' lead':'',lb=g&&b>a?' lead':'';
+    const n=gameLegs(cfg.event).length;
+    h+='<a class="gt '+s.cls+'" href="#g-'+cfg.event+'"><span class="tms"><span class="t'+la+'">'+esc(cfg.away)+'<b>'+(g&&g.state!=='pre'?a:'')+'</b></span><span class="t'+lb+'">'+esc(cfg.home)+'<b>'+(g&&g.state!=='pre'?b:'')+'</b></span></span><span class="gst">'+(s.cls==='in'?'<span class="dot"></span>':'')+esc(s.txt)+'</span><span class="gn">'+n+' leg'+(n===1?'':'s')+'</span></a>';
+  }
+  $('games').innerHTML=h;
+  $('mid').innerHTML=(live?'<span class="dot"></span>Live':'<span class="dot off"></span>Week '+esc(BETS.week||''))+' <span id="ago"></span><span class="tap">· tap to refresh</span>';
   updAgo();
 }
 function updAgo(){
@@ -374,7 +405,7 @@ function updAgo(){
   const s=Math.round((Date.now()-lastOk)/1000);
   const live=Object.values(G).some(g=>g.state==='in');
   el.textContent=errMsg?'retrying…':(s<5?'just updated':'updated '+(s<90?s+'s':Math.round(s/60)+'m')+' ago');
-  el.className=(errMsg||(live&&s>60))?'stale':'';
+  el.className=(errMsg||(live&&s>75))?'stale':'';
 }
 function bar(cur,ts){
   const top=ts[ts.length-1].t;const mx=Math.max(top*1.15,cur*1.04,1);
@@ -395,12 +426,12 @@ function statLine(r){
   const re=r.s.receiving;if(re)o.push(re.receptions+' rec '+re.receivingYards+' yds'+(re.receivingTargets!=null&&re.receivingTargets!==''?' ('+re.receivingTargets+' tgt)':'')+(num(re.receivingTouchdowns)?' · '+re.receivingTouchdowns+' TD':''));
   return o.join('  ·  ')||'no stats yet';
 }
-function board(ev,g,flash){
-  // group legs: player -> stat -> threshold -> slips
-  const P=new Map();let ml=null;
-  for(const s of ev.slips)for(const l of s.legs){
-    if(l.stat==='ml'){ml=ml||{l,slips:[]};ml.slips.push(s.id);continue;}
-    const pk=l.pid||norm(l.p);
+function board(flash){
+  // group legs: game -> player -> stat -> threshold -> slips
+  const P=new Map();const ML=new Map();
+  for(const s of BETS.slips)for(const l of s.legs){
+    if(l.stat==='ml'){const k=l.ev+':'+l.team;if(!ML.has(k))ML.set(k,{l,slips:[]});ML.get(k).slips.push(s.id);continue;}
+    const pk=l.ev+':'+(l.pid||norm(l.p));
     if(!P.has(pk))P.set(pk,{l,slips:new Set(),stats:new Map()});
     const p=P.get(pk);p.slips.add(s.id);
     if(!p.stats.has(l.stat))p.stats.set(l.stat,new Map());
@@ -409,71 +440,89 @@ function board(ev,g,flash){
     const e=m.get(l.min);e.slips.push(s.id);if(l.void)e.voids++;
   }
   let h='';
-  if(ml){
-    const r=evalLeg(g,ml.l),mine=r.me.team?r.me.team.name:ev.team;
-    const lead=r.a>r.b?'leads':r.a<r.b?'trails':'tied';
-    const state=g.state==='pre'?'Not started':g.state==='post'?(r.st==='won'?'Won':r.st==='lost'?'Lost':'Tie'):(mine+' '+lead+' '+r.a+'–'+r.b);
-    h+='<div class="card pc"><h3>'+esc(mine)+' to win <em>'+ml.slips.length+' slips</em></h3>'
-      +'<div class="rh" style="margin-top:8px"><span>'+esc(state)+'</span><b>'+(r.wp!=null?Math.round(r.wp*100)+'%':'')+(r.wp!=null?'<small>win chance</small>':'')+'</b></div>'
-      +'<div class="chs" style="margin-top:8px"><span class="ch '+(r.st==='won'?'ok':r.st==='lost'?'no':'')+'">'+ml.slips.join(' ')+'</span></div></div>';
-  }
-  const arr=[...P.values()].sort((a,b)=>b.slips.size-a.slips.size);
-  for(const p of arr){
-    const r=player(g,p.l);
-    const allVoid=[...p.stats.values()].every(m=>[...m.values()].every(e=>e.voids===e.slips.length));
-    h+='<div class="card pc'+(allVoid?' lost':'')+'"><h3>'+esc(p.l.p)+' <em>'+[...p.slips].sort().join(' ')+'</em></h3><div class="sl">'+esc(allVoid?(p.l.why||'void'):statLine(r))+'</div>'+(!allVoid&&hurtOf(g,p.l)?'<div class="chs" style="margin:4px 0 2px"><span class="ch hr">Hurt at '+esc(hurtOf(g,p.l).when)+' · not in a play since</span></div>':'');
-    if(allVoid){h+='</div>';continue;}
-    const stats=[...p.stats.keys()].sort((a,b)=>ORDER.indexOf(a)-ORDER.indexOf(b));
-    for(const k of stats){
-      const d=STAT[k],ts=[...p.stats.get(k).values()].sort((a,b)=>a.t-b.t);
-      const cur=value(g,{stat:k,p:p.l.p,pid:p.l.pid});
-      const key=(p.l.pid||norm(p.l.p))+':'+k;
-      const post=g.state==='post';
-      let pace='';
-      if(d.yards&&g.state==='in'&&g.frac>=0.12)pace='<span class="pace">on pace for '+Math.round(cur/g.frac)+'</span>';
-      h+='<div class="row'+(flash.has(key)?' fl':'')+'"><div class="rh"><span>'+(k==='atd'?'Anytime TD':d.lab)+'</span>'+pace+'<b>'+cur+'</b></div>';
-      h+=d.yards?bar(cur,ts):pips(cur,ts[ts.length-1].t);
-      h+='<div class="chs">'+ts.map(e=>{
-        const allv=e.voids===e.slips.length;
-        const cls=allv?'vd':cur>=e.t?(post||!d.yards?'ok':'so'):post?'no':'';
-        const lg={stat:k,p:p.l.p,pid:p.l.pid,min:e.t},rr=evalLeg(g,lg),pp=allv?null:chance(ev,g,lg,rr);
-        const lab=(k==='atd'?'TD':e.t+'+')+' · '+e.slips.join(' ')+(cur>=e.t&&!allv?' ✓':(pp!=null&&rr.st==='live'?' · '+pct(pp):''));
-        return '<span class="ch '+cls+'">'+esc(lab)+'</span>';
-      }).join('')+'</div></div>';
+  for(const cfg of BETS.games){
+    const g=G[cfg.event],s=gameState(g,cfg);
+    const players=[...P.values()].filter(p=>p.l.ev===cfg.event).sort((a,b)=>b.slips.size-a.slips.size);
+    const mls=[...ML.values()].filter(m=>m.l.ev===cfg.event);
+    if(!players.length&&!mls.length)continue;
+    const sc=g&&g.state!=='pre'?' <b>'+score(g,cfg.away)+'–'+score(g,cfg.home)+'</b>':'';
+    h+='<h3 class="gh" id="g-'+cfg.event+'"><span>'+esc(cfg.away)+' @ '+esc(cfg.home)+sc+'</span><em class="'+s.cls+'">'+(s.cls==='in'?'<span class="dot"></span>':'')+esc(s.txt)+'</em></h3>';
+    if(g&&g.state==='in'&&g.lastPlay){const lp=g.lastPlay,dd=lp.end&&lp.end.downDistanceText;h+='<div class="lp">'+(dd?'<b>'+esc(dd)+'</b> · ':'')+esc(String(lp.text||'').trim())+'</div>';}
+    for(const ml of mls){
+      const r=evalLeg(g,ml.l),mine=r.me&&r.me.team?r.me.team.name:ml.l.team;
+      const lead=r.a>r.b?'leads':r.a<r.b?'trails':'tied';
+      const state=!g||g.state==='pre'?'Not started':g.state==='post'?(r.st==='won'?'Won':r.st==='lost'?'Lost':'Tie'):(mine+' '+lead+' '+r.a+'–'+r.b);
+      h+='<div class="card pc"><h3>'+esc(mine)+' to win <em>'+ml.slips.join(' ')+'</em></h3>'
+        +'<div class="rh" style="margin-top:8px"><span>'+esc(state)+'</span><b>'+(r.wp!=null?Math.round(r.wp*100)+'%':'')+(r.wp!=null?'<small>win chance</small>':'')+'</b></div></div>';
     }
-    h+='</div>';
+    for(const p of players){
+      const r=player(g,p.l);
+      const allVoid=[...p.stats.values()].every(m=>[...m.values()].every(e=>e.voids===e.slips.length));
+      h+='<div class="card pc'+(allVoid?' lost':'')+'"><h3>'+esc(p.l.p)+' <em>'+[...p.slips].sort().join(' ')+'</em></h3><div class="sl">'+esc(allVoid?(p.l.why||'void'):(g&&g.state!=='pre'?statLine(r):'not started'))+'</div>'+(!allVoid&&hurtOf(g,p.l)?'<div class="chs" style="margin:4px 0 2px"><span class="ch hr">Hurt at '+esc(hurtOf(g,p.l).when)+' · not in a play since</span></div>':'');
+      if(allVoid){h+='</div>';continue;}
+      const stats=[...p.stats.keys()].sort((a,b)=>ORDER.indexOf(a)-ORDER.indexOf(b));
+      for(const k of stats){
+        const d=STAT[k],ts=[...p.stats.get(k).values()].sort((a,b)=>a.t-b.t);
+        const cur=value(g,{stat:k,p:p.l.p,pid:p.l.pid});
+        const key=legKey({ev:p.l.ev,stat:k,p:p.l.p,pid:p.l.pid});
+        const post=g&&g.state==='post';
+        let pace='';
+        if(d.yards&&g&&g.state==='in'&&g.frac>=0.12)pace='<span class="pace">on pace for '+Math.round(cur/g.frac)+'</span>';
+        h+='<div class="row'+(flash.has(key)?' fl':'')+'"><div class="rh"><span>'+(k==='atd'?'Touchdowns':d.lab)+'</span>'+pace+'<b>'+cur+'</b></div>';
+        h+=d.yards?bar(cur,ts):pips(cur,ts[ts.length-1].t);
+        h+='<div class="chs">'+ts.map(e=>{
+          const allv=e.voids===e.slips.length;
+          const cls=allv?'vd':cur>=e.t?(post||!d.yards?'ok':'so'):post?'no':'';
+          const lg={ev:p.l.ev,stat:k,p:p.l.p,pid:p.l.pid,min:e.t},rr=evalLeg(g,lg),pp=allv?null:chance(g,lg,rr);
+          const lab=(k==='atd'?(e.t>=2?e.t+'+ TD':'TD'):e.t+'+')+' · '+e.slips.join(' ')+(cur>=e.t&&!allv?' ✓':(pp!=null&&rr.st==='live'?' · '+pct(pp):''));
+          return '<span class="ch '+cls+'">'+esc(lab)+'</span>';
+        }).join('')+'</div></div>';
+      }
+      h+='</div>';
+    }
   }
   return h;
 }
-function slipCard(ev,g,s,res,flash){
+function slipCard(s,res,flash){
   const icon={hit:'✓',won:'✓',clear:'✓',lost:'✕',void:'–',live:''};
   const cls={hit:'h',won:'w',clear:'c',lost:'l',void:'v',live:''};
+  const multi=res.evs.length>1;
   let rows='';
   for(const x of res.legs){
-    const l=x.l,r=x.r;let right='',sub='';
+    const l=x.l,r=x.r,g=x.g;let right='',sub='';
+    const tag=multi?gtag(l.ev)+' · ':'';
+    const gs=gameState(g,gameCfg(l.ev));
     if(r.st==='void')right='void',sub=l.why||'';
     else if(l.stat==='ml'){
-      right=g.state==='pre'?'—':r.a+'–'+r.b;
+      right=!g||g.state==='pre'?'—':r.a+'–'+r.b;
       sub=r.wp!=null&&g.state!=='post'?Math.round(r.wp*100)+'% win chance':'';
     }else if(l.stat==='atd'){
       right=r.cur>0?r.cur+' TD':'no TD yet';
-      if(r.st==='live'&&x.p!=null)sub=hurtOf(g,l)?'hurt, out since '+hurtOf(g,l).when:pct(x.p)+' chance';
-      if(g.state==='post'&&r.cur===0)right='no TD';
+      if(!g||g.state==='pre')sub=tag+gs.txt;
+      else if(r.st==='live'&&x.p!=null)sub=tag+(hurtOf(g,l)?'hurt, out since '+hurtOf(g,l).when:pct(x.p)+' chance');
+      else if(r.st==='live')sub=tag+gs.txt;
+      else sub=tag+(g.state==='post'?'final':gs.txt);
+      if(g&&g.state==='post'&&r.cur===0)right='no TD';
+      if(l.min>=2)right=r.cur+' / '+l.min+' TD';
     }else{
       right=r.cur+' / '+r.t;
-      if(r.st==='clear')sub='over so far';
-      else if(r.st==='live')sub=hurtOf(g,l)?'needs '+r.need+' · hurt, out since '+hurtOf(g,l).when:'needs '+r.need+(x.p!=null?' · '+pct(x.p)+' chance':'');
+      if(!g||g.state==='pre')sub=tag+gs.txt;
+      else if(r.st==='clear')sub=tag+'over so far';
+      else if(r.st==='live')sub=tag+(hurtOf(g,l)?'needs '+r.need+' · hurt, out since '+hurtOf(g,l).when:'needs '+r.need+(x.p!=null?' · '+pct(x.p)+' chance':''));
+      else sub=tag+(g.state==='post'?'final':gs.txt);
       right+='<div class="mb"><i style="width:'+Math.min(100,r.cur/r.t*100).toFixed(1)+'%"></i></div>';
     }
     const k=legKey(l);
     rows+='<div class="lg '+cls[r.st]+(flash.has(k)?' fl':'')+'"><span class="ic">'+icon[r.st]+'</span><div class="nm">'+esc(legName(g,l,true))+(sub?'<small>'+esc(sub)+'</small>':'')+'</div><div class="vl">'+right+'</div></div>';
   }
-  const live=res.legs.filter(x=>x.r.st==='live');
-  const need=res.st==='alive'&&live.length?'<div class="need">Still needs: '+live.map(x=>needText(g,x)).join(', ')+'</div>':'';
+  const live=res.legs.filter(x=>x.r.st==='live'&&x.g&&x.g.state!=='pre');
+  const later=res.legs.filter(x=>x.r.st==='live'&&(!x.g||x.g.state==='pre')).length;
+  const need=res.st==='alive'&&(live.length||later)?'<div class="need">'+(live.length?'Still needs: '+live.map(needText).join(', '):'')+(later?(live.length?' · ':'')+later+' leg'+(later===1?'':'s')+' not started':'')+'</div>':'';
   const tag=res.st==='won'?'Won':res.st==='lost'?'Lost':(res.hit+' of '+res.act.length+' in');
   const odds=res.st==='alive'&&res.p!=null?'<span class="od">'+(res.p<.001?'':'~')+pct1(res.p)+' to cash</span>':'';
   return '<div class="card slip '+res.st+'" id="slip-'+esc(s.id)+'"><div class="hd"><span class="id">'+esc(s.id)+'</span><span class="tag '+res.st+'">'+esc(tag)+'</span><span class="od">'+esc(s.odds||'')+'</span>'+odds
-    +'<span class="pay">'+money0(s.stake)+' to win<b>'+money(s.payout)+'</b></span></div>'+need+'<div style="margin-top:6px">'+rows+'</div></div>';
+    +'<span class="pay">'+money0(s.stake)+' to win<b>'+money(s.payout)+'</b></span></div>'
+    +'<div class="ttl">'+esc(s.title||'')+(s.boost?' · '+esc(s.boost):'')+'</div>'+need+'<div style="margin-top:6px">'+rows+'</div></div>';
 }
 function futures(){
   const F=BETS.futures||[];if(!F.length)return '';
@@ -494,16 +543,18 @@ function futures(){
       const needW=Math.floor(f.line)+1,left=(total||17)-played,more=Math.max(0,needW-w);
       body=more===0?'<p><b>Cashed:</b> '+w+' wins already clears '+f.line+'.</p>'
         :more>left?'<p>'+w+' wins with '+left+' games left: can’t reach '+needW+'.</p>'
-        :'<p>Record <b>'+rec+'</b>'+(live?' (tonight not counted yet)':'')+'. Needs <b>'+more+' more wins</b> from '+left+' games left ('+needW+' total).</p>';
+        :'<p>Record <b>'+rec+'</b>'+(live?' (today not counted yet)':'')+'. Needs <b>'+more+' more wins</b> from '+left+' games left ('+needW+' total).</p>';
     }
     if(f.market==='division'){
-      const g0=G[BETS.games[0].event];const grp=g0&&g0.sum.standings&&(g0.sum.standings.groups||[]).find(x=>(x.standings&&x.standings.entries||[]).some(e=>abbr(e)===f.team));
+      // the standings block rides along in any game summary; take the one with this team in it
+      let grp=null;
+      for(const g of Object.values(G)){grp=g.sum.standings&&(g.sum.standings.groups||[]).find(x=>(x.standings&&x.standings.entries||[]).some(e=>abbr(e)===f.team));if(grp)break;}
       if(grp){
         const rows=grp.standings.entries.map(e=>{const s=k=>{const x=(e.stats||[]).find(y=>y.name===k);return x?num(x.value):0};return{ab:abbr(e),name:e.team,w:s('wins'),l:s('losses'),t:s('ties')}});
         rows.sort((a,b)=>(b.w+b.t/2)/Math.max(1,b.w+b.l+b.t)-(a.w+a.t/2)/Math.max(1,a.w+a.l+a.t)||b.w-a.w);
         const lead=rows[0],me=rows.find(r=>r.ab===f.team);
         const gb=me?((lead.w-me.w)+(me.l-lead.l))/2:0;
-        body='<p>'+(me===lead?'<b>'+esc(f.team)+' lead the division</b>':'<b>'+gb+' game'+(gb===1?'':'s')+' back</b> of '+esc(lead.name))+(live?' — standings before tonight’s result.':'.')+'</p>'
+        body='<p>'+(me===lead?'<b>'+esc(f.team)+' lead the division</b>':'<b>'+gb+' game'+(gb===1?'':'s')+' back</b> of '+esc(lead.name))+(live?' — standings before today’s results.':'.')+'</p>'
           +'<table class="dv">'+rows.map(r=>'<tr class="'+(r.ab===f.team?'me':'')+'"><td>'+esc(r.name)+'</td><td class="n">'+r.w+'–'+r.l+(r.t?'–'+r.t:'')+'</td></tr>').join('')+'</table>';
       }
     }
@@ -511,7 +562,7 @@ function futures(){
   }
   return h;
 }
-function abbr(e){const m=/\/name\/([a-z]+)\//i.exec(e.link||'');return m?m[1].toUpperCase().replace('WSH','WSH'):'';}
+function abbr(e){const m=/\/name\/([a-z]+)\//i.exec(e.link||'');return m?m[1].toUpperCase():'';}
 function toast(msg,bad){
   const el=document.createElement('div');el.className='toast'+(bad?' bad':'');el.textContent=msg;
   $('toasts').appendChild(el);setTimeout(()=>el.remove(),7000);
@@ -520,46 +571,44 @@ function toast(msg,bad){
 function render(){
   const flash=new Set();let html='';
   if(errMsg)html+='<div class="err">'+esc(errMsg)+'</div>';
-  for(const ev of BETS.games){const g=G[ev.event];if(!g)continue;
+  for(const ev in G){const g=G[ev];
     for(const k in g.hurt){const h=g.hurt[k];
-      const ids=ev.slips.filter(s=>s.legs.some(l=>!l.void&&(l.pid||norm(l.p))===k)).map(s=>s.id);
-      html+='<div class="hurt"><b>'+esc(h.name)+' was injured at '+esc(h.when)+'</b> and hasn’t been in a play since. His legs count as 0% until he’s back'+(ids.length?' (on slips '+ids.join(', ')+')':'')+'.</div>';}}
-  const newly=[];
-  for(const ev of BETS.games){
-    const g=G[ev.event];if(!g)continue;
-    // detect changed values for flashes
-    for(const s of ev.slips)for(const l of s.legs){
-      if(l.void)continue;const k=legKey(l);
-      const v=l.stat==='ml'?moneyline(g,l.team).a+':'+moneyline(g,l.team).b:value(g,l);
-      if(booted&&prevVal[k]!==undefined&&prevVal[k]!==v)flash.add(k);
-      prevVal[k]=v;
-    }
-    const res=ev.slips.map(s=>evalSlip(ev,g,s));
-    // toasts for legs that just came in and slips that just died
-    const seen=new Set();
-    res.forEach((r,i)=>{const s=ev.slips[i];
-      r.legs.forEach((x,j)=>{const pk=ev.event+s.id+j,was=prevLeg[pk];prevLeg[pk]=x.r.st;
-        if(booted&&was&&!HIT(was)&&HIT(x.r.st)){const k=legKey(x.l)+':'+x.l.min;if(!seen.has(k)){seen.add(k);newly.push({l:x.l,ids:res.map((rr,ii)=>rr.legs.some(y=>legKey(y.l)===legKey(x.l)&&y.l.min===x.l.min&&HIT(y.r.st))?ev.slips[ii].id:null).filter(Boolean)});}}
-      });
-      const ps=prevSlip[ev.event+s.id];prevSlip[ev.event+s.id]=r.st;
-      if(booted&&ps&&ps!==r.st){if(r.st==='lost')toast('Slip '+s.id+' is out',true);if(r.st==='won')toast('Slip '+s.id+' cashed: '+money(s.payout));}
-    });
-    newly.forEach(n=>toast('✓ '+legName(g,n.l,true)+' — '+n.ids.join(' ')));
-    const staked=ev.slips.reduce((a,s)=>a+s.stake,0),max=ev.slips.reduce((a,s)=>a+s.payout,0);
-    const alive=res.reduce((a,r,i)=>a+(r.st!=='lost'?ev.slips[i].payout:0),0);
-    const nAlive=res.filter(r=>r.st!=='lost').length;
-    const worth=res.reduce((a,r,i)=>a+(r.p==null?0:r.p*ev.slips[i].payout),0),known=res.every(r=>r.p!=null);
-    html+='<div class="sum"><div><span>Staked</span><b>'+money0(staked)+'</b></div><div><span>'+(g.state==='post'?'Returned':'Still alive')+'</span><b class="g">'+(g.state==='post'?money(res.reduce((a,r,i)=>a+(r.st==='won'?ev.slips[i].payout:0),0)):money0(alive))+'</b></div><div><span>'+(g.state==='post'?'Slips won':'Slips alive')+'</span><b>'+(g.state==='post'?res.filter(r=>r.st==='won').length:nAlive)+' / '+ev.slips.length+'</b></div>'+(g.state!=='post'&&known?'<div><span>Worth now*</span><b>'+money0(worth)+'</b></div>':'')+'</div>';
-    html+='<div class="strip">'+res.map((r,i)=>{const s=ev.slips[i];
-      const dots=r.legs.map(x=>'<i class="'+({hit:'h',won:'h',clear:'c',lost:'l',void:'v',live:''}[x.r.st])+'"></i>').join('');
-      const lab=r.st==='won'?'won':r.st==='lost'?'out':'alive';
-      return '<a class="chip '+r.st+'" href="#slip-'+esc(s.id)+'"><span class="id">'+esc(s.id)+'</span><span class="st">'+lab+'</span><div class="ct">'+r.hit+'/'+r.act.length+' in'+(r.st==='alive'&&r.p!=null?' · '+pct1(r.p):'')+'</div><div class="po">'+money0(s.payout)+'</div><div class="dots">'+dots+'</div></a>';
-    }).join('')+'</div>';
-    html+='<h2>By player<small>every line you need, live</small></h2>'+board(ev,g,flash);
-    html+='<h2>Your slips<small>'+esc(ev.sub||'')+'</small></h2>'+res.map((r,i)=>slipCard(ev,g,ev.slips[i],r,flash)).join('');
+      const ids=BETS.slips.filter(s=>s.legs.some(l=>!l.void&&l.ev===ev&&(l.pid||norm(l.p))===k)).map(s=>s.id);
+      html+='<div class="hurt"><b>'+esc(h.name)+' was injured at '+esc(h.when)+'</b> ('+esc(gtag(ev))+') and hasn’t been in a play since. His legs count as 0% until he’s back'+(ids.length?' (on slips '+ids.join(', ')+')':'')+'.</div>';}}
+  // detect changed values for flashes
+  for(const s of BETS.slips)for(const l of s.legs){
+    if(l.void)continue;const g=gameOf(l);if(!g)continue;const k=legKey(l);
+    const v=l.stat==='ml'?moneyline(g,l.team).a+':'+moneyline(g,l.team).b:value(g,l);
+    if(booted&&prevVal[k]!==undefined&&prevVal[k]!==v)flash.add(k);
+    prevVal[k]=v;
   }
+  const res=BETS.slips.map(evalSlip);
+  // toasts for legs that just came in and slips that just settled
+  const newly=[],seen=new Set();
+  res.forEach((r,i)=>{const s=BETS.slips[i];
+    r.legs.forEach((x,j)=>{const pk=s.id+':'+j,was=prevLeg[pk];prevLeg[pk]=x.r.st;
+      if(booted&&was&&!HIT(was)&&HIT(x.r.st)){const k=legKey(x.l)+':'+x.l.min;if(!seen.has(k)){seen.add(k);newly.push({l:x.l,g:x.g,ids:res.map((rr,ii)=>rr.legs.some(y=>legKey(y.l)===legKey(x.l)&&y.l.min===x.l.min&&HIT(y.r.st))?BETS.slips[ii].id:null).filter(Boolean)});}}
+    });
+    const ps=prevSlip[s.id];prevSlip[s.id]=r.st;
+    if(booted&&ps&&ps!==r.st){if(r.st==='lost')toast('Slip '+s.id+' is out',true);if(r.st==='won')toast('Slip '+s.id+' cashed: '+money(s.payout));}
+  });
+  newly.forEach(n=>toast('✓ '+legName(n.g,n.l,true)+' — '+n.ids.join(' ')));
+  const allDone=res.every(r=>r.done);
+  const staked=BETS.slips.reduce((a,s)=>a+s.stake,0);
+  const alive=res.reduce((a,r,i)=>a+(r.st!=='lost'?BETS.slips[i].payout:0),0);
+  const nAlive=res.filter(r=>r.st!=='lost').length;
+  const worth=res.reduce((a,r,i)=>a+(r.p==null?0:r.p*BETS.slips[i].payout),0),known=res.every(r=>r.p!=null);
+  const won=res.reduce((a,r,i)=>a+(r.st==='won'?BETS.slips[i].payout:0),0);
+  html+='<div class="sum"><div><span>Staked</span><b>'+money0(staked)+'</b></div><div><span>'+(allDone?'Returned':'Still alive')+'</span><b class="g">'+(allDone?money(won):money0(alive))+'</b></div><div><span>'+(allDone?'Slips won':'Slips alive')+'</span><b>'+(allDone?res.filter(r=>r.st==='won').length:nAlive)+' / '+BETS.slips.length+'</b></div>'+(!allDone&&known?'<div><span>Worth now*</span><b>'+money0(worth)+'</b></div>':'')+'</div>';
+  html+='<div class="strip">'+res.map((r,i)=>{const s=BETS.slips[i];
+    const dots=r.legs.map(x=>'<i class="'+({hit:'h',won:'h',clear:'c',lost:'l',void:'v',live:''}[x.r.st])+'"></i>').join('');
+    const lab=r.st==='won'?'won':r.st==='lost'?'out':'alive';
+    return '<a class="chip '+r.st+'" href="#slip-'+esc(s.id)+'"><span class="id">'+esc(s.id)+'</span><span class="st">'+lab+'</span><div class="ct">'+r.hit+'/'+r.act.length+' in'+(r.st==='alive'&&r.p!=null?' · '+pct1(r.p):'')+'</div><div class="po">'+money0(s.payout)+'</div><div class="dots">'+dots+'</div></a>';
+  }).join('')+'</div>';
+  html+='<h2>By player<small>every line you need, live, game by game</small></h2>'+board(flash);
+  html+='<h2>Your slips<small>'+esc(BETS.sub||'FanDuel · '+BETS.slips.length+' open')+'</small></h2>'+res.map((r,i)=>slipCard(BETS.slips[i],r,flash)).join('');
   html+=futures();
-  html+='<div class="notes"><b>How legs are counted.</b> Anytime TD = a rushing, receiving or return touchdown (a passing TD doesn’t count for the passer). A yardage leg over its number shows <b>“over so far”</b> until the final whistle, because a sack, kneel-down or loss can pull the total back under. Numbers come from ESPN’s live box score and refresh every 15 seconds while the game is on; FanDuel settles on official stats. Puka Nacua was ruled out, so that leg on slip D is void.<br><b>*Chances are a rough guide.</b> Each leg starts from the sportsbook line for that player and shifts toward how he’s actually playing as the game goes on (the line counts as about a game and a half of evidence); a slip’s chance multiplies its legs as if they were unrelated. “Worth now” is each slip’s payout times its chance, added up. It is not a cash-out price.'
+  html+='<div class="notes"><b>How legs are counted.</b> Anytime TD = a rushing, receiving or return touchdown (a passing TD doesn’t count for the passer); “2+ TDs” needs two of those. A yardage leg over its number shows <b>“over so far”</b> until the final whistle, because a sack, kneel-down or loss can pull the total back under. Numbers come from ESPN’s live box scores; a game refreshes every 20 seconds while it is on, every couple of minutes before kickoff, and every five minutes after the final. FanDuel settles on official stats.<br><b>*Chances are a rough guide.</b> Each leg starts from the sportsbook line for that player and shifts toward how he’s actually playing as the game goes on (the line counts as about a game and a half of evidence); a slip’s chance multiplies its legs as if they were unrelated, which understates a same-game parlay. “Worth now” is each slip’s payout times its chance, added up. It is not a cash-out price.'
     +'<br><a class="home" href="/">← Back to the site</a></div>';
   $('app').innerHTML=html;
   renderTop();
@@ -573,36 +622,54 @@ async function loadSched(force){
   await Promise.all(teams.map(async t=>{try{SCHED[t]=await getJSON(API+'teams/'+t.toLowerCase()+'/schedule?season='+(BETS.season||'')+'&seasontype=2');}catch(e){}}));
   schedAt=Date.now();
 }
+function waitFor(g){
+  if(!g)return SOON_MS;
+  if(g.state==='in')return LIVE_MS;
+  if(g.state==='post')return POST_MS;
+  const ms=new Date(g.comp.date||g.cfg.kick)-Date.now();
+  return ms<15*60000?SOON_MS:PRE_MS;
+}
 async function tick(manual){
-  clearTimeout(timer);let next=60000;
+  clearTimeout(timer);
+  if(inflight){if(!document.hidden)timer=setTimeout(tick,3000);return;}
+  inflight=true;
   try{
-    const before=Object.fromEntries(Object.entries(G).map(([k,g])=>[k,g.state]));
-    await Promise.all(BETS.games.map(async ev=>{G[ev.event]=buildGame(ev,await getJSON(API+'summary?event='+ev.event));}));
-    const states=Object.values(G).map(g=>g.state);
-    const ended=Object.entries(G).some(([k,g])=>before[k]&&before[k]!=='post'&&g.state==='post');
-    await loadSched(ended);
-    lastOk=Date.now();errMsg='';
-    if(states.includes('in'))next=LIVE_MS;
-    else if(states.includes('pre')){const soon=Object.values(G).some(g=>g.state==='pre'&&new Date(g.comp.date)-Date.now()<15*60000);next=soon?30000:120000;}
-    else next=300000;
+    const now=Date.now();
+    const due=BETS.games.filter(c=>manual||!DUE[c.event]||DUE[c.event]<=now);
+    let failed=0,ended=false;
+    await Promise.all(due.map(async cfg=>{
+      try{
+        const was=G[cfg.event]&&G[cfg.event].state;
+        G[cfg.event]=buildGame(cfg,await getJSON(API+'summary?event='+cfg.event));
+        if(was&&was!=='post'&&G[cfg.event].state==='post')ended=true;
+        DUE[cfg.event]=Date.now()+waitFor(G[cfg.event]);
+      }catch(e){failed++;DUE[cfg.event]=Date.now()+20000;}
+    }));
+    if(failed&&failed===due.length&&due.length)throw new Error('no game answered');
+    if(Object.keys(G).length)await loadSched(ended);
+    if(!failed){lastOk=Date.now();errMsg='';}
+    else errMsg=failed+' of '+due.length+' games didn’t answer; showing the last numbers for those.';
   }catch(e){
     errMsg='Can’t reach ESPN right now ('+(e.message||e)+'). Showing the last numbers; retrying.';
-    next=20000;
   }
-  if(Object.keys(G).length)render();else if(errMsg)$('app').innerHTML='<div class="err">'+esc(errMsg)+'</div>';
+  inflight=false;
+  if(Object.keys(G).length)render();else if(errMsg){$('app').innerHTML='<div class="err">'+esc(errMsg)+'</div>';renderTop();}
+  // wake up when the soonest game is due (never longer than a minute so the clock stays honest)
+  const next=Math.max(3000,Math.min(60000,...BETS.games.map(c=>(DUE[c.event]||0)-Date.now())));
   if(!document.hidden)timer=setTimeout(tick,next);
 }
-document.addEventListener('visibilitychange',()=>{if(document.hidden)clearTimeout(timer);else if(BETS)tick();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)clearTimeout(timer);else if(BETS)tick(true);});
 setInterval(updAgo,1000);
 (async()=>{
   try{BETS=await getJSON('/bets.json');}
   catch(e){
-    // bets.json missing (or the page opened as a file): use the copy baked into this page
     try{BETS=JSON.parse($('bets-inline').textContent);}
     catch(e2){$('app').innerHTML='<div class="err">Couldn’t load the bets list ('+esc(e.message)+').</div>';return;}
   }
-  if(BETS.games&&BETS.games[0]&&BETS.games[0].title)document.title='Live · '+BETS.games[0].title;
-  tick();
+  normalizeBets(BETS);
+  document.title='Live · Week '+(BETS.week||'');
+  $('mid').onclick=()=>tick(true);
+  tick(true);
 })();
 </script>
 </body>
