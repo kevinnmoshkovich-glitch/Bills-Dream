@@ -86,6 +86,8 @@ h2 small{font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:.0
 .bar .fill.done{background:linear-gradient(90deg,#20a86a,var(--win))}
 .tk{position:absolute;top:-4px;bottom:-4px;width:2px;margin-left:-1px;background:#c6d5f2;border-radius:1px}
 .tk.on{background:var(--win)}
+.tk.cap{background:var(--amb)} .tk.cap span{color:var(--amb)} .tk.bad{background:var(--lose)} .tk.bad span{color:var(--lose)}
+.mb.over i{background:var(--lose)}
 .tk span{position:absolute;top:17px;left:50%;transform:translateX(-50%);font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:9.5px;color:var(--mut);white-space:nowrap}
 .tk.on span{color:var(--win)}
 .chs{display:flex;flex-wrap:wrap;gap:6px}
@@ -162,7 +164,7 @@ table.dv tr.me td{color:var(--g);font-weight:700}
   <section id="board"></section>
 </main>
 <div class="toasts" id="toasts"></div>
-<script type="application/json" id="bets-inline">{"note":"Open bets shown on /live. Edit this block to add or remove slips; the page re-reads it on every load. Each leg names its game (ev = ESPN event id). stat: ml | pass_yds | pass_td | rush_yds | rec_yds | rec | atd. min = the number the leg needs (FanDuel '225+' = 225; 'to score 2+ TDs' = atd with min 2). lines = FanDuel's main line per player, used only for the rough chance figures.","season":2026,"week":3,"placed":"2026-09-27","games":[{"event":"401872950","away":"CIN","home":"PIT","kick":"2026-09-27T17:00Z"},{"event":"401872952","away":"KC","home":"MIA","kick":"2026-09-27T17:00Z"},{"event":"401872953","away":"LAC","home":"BUF","kick":"2026-09-27T17:00Z"},{"event":"401872954","away":"NYJ","home":"DET","kick":"2026-09-27T17:00Z"},{"event":"401872955","away":"SEA","home":"WSH","kick":"2026-09-27T17:00Z"},{"event":"401872956","away":"TEN","home":"NYG","kick":"2026-09-27T17:00Z"},{"event":"401872958","away":"ARI","home":"SF","kick":"2026-09-27T20:05Z"},{"event":"401872959","away":"MIN","home":"TB","kick":"2026-09-27T20:05Z"},{"event":"401872961","away":"LV","home":"NO","kick":"2026-09-27T20:25Z"}],"lines":{"3918298":{"pass_yds":239.5,"pass_td":1.5,"rush_yds":34.5},"3915416":{"rec_yds":46.5,"rec":3.5},"4373678":{"rec_yds":41.5,"rec":3.5},"4385690":{"rec_yds":59.5,"rec":4.5},"4379399":{"rush_yds":80.5,"rec_yds":12.5,"rec":1.5},"4696981":{"rush_yds":58.5,"rec_yds":12.5,"rec":1.5},"4595348":{"rec_yds":54.5,"rec":4.5},"4361050":{"rec_yds":39.5,"rec":3.5},"2969939":{"pass_yds":199.5,"pass_td":0.5,"rush_yds":5.5},"4682648":{"rec_yds":23.5,"rec":1.5},"3139477":{"pass_yds":236.5,"pass_td":1.5,"rush_yds":15.5},"4567048":{"rush_yds":85.5,"rec_yds":23.5,"rec":3.5},"15847":{"rec_yds":51.5,"rec":4.5},"4239993":{"rec_yds":53.5,"rec":4.5},"4362628":{"rec_yds":76.5,"rec":6.5},"4362238":{"rush_yds":63.5,"rec_yds":22.5,"rec":3.5},"4374302":{"rec_yds":75.5,"rec":7.5},"4429795":{"rush_yds":89.5,"rec_yds":34.5,"rec":4.5},"4430878":{"rec_yds":93.5,"rec":6.5},"4262921":{"rec_yds":73.5,"rec":5.5},"3117251":{"rush_yds":57.5,"rec_yds":38.5,"rec":4.5},"16737":{"rec_yds":52.5,"rec":4.5},"4890973":{"rush_yds":69.5,"rec_yds":22.5,"rec":3.5}},"slips":[{"id":"A","title":"Chargers @ Bills same-game parlay","odds":"+42702","boost":"50% profit boost (was +28457)","stake":10,"payout":4280.21,"legs":[{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"pass_yds","min":200},{"ev":"401872953","p":"D.J. Moore","pid":"3915416","stat":"rec_yds","min":25},{"ev":"401872953","p":"Khalil Shakir","pid":"4373678","stat":"rec_yds","min":25},{"ev":"401872953","p":"Dalton Kincaid","pid":"4385690","stat":"rec_yds","min":50},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"rush_yds","min":15},{"ev":"401872953","p":"James Cook","pid":"4379399","stat":"rush_yds","min":50},{"ev":"401872953","p":"D.J. Moore","pid":"3915416","stat":"rec","min":4},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"atd","min":1},{"ev":"401872953","p":"Dalton Kincaid","pid":"4385690","stat":"atd","min":2},{"ev":"401872953","p":"D.J. Moore","pid":"3915416","stat":"atd","min":1}]},{"id":"B","title":"Titans @ Giants same-game parlay","odds":"+11295","stake":10,"payout":1139.5,"legs":[{"ev":"401872956","p":"Cam Skattebo","pid":"4696981","stat":"atd","min":1},{"ev":"401872956","p":"Malik Nabers","pid":"4595348","stat":"atd","min":1},{"ev":"401872956","p":"Isaiah Likely","pid":"4361050","stat":"atd","min":1},{"ev":"401872956","p":"Jameis Winston","pid":"2969939","stat":"pass_yds","min":175},{"ev":"401872956","p":"Isaiah Likely","pid":"4361050","stat":"rec_yds","min":25},{"ev":"401872956","p":"Malik Nabers","pid":"4595348","stat":"rec_yds","min":30},{"ev":"401872956","p":"Malachi Fields","pid":"4682648","stat":"rec_yds","min":25},{"ev":"401872956","p":"Cam Skattebo","pid":"4696981","stat":"rush_yds","min":40}]},{"id":"C","title":"SGP+ \u00b7 Chiefs @ Dolphins (+1644) and Bengals @ Steelers (+1401)","odds":"+26095","stake":10,"payout":2619.51,"legs":[{"ev":"401872952","p":"Patrick Mahomes","pid":"3139477","stat":"pass_yds","min":250},{"ev":"401872952","p":"Kenneth Walker III","pid":"4567048","stat":"rush_yds","min":90},{"ev":"401872952","p":"Travis Kelce","pid":"15847","stat":"rec_yds","min":60},{"ev":"401872952","p":"Travis Kelce","pid":"15847","stat":"atd","min":1},{"ev":"401872950","p":"Tee Higgins","pid":"4239993","stat":"atd","min":1},{"ev":"401872950","p":"Ja'Marr Chase","pid":"4362628","stat":"atd","min":1},{"ev":"401872950","p":"Chase Brown","pid":"4362238","stat":"atd","min":1}]},{"id":"D","title":"SGP+ \u00b7 Jets @ Lions (+376) plus five picks","odds":"+45525","stake":10,"payout":4562.58,"legs":[{"ev":"401872954","p":"Amon-Ra St. Brown","pid":"4374302","stat":"rec_yds","min":80},{"ev":"401872954","p":"Jahmyr Gibbs","pid":"4429795","stat":"atd","min":2},{"ev":"401872950","p":"Ja'Marr Chase","pid":"4362628","stat":"rec_yds","min":80},{"ev":"401872955","p":"Jaxon Smith-Njigba","pid":"4430878","stat":"rec_yds","min":80},{"ev":"401872953","p":"James Cook","pid":"4379399","stat":"atd","min":2},{"ev":"401872959","p":"Justin Jefferson","pid":"4262921","stat":"rec_yds","min":80},{"ev":"401872958","p":"Christian McCaffrey","pid":"3117251","stat":"atd","min":2}]},{"id":"E","title":"SGP+ \u00b7 Cardinals @ 49ers (+282), Chargers @ Bills (+239) plus two picks","odds":"+6080","stake":10,"payout":618.01,"legs":[{"ev":"401872958","p":"Christian McCaffrey","pid":"3117251","stat":"atd","min":1},{"ev":"401872958","p":"Mike Evans","pid":"16737","stat":"atd","min":1},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"atd","min":1},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"pass_yds","min":225},{"ev":"401872953","p":"Dalton Kincaid","pid":"4385690","stat":"rec_yds","min":40},{"ev":"401872959","p":"Justin Jefferson","pid":"4262921","stat":"atd","min":1},{"ev":"401872961","p":"Ashton Jeanty","pid":"4890973","stat":"atd","min":1}]},{"id":"F","title":"Chargers @ Bills same-game parlay","odds":"+239","stake":45,"payout":152.7,"legs":[{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"atd","min":1},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"pass_yds","min":225},{"ev":"401872953","p":"Dalton Kincaid","pid":"4385690","stat":"rec_yds","min":40}]}],"futures":[{"id":"G","team":"NYG","market":"division","label":"Giants to win the NFC East","odds":"+550","stake":60,"payout":390},{"id":"H","team":"NYG","market":"wins_over","line":7.5,"label":"Giants over 7.5 regular-season wins","odds":"+105","stake":100,"payout":205}]}</script>
+<script type="application/json" id="bets-inline">{"note":"Open bets shown on /live. Edit this block to add or remove slips; the page re-reads it on every load. Each leg names its game (ev = ESPN event id). stat: ml | pass_yds | pass_td | rush_yds | rec_yds | rec | atd. min = the number the leg needs (FanDuel '225+' = 225; 'to score 2+ TDs' = atd with min 2); max = an UNDER leg ('Under 211.5' = max 211.5), which only wins at the final whistle. lines = FanDuel's main line per player, used only for the rough chance figures.","season":2026,"week":3,"placed":"2026-09-27","games":[{"event":"401872950","away":"CIN","home":"PIT","kick":"2026-09-27T17:00Z"},{"event":"401872952","away":"KC","home":"MIA","kick":"2026-09-27T17:00Z"},{"event":"401872953","away":"LAC","home":"BUF","kick":"2026-09-27T17:00Z"},{"event":"401872954","away":"NYJ","home":"DET","kick":"2026-09-27T17:00Z"},{"event":"401872955","away":"SEA","home":"WSH","kick":"2026-09-27T17:00Z"},{"event":"401872956","away":"TEN","home":"NYG","kick":"2026-09-27T17:00Z"},{"event":"401872958","away":"ARI","home":"SF","kick":"2026-09-27T20:05Z"},{"event":"401872959","away":"MIN","home":"TB","kick":"2026-09-27T20:05Z"},{"event":"401872961","away":"LV","home":"NO","kick":"2026-09-27T20:25Z"},{"event":"401872962","away":"LAR","home":"DEN","kick":"2026-09-28T00:20Z"}],"lines":{"3918298":{"pass_yds":239.5,"pass_td":1.5,"rush_yds":34.5},"3915416":{"rec_yds":46.5,"rec":3.5},"4373678":{"rec_yds":41.5,"rec":3.5},"4385690":{"rec_yds":59.5,"rec":4.5},"4379399":{"rush_yds":80.5,"rec_yds":12.5,"rec":1.5},"4696981":{"rush_yds":58.5,"rec_yds":12.5,"rec":1.5},"4595348":{"rec_yds":54.5,"rec":4.5},"4361050":{"rec_yds":39.5,"rec":3.5},"2969939":{"pass_yds":199.5,"pass_td":0.5,"rush_yds":5.5},"4682648":{"rec_yds":23.5,"rec":1.5},"3139477":{"pass_yds":236.5,"pass_td":1.5,"rush_yds":15.5},"4567048":{"rush_yds":85.5,"rec_yds":23.5,"rec":3.5},"15847":{"rec_yds":51.5,"rec":4.5},"4239993":{"rec_yds":53.5,"rec":4.5},"4362628":{"rec_yds":76.5,"rec":6.5},"4362238":{"rush_yds":63.5,"rec_yds":22.5,"rec":3.5},"4374302":{"rec_yds":75.5,"rec":7.5},"4429795":{"rush_yds":89.5,"rec_yds":34.5,"rec":4.5},"4430878":{"rec_yds":93.5,"rec":6.5},"4262921":{"rec_yds":73.5,"rec":5.5},"3117251":{"rush_yds":57.5,"rec_yds":38.5,"rec":4.5},"16737":{"rec_yds":52.5,"rec":4.5},"4890973":{"rush_yds":69.5,"rec_yds":22.5,"rec":3.5},"12483":{"pass_yds":239.5,"pass_td":1.5,"rush_yds":0.5},"4426338":{"pass_yds":211.5,"pass_td":1.5,"rush_yds":15.5},"16800":{"rec_yds":70.5,"rec":5.5},"4372016":{"rec_yds":60.5,"rec":4.5},"3128429":{"rec_yds":35.5,"rec":3.5}},"slips":[{"id":"A","title":"Chargers @ Bills same-game parlay","odds":"+42702","boost":"50% profit boost (was +28457)","stake":10,"payout":4280.21,"legs":[{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"pass_yds","min":200},{"ev":"401872953","p":"D.J. Moore","pid":"3915416","stat":"rec_yds","min":25},{"ev":"401872953","p":"Khalil Shakir","pid":"4373678","stat":"rec_yds","min":25},{"ev":"401872953","p":"Dalton Kincaid","pid":"4385690","stat":"rec_yds","min":50},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"rush_yds","min":15},{"ev":"401872953","p":"James Cook","pid":"4379399","stat":"rush_yds","min":50},{"ev":"401872953","p":"D.J. Moore","pid":"3915416","stat":"rec","min":4},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"atd","min":1},{"ev":"401872953","p":"Dalton Kincaid","pid":"4385690","stat":"atd","min":2},{"ev":"401872953","p":"D.J. Moore","pid":"3915416","stat":"atd","min":1}]},{"id":"B","title":"Titans @ Giants same-game parlay","odds":"+11295","stake":10,"payout":1139.5,"legs":[{"ev":"401872956","p":"Cam Skattebo","pid":"4696981","stat":"atd","min":1},{"ev":"401872956","p":"Malik Nabers","pid":"4595348","stat":"atd","min":1},{"ev":"401872956","p":"Isaiah Likely","pid":"4361050","stat":"atd","min":1},{"ev":"401872956","p":"Jameis Winston","pid":"2969939","stat":"pass_yds","min":175},{"ev":"401872956","p":"Isaiah Likely","pid":"4361050","stat":"rec_yds","min":25},{"ev":"401872956","p":"Malik Nabers","pid":"4595348","stat":"rec_yds","min":30},{"ev":"401872956","p":"Malachi Fields","pid":"4682648","stat":"rec_yds","min":25},{"ev":"401872956","p":"Cam Skattebo","pid":"4696981","stat":"rush_yds","min":40}]},{"id":"C","title":"SGP+ \u00b7 Chiefs @ Dolphins (+1644) and Bengals @ Steelers (+1401)","odds":"+26095","stake":10,"payout":2619.51,"legs":[{"ev":"401872952","p":"Patrick Mahomes","pid":"3139477","stat":"pass_yds","min":250},{"ev":"401872952","p":"Kenneth Walker III","pid":"4567048","stat":"rush_yds","min":90},{"ev":"401872952","p":"Travis Kelce","pid":"15847","stat":"rec_yds","min":60},{"ev":"401872952","p":"Travis Kelce","pid":"15847","stat":"atd","min":1},{"ev":"401872950","p":"Tee Higgins","pid":"4239993","stat":"atd","min":1},{"ev":"401872950","p":"Ja'Marr Chase","pid":"4362628","stat":"atd","min":1},{"ev":"401872950","p":"Chase Brown","pid":"4362238","stat":"atd","min":1}]},{"id":"D","title":"SGP+ \u00b7 Jets @ Lions (+376) plus five picks","odds":"+45525","stake":10,"payout":4562.58,"legs":[{"ev":"401872954","p":"Amon-Ra St. Brown","pid":"4374302","stat":"rec_yds","min":80},{"ev":"401872954","p":"Jahmyr Gibbs","pid":"4429795","stat":"atd","min":2},{"ev":"401872950","p":"Ja'Marr Chase","pid":"4362628","stat":"rec_yds","min":80},{"ev":"401872955","p":"Jaxon Smith-Njigba","pid":"4430878","stat":"rec_yds","min":80},{"ev":"401872953","p":"James Cook","pid":"4379399","stat":"atd","min":2},{"ev":"401872959","p":"Justin Jefferson","pid":"4262921","stat":"rec_yds","min":80},{"ev":"401872958","p":"Christian McCaffrey","pid":"3117251","stat":"atd","min":2}]},{"id":"E","title":"SGP+ \u00b7 Cardinals @ 49ers (+282), Chargers @ Bills (+239) plus two picks","odds":"+6080","stake":10,"payout":618.01,"legs":[{"ev":"401872958","p":"Christian McCaffrey","pid":"3117251","stat":"atd","min":1},{"ev":"401872958","p":"Mike Evans","pid":"16737","stat":"atd","min":1},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"atd","min":1},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"pass_yds","min":225},{"ev":"401872953","p":"Dalton Kincaid","pid":"4385690","stat":"rec_yds","min":40},{"ev":"401872959","p":"Justin Jefferson","pid":"4262921","stat":"atd","min":1},{"ev":"401872961","p":"Ashton Jeanty","pid":"4890973","stat":"atd","min":1}]},{"id":"F","title":"Chargers @ Bills same-game parlay","odds":"+239","stake":45,"payout":152.7,"legs":[{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"atd","min":1},{"ev":"401872953","p":"Josh Allen","pid":"3918298","stat":"pass_yds","min":225},{"ev":"401872953","p":"Dalton Kincaid","pid":"4385690","stat":"rec_yds","min":40}]},{"id":"G","title":"Rams @ Broncos same-game parlay \u00b7 Sunday night","odds":"+1383","stake":10,"payout":148.38,"legs":[{"ev":"401872962","p":"Matthew Stafford","pid":"12483","stat":"pass_yds","min":175},{"ev":"401872962","p":"Bo Nix","pid":"4426338","stat":"pass_yds","min":125},{"ev":"401872962","p":"Davante Adams","pid":"16800","stat":"rec_yds","min":40},{"ev":"401872962","p":"Jaylen Waddle","pid":"4372016","stat":"rec_yds","min":25},{"ev":"401872962","p":"Courtland Sutton","pid":"3128429","stat":"rec_yds","min":15},{"ev":"401872962","p":"Davante Adams","pid":"16800","stat":"rec","min":6},{"ev":"401872962","p":"Jaylen Waddle","pid":"4372016","stat":"rec","min":4},{"ev":"401872962","p":"Matthew Stafford","pid":"12483","stat":"pass_td","min":2},{"ev":"401872962","p":"Bo Nix","pid":"4426338","stat":"pass_yds","max":211.5}]}],"futures":[{"id":"G","team":"NYG","market":"division","label":"Giants to win the NFC East","odds":"+550","stake":60,"payout":390},{"id":"H","team":"NYG","market":"wins_over","line":7.5,"label":"Giants over 7.5 regular-season wins","odds":"+105","stake":100,"payout":205}]}</script>
 <script>
 'use strict';
 /* /live — every open slip, across every game it touches, refreshed from ESPN's
@@ -328,7 +330,13 @@ function evalLeg(g,l){
   if(!g)return{cur:0,t:l.min,need:l.min,st:'live',nog:true};
   const post=g.state==='post';
   if(l.stat==='ml'){const m=moneyline(g,l.team);return Object.assign(m,{st:post?(m.a>m.b?'won':m.a<m.b?'lost':'void'):'live'});}
-  const d=STAT[l.stat],cur=value(g,l),t=l.min;let st;
+  const d=STAT[l.stat],cur=value(g,l);let st;
+  if(l.max!=null){ // an UNDER leg: dead the moment it goes over, only won at the final whistle
+    const mx=l.max;
+    if(cur>=mx)st='lost';else st=post?'won':'live';
+    return{cur,t:mx,under:true,room:Math.max(0,mx-cur),need:0,st};
+  }
+  const t=l.min;
   if(cur>=t)st=post?'won':(d.yards?'clear':'hit');else st=post?'lost':'live';
   return{cur,t,need:Math.max(0,t-cur),st};
 }
@@ -362,12 +370,16 @@ function chance(g,l,r){
   if(base==null){if(f<=.02)return null;full=r.cur/f}
   else full=(K*base+r.cur)/(K+f);
   const need=r.t-r.cur;
-  if(!STAT[l.stat].yards)return poisAtLeast(need,Math.max(1e-4,full*rem));
-  const m=Math.max(.5,full*rem),cv=Math.min(2.5,(CV[l.stat]||.5)/Math.sqrt(rem)),sg=Math.sqrt(Math.log(1+cv*cv));
-  let pr=1-ncdf((Math.log(need)-Math.log(m))/sg);
-  const L=(BETS.lines||{})[l.pid]||{};
-  if(l.stat==='rec_yds'&&L.rec){const rc=value(g,{stat:'rec',p:l.p,pid:l.pid}),rate=(K*L.rec+rc)/(K+f);pr*=1-Math.exp(-rate*rem)}
-  return pr;
+  if(need<=0)return r.under?0:1;
+  let pr;
+  if(!STAT[l.stat].yards)pr=poisAtLeast(need,Math.max(1e-4,full*rem));
+  else{
+    const m=Math.max(.5,full*rem),cv=Math.min(2.5,(CV[l.stat]||.5)/Math.sqrt(rem)),sg=Math.sqrt(Math.log(1+cv*cv));
+    pr=1-ncdf((Math.log(need)-Math.log(m))/sg);
+    const L=(BETS.lines||{})[l.pid]||{};
+    if(l.stat==='rec_yds'&&L.rec){const rc=value(g,{stat:'rec',p:l.p,pid:l.pid}),rate=(K*L.rec+rc)/(K+f);pr*=1-Math.exp(-rate*rem)}
+  }
+  return r.under?1-pr:pr;
 }
 const pct=p=>p==null?'':p>=.995?'99%':p<.01?(p<=0?'0%':'<1%'):Math.round(p*100)+'%';
 const pct1=p=>p==null?'':p>=.995?'99%':p<.001?(p<=0?'0%':'<0.1%'):p<.1?(p*100).toFixed(1)+'%':Math.round(p*100)+'%';
@@ -388,6 +400,7 @@ function legName(g,l,withName){
   if(l.stat==='ml'){const m=g&&g.comps.find(c=>c.team&&c.team.abbreviation===l.team);return (m?m.team.name:l.team)+' to win';}
   const who=withName?surname(l.p)+' ':'';
   if(l.stat==='atd')return who+(l.min>=2?l.min+'+ TDs':'anytime TD');
+  if(l.max!=null)return who+'under '+l.max+' '+d.lab;
   return who+l.min+'+ '+d.lab;
 }
 function legKey(l){return l.ev+':'+(l.stat==='ml'?'ml:'+l.team:(l.pid||norm(l.p))+':'+l.stat)}
@@ -395,6 +408,7 @@ function needText(x){
   const l=x.l,r=x.r;
   if(l.stat==='ml')return '<b>'+esc(legName(x.g,l))+'</b>'+(r.wp!=null?' ('+Math.round(r.wp*100)+'%)':'');
   if(l.stat==='atd')return '<b>'+esc(surname(l.p))+' '+(l.min>=2?(l.min-r.cur)+' more TD'+(l.min-r.cur===1?'':'s'):'TD')+'</b>';
+  if(r.under)return '<b>'+esc(surname(l.p))+' under '+l.max+'</b> ('+r.room+' of room)';
   return '<b>'+esc(surname(l.p))+' +'+r.need+'</b> '+STAT[l.stat].short;
 }
 
@@ -425,8 +439,9 @@ function updAgo(){
 function bar(cur,ts){
   const top=ts[ts.length-1].t;const mx=Math.max(top*1.15,cur*1.04,1);
   const w=Math.max(0,Math.min(100,cur/mx*100));
-  const ticks=ts.map(x=>'<i class="tk'+(cur>=x.t?' on':'')+'" style="left:'+(x.t/mx*100).toFixed(2)+'%"><span>'+x.t+'</span></i>').join('');
-  return '<div class="bar"><div class="fill'+(cur>=ts[0].t?' done':'')+'" style="width:'+w.toFixed(2)+'%"></div>'+ticks+'</div>';
+  const ticks=ts.map(x=>'<i class="tk'+(x.under?(cur>=x.t?' bad':' cap'):(cur>=x.t?' on':''))+'" style="left:'+(x.t/mx*100).toFixed(2)+'%"><span>'+(x.under?'U'+x.t:x.t)+'</span></i>').join('');
+  const first=ts.find(x=>!x.under);
+  return '<div class="bar"><div class="fill'+(first&&cur>=first.t?' done':'')+'" style="width:'+w.toFixed(2)+'%"></div>'+ticks+'</div>';
 }
 function pips(cur,t){
   const n=Math.max(t,Math.min(cur,t+4));let s='';
@@ -451,8 +466,9 @@ function board(flash){
     const p=P.get(pk);p.slips.add(s.id);
     if(!p.stats.has(l.stat))p.stats.set(l.stat,new Map());
     const m=p.stats.get(l.stat);
-    if(!m.has(l.min))m.set(l.min,{t:l.min,slips:[],voids:0});
-    const e=m.get(l.min);e.slips.push(s.id);if(l.void)e.voids++;
+    const tk=l.max!=null?'u'+l.max:l.min;
+    if(!m.has(tk))m.set(tk,{t:l.max!=null?l.max:l.min,under:l.max!=null,slips:[],voids:0});
+    const e=m.get(tk);e.slips.push(s.id);if(l.void)e.voids++;
   }
   let h='';
   for(const cfg of BETS.games){
@@ -488,9 +504,9 @@ function board(flash){
         h+=d.yards?bar(cur,ts):pips(cur,ts[ts.length-1].t);
         h+='<div class="chs">'+ts.map(e=>{
           const allv=e.voids===e.slips.length;
-          const cls=allv?'vd':cur>=e.t?(post||!d.yards?'ok':'so'):post?'no':'';
-          const lg={ev:p.l.ev,stat:k,p:p.l.p,pid:p.l.pid,min:e.t},rr=evalLeg(g,lg),pp=allv?null:chance(g,lg,rr);
-          const lab=(k==='atd'?(e.t>=2?e.t+'+ TD':'TD'):e.t+'+')+' · '+e.slips.join(' ')+(cur>=e.t&&!allv?' ✓':(pp!=null&&rr.st==='live'?' · '+pct(pp):''));
+          const lg=e.under?{ev:p.l.ev,stat:k,p:p.l.p,pid:p.l.pid,max:e.t}:{ev:p.l.ev,stat:k,p:p.l.p,pid:p.l.pid,min:e.t},rr=evalLeg(g,lg),pp=allv?null:chance(g,lg,rr);
+          const cls=allv?'vd':e.under?(rr.st==='lost'?'no':rr.st==='won'?'ok':''):cur>=e.t?(post||!d.yards?'ok':'so'):post?'no':'';
+          const lab=(e.under?'U '+e.t:k==='atd'?(e.t>=2?e.t+'+ TD':'TD'):e.t+'+')+' · '+e.slips.join(' ')+(e.under?(rr.st==='lost'?' ✕':rr.st==='won'?' ✓':(pp!=null?' · '+pct(pp):'')):(cur>=e.t&&!allv?' ✓':(pp!=null&&rr.st==='live'?' · '+pct(pp):'')));
           return '<span class="ch '+cls+'">'+esc(lab)+'</span>';
         }).join('')+'</div></div>';
       }
@@ -521,6 +537,12 @@ function slipCard(s,res,flash){
       else sub=tag+(g.state==='post'?'final':gs.txt);
       if(g&&g.state==='post'&&r.cur===0)right='no TD';
       if(l.min>=2)right=r.cur+' / '+l.min+' TD';
+    }else if(r.under){
+      right=r.cur+' / U'+r.t;
+      if(!g||g.state==='pre')sub=tag+gs.txt;
+      else if(r.st==='live')sub=tag+r.room+' of room'+(x.p!=null?' · '+pct(x.p)+' chance':'')+' · settles at the final';
+      else sub=tag+(r.st==='lost'?'went over':'stayed under');
+      right+='<div class="mb'+(r.st==='lost'?' over':'')+'"><i style="width:'+Math.min(100,r.cur/r.t*100).toFixed(1)+'%"></i></div>';
     }else{
       right=r.cur+' / '+r.t;
       if(!g||g.state==='pre')sub=tag+gs.txt;
@@ -605,7 +627,7 @@ function render(){
   const newly=[],seen=new Set();
   res.forEach((r,i)=>{const s=BETS.slips[i];
     r.legs.forEach((x,j)=>{const pk=s.id+':'+j,was=prevLeg[pk];prevLeg[pk]=x.r.st;
-      if(booted&&was&&!HIT(was)&&HIT(x.r.st)){const k=legKey(x.l)+':'+x.l.min;if(!seen.has(k)){seen.add(k);newly.push({l:x.l,g:x.g,ids:res.map((rr,ii)=>rr.legs.some(y=>legKey(y.l)===legKey(x.l)&&y.l.min===x.l.min&&HIT(y.r.st))?BETS.slips[ii].id:null).filter(Boolean)});}}
+      if(booted&&was&&!HIT(was)&&HIT(x.r.st)){const k=legKey(x.l)+':'+x.l.min+':'+x.l.max;if(!seen.has(k)){seen.add(k);newly.push({l:x.l,g:x.g,ids:res.map((rr,ii)=>rr.legs.some(y=>legKey(y.l)===legKey(x.l)&&y.l.min===x.l.min&&y.l.max===x.l.max&&HIT(y.r.st))?BETS.slips[ii].id:null).filter(Boolean)});}}
     });
     const ps=prevSlip[s.id];prevSlip[s.id]=r.st;
     if(booted&&ps&&ps!==r.st){if(r.st==='lost')toast('Slip '+s.id+' is out',true);if(r.st==='won')toast('Slip '+s.id+' cashed: '+money(s.payout));}
@@ -625,7 +647,7 @@ function render(){
   }).join('')+'</div>';
   $('sum').innerHTML=top;
   $('slips').innerHTML='<h2>Your slips<small>'+esc(BETS.sub||'FanDuel · '+BETS.slips.length+' open')+'</small></h2><div class="slips">'+res.map((r,i)=>slipCard(BETS.slips[i],r,flash)).join('')+'</div>'+futures()
-    +'<div class="notes"><b>How legs are counted.</b> Anytime TD = a rushing, receiving or return touchdown (a passing TD doesn’t count for the passer); “2+ TDs” needs two of those. A yardage leg over its number shows <b>“over so far”</b> until the final whistle, because a sack, kneel-down or loss can pull the total back under. Numbers come from ESPN’s live box scores; a game refreshes every 20 seconds while it is on, every couple of minutes before kickoff, and every five minutes after the final. FanDuel settles on official stats.<br><b>*Chances are a rough guide.</b> Each leg starts from the sportsbook line for that player and shifts toward how he’s actually playing as the game goes on (the line counts as about a game and a half of evidence); a slip’s chance multiplies its legs as if they were unrelated, which understates a same-game parlay. “Worth now” is each slip’s payout times its chance, added up. It is not a cash-out price.'
+    +'<div class="notes"><b>How legs are counted.</b> Anytime TD = a rushing, receiving or return touchdown (a passing TD doesn’t count for the passer); “2+ TDs” needs two of those. An <b>under</b> leg is dead the moment the number goes over and only wins at the final whistle, so it never shows a check mark early. A yardage leg over its number shows <b>“over so far”</b> until the final whistle, because a sack, kneel-down or loss can pull the total back under. Numbers come from ESPN’s live box scores; a game refreshes every 20 seconds while it is on, every couple of minutes before kickoff, and every five minutes after the final. FanDuel settles on official stats.<br><b>*Chances are a rough guide.</b> Each leg starts from the sportsbook line for that player and shifts toward how he’s actually playing as the game goes on (the line counts as about a game and a half of evidence); a slip’s chance multiplies its legs as if they were unrelated, which understates a same-game parlay. “Worth now” is each slip’s payout times its chance, added up. It is not a cash-out price.'
     +'<br><a class="home" href="/">← Back to the site</a></div>';
   $('board').innerHTML='<h2>By player<small>every line you need, live, game by game</small></h2>'+board(flash);
   renderTop();fitHeader();
