@@ -27,6 +27,10 @@
 "name": "Geno Smith",
 "pos": "QB"
 },
+"16002": {
+"name": "Kyle Juszczyk",
+"pos": "FB"
+},
 "16733": {
 "name": "Odell Beckham Jr.",
 "pos": "WR"
@@ -471,6 +475,10 @@
 "name": "Chris Olave",
 "pos": "WR"
 },
+"4361372": {
+"name": "Jeremy Ruckert",
+"pos": "TE"
+},
 "4361409": {
 "name": "Jahan Dotson",
 "pos": "WR"
@@ -483,6 +491,10 @@
 "name": "Romeo Doubs",
 "pos": "WR"
 },
+"4361577": {
+"name": "Dyami Brown",
+"pos": "WR"
+},
 "4361579": {
 "name": "Javonte Williams",
 "pos": "RB"
@@ -490,6 +502,10 @@
 "4361741": {
 "name": "Brock Purdy",
 "pos": "QB"
+},
+"4362018": {
+"name": "Blake Whiteheart",
+"pos": "TE"
 },
 "4362238": {
 "name": "Chase Brown",
@@ -855,12 +871,20 @@
 "name": "Raheim Sanders",
 "pos": "RB"
 },
+"4603186": {
+"name": "Jack Bech",
+"pos": "WR"
+},
 "4608686": {
 "name": "Kyle Monangai",
 "pos": "RB"
 },
 "4612826": {
 "name": "Ladd McConkey",
+"pos": "WR"
+},
+"4613202": {
+"name": "Kyle Williams",
 "pos": "WR"
 },
 "4635008": {
