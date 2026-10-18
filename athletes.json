@@ -95,6 +95,10 @@
 "name": "Mack Hollins",
 "pos": "WR"
 },
+"2998565": {
+"name": "Mo Alie-Cox",
+"pos": "TE"
+},
 "3040151": {
 "name": "George Kittle",
 "pos": "TE"
@@ -851,6 +855,10 @@
 "name": "Rome Odunze",
 "pos": "WR"
 },
+"4431431": {
+"name": "Corey Kiner",
+"pos": "RB"
+},
 "4431452": {
 "name": "Drake Maye",
 "pos": "QB"
@@ -958,6 +966,10 @@
 "4569618": {
 "name": "Garrett Wilson",
 "pos": "WR"
+},
+"4569682": {
+"name": "Audric Estime",
+"pos": "RB"
 },
 "4569987": {
 "name": "Jaylen Warren",
@@ -1218,6 +1230,14 @@
 "4715355": {
 "name": "Darius Cooper",
 "pos": "WR"
+},
+"4722893": {
+"name": "Jaleel McLaughlin",
+"pos": "RB"
+},
+"4722908": {
+"name": "Drew Ogletree",
+"pos": "TE"
 },
 "4723086": {
 "name": "Colston Loveland",
