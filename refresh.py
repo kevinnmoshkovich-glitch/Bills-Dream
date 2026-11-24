@@ -152,6 +152,9 @@ def fetch_standings():
                     "pf": num("pointsFor"), "pa": num("pointsAgainst"),
                     "pd": s.get("pointDifferential", {}).get("displayValue", ""),
                     "streak": s.get("streak", {}).get("displayValue", ""),
+                    # the league's own mark once a club has clinched or is out:
+                    # x playoffs, y division, z bye, * top seed, e eliminated
+                    "clinch": s.get("clincher", {}).get("displayValue", ""),
                 })
                 conf_of[ab] = cname
             if rows:

@@ -61,5 +61,49 @@ try:
 except Exception as e:
     check("with_support did not raise", False, f"{type(e).__name__}: {e}")
 
+print("\nplayoff race: the played-out seasons")
+import os, playoffs
+_snap = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "snapshots", "latest.json")))
+a = playoffs.simulate(_snap, runs=300); b = playoffs.simulate(_snap, runs=300)
+check("same snapshot draws the same numbers", a["made"] == b["made"] and a["seeds"] == b["seeds"])
+lg = a["lg"]
+for conf in ("AFC", "NFC"):
+    ids = [i for i in range(lg.n) if lg.conf[i] == conf]
+    check(f"{conf}: exactly seven clubs go through in every season", sum(a["made"][i] for i in ids) == 7 * 300)
+    check(f"{conf}: exactly four division winners in every season", sum(a["div"][i] for i in ids) == 4 * 300)
+    check(f"{conf}: one top seed in every season", sum(a["bye"][i] for i in ids) == 300)
+check("a division winner always makes the playoffs", all(a["div"][i] <= a["made"][i] for i in range(lg.n)))
+
+print("\nplayoff race: tiebreakers and what counts as official")
+def _mini(results, left=()):
+    """Two divisions of two, one conference. results: (home, away, home score, away score)."""
+    teams = {ab: {"name": ab, "conf": "NFC", "div": d} for ab, d in
+             (("AAA", "East"), ("BBB", "East"), ("CCC", "West"), ("DDD", "West"))}
+    games = {}
+    for n, (h, aw, hs, as_) in enumerate(results):
+        games[f"d{n}"] = {"week": 1, "date": f"2026-09-{10+n:02d}T17:00Z", "completed": True,
+                          "home": {"abbr": h, "score": hs}, "away": {"abbr": aw, "score": as_}}
+    for n, (h, aw) in enumerate(left):
+        games[f"l{n}"] = {"week": 9, "date": f"2026-12-{10+n:02d}T17:00Z", "completed": False,
+                          "home": {"abbr": h}, "away": {"abbr": aw}, "prob": {"home": 50, "away": 50}}
+    return {"teams": teams, "games": games, "divisions": {}, "builtAt": "2026-11-24"}
+m = playoffs.League(_mini([("AAA", "BBB", 20, 10), ("BBB", "CCC", 20, 10), ("AAA", "DDD", 10, 20), ("CCC", "DDD", 20, 10)]))
+order, winners = playoffs.current(m).seed("NFC")
+check("level on record, the head-to-head winner takes the division", m.abbrs[order[0]] == "AAA" or "AAA" in [m.abbrs[i] for i in winners],
+      [m.abbrs[i] for i in order])
+check("AAA is ranked above BBB", [m.abbrs[i] for i in order].index("AAA") < [m.abbrs[i] for i in order].index("BBB"))
+m2 = playoffs.League(_mini([("AAA", "BBB", 20, 10), ("AAA", "BBB", 20, 10), ("AAA", "CCC", 20, 10)], left=[("BBB", "CCC")]))
+off, _ = playoffs.official({"divisions": {}}, m2)
+check("a club that cannot be caught in its division is officially in", off.get(m2.ix["AAA"], ("",))[0] == "in", off)
+check("nobody is called out while it can still get there", all(v[0] != "out" for v in off.values()), off)
+off3, _ = playoffs.official({"divisions": {"x": [{"abbr": "BBB", "clinch": "e"}, {"abbr": "CCC", "clinch": "x"}]}}, m2)
+check("the league's own letters are honoured", off3[m2.ix["BBB"]][0] == "out" and off3[m2.ix["CCC"]][0] == "in")
+real_off, _ = playoffs.official(_snap, lg)
+sim_all = playoffs.simulate(_snap, runs=2000)
+check("no club marked officially out ever got in when the season was played out",
+      all(sim_all["made"][i] == 0 for i, v in real_off.items() if v[0] == "out"))
+check("no club marked officially in ever missed",
+      all(sim_all["made"][i] == 2000 for i, v in real_off.items() if v[0] == "in"))
+
 print("\n" + ("ALL PASS" if not fails else f"{len(fails)} FAILED: {fails}"))
 sys.exit(1 if fails else 0)

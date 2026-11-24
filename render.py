@@ -14,6 +14,7 @@ generated whole from page.template.html.
 """
 
 import os, re, json
+import playoffs
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
@@ -100,7 +101,7 @@ def swap(html, marker, content):
                   f"<!--{marker}-->{content}<!--/{marker}-->", html, flags=re.S)
 
 
-NAV = [("/", "Head to head"), ("/schedule", "Schedules"),
+NAV = [("/", "Head to head"), ("/playoffs", "Playoff race"), ("/schedule", "Schedules"),
        ("/parlay", "Parlay"), ("/league", "Every division")]
 
 
@@ -903,6 +904,8 @@ def build(snap, site_dir):
     out = swap(out, "COMPARE", compare_bars(snap))
     out = swap(out, "DIVISIONS", home_divisions(snap))
     out = swap(out, "STAMP", f"Updated {stamp}")
+    sim = playoffs.run(snap)          # the season played out; used by home and /playoffs
+    out = swap(out, "PLAYOFFS", playoffs.home_strip(snap, sim))
     open(os.path.join(site_dir, "index.html"), "w", encoding="utf-8").write(out)
     written += 1
 
@@ -928,6 +931,12 @@ def build(snap, site_dir):
          f'<div class="scheds">{cols}</div>'
          f'<p class="lede" style="margin-top:18px">Probabilities as published '
          f'{asof or "—"}. Rebuilt {stamp}.</p>')
+    written += 1
+
+    # ---- playoff race
+    page("playoffs.html", "/playoffs", "Playoff race", "Playoff race",
+         "Who is in, who is alive, who is out, and what the Giants need.",
+         playoffs.body(snap, sim, stamp))
     written += 1
 
     # ---- parlay
