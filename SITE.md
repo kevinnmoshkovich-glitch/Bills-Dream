@@ -232,3 +232,17 @@ wider than 500px shows its legs two across (container query).
 
 Polling: each game on its own clock - 20 s while it is on, 30 s inside the
 last 15 minutes before kickoff, 2 min before that, 5 min after the final.
+
+## Playoff race (/playoffs)
+
+`playoffs.py` builds `playoffs.html` and the two tiles at the top of the home page
+(marker `PLAYOFFS` in `index.template.html`). It fetches nothing: it plays out the
+games still in the snapshot 20,000 times with their published win probabilities,
+applies the league's seeding rules, and reports how often each club got in. The
+random seed is the snapshot date, so one snapshot always draws one page.
+
+This is the one page on the site that works a number out instead of printing a
+published one, and it says so at the bottom. "Officially in" and "knocked out" are
+never taken from the played-out seasons: only from the league's mark (`clinch` on
+each standings row, captured in `refresh.py`) or arithmetic that cannot be wrong.
+The common-games tiebreaker is not applied. Rules are tested in `test_model.py`.
