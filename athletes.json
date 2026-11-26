@@ -163,6 +163,10 @@
 "name": "Alvin Kamara",
 "pos": "RB"
 },
+"3059722": {
+"name": "Zay Jones",
+"pos": "WR"
+},
 "3068267": {
 "name": "Austin Ekeler",
 "pos": "RB"
@@ -447,6 +451,10 @@
 "name": "Travis Etienne Jr.",
 "pos": "RB"
 },
+"4240391": {
+"name": "Tommy DeVito",
+"pos": "QB"
+},
 "4240472": {
 "name": "Noah Gray",
 "pos": "TE"
@@ -730,6 +738,10 @@
 "4372414": {
 "name": "Elijah Moore",
 "pos": "WR"
+},
+"4372519": {
+"name": "Jashaun Corbin",
+"pos": "RB"
 },
 "4372780": {
 "name": "Tommy Tremble",
@@ -1414,6 +1426,10 @@
 "4697815": {
 "name": "Rachaad White",
 "pos": "RB"
+},
+"4699354": {
+"name": "Harrison Wallace III",
+"pos": "WR"
 },
 "4701936": {
 "name": "Matthew Golden",
